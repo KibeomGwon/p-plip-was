@@ -1,4 +1,4 @@
-package review.pplip;
+package com.pplip;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

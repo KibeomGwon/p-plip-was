@@ -1,0 +1,32 @@
+#logging:
+#  level:
+#    com:
+#      ssafy: LOG-LEVEL
+#  pattern:
+#    console: CONSOLE-FORMAT
+#
+#spring:
+#  servlet:
+#    multipart:
+#      location: #FILE LOACATION
+#      file-size-threshold: #THRESHOLD
+#      max-file-size: #SIZE
+#      max-request-size: #MAX SIZE
+#  datasource:
+#    driver-class-name: #DRIVER CLASS
+#    url: #DRIVER - URL
+#    username: #DB - USERNAME
+#    password: #DB - PASSWORD
+#    hikari:
+#      maximum-pool-size: # MAX POOL
+#      minimum-idle: #MINIMUM - IDEL
+#      idle-timeout: #TIME OUT
+#      connection-timeout: #CONNECTION - TIMEOUT
+#
+#mybatis:
+#  type-aliases-package: #MAPPING PACKAGE
+#  mapper-locations: #MAPPER LOCATION
+#  configuration:
+#    map-underscore-to-camel-case: #TRUE OR FALSE
+#
+#key_kakao_javascript: #Your_Key_Here
