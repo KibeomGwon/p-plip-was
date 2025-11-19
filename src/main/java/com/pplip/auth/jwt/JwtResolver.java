@@ -1,0 +1,57 @@
+package com.pplip.auth.jwt;
+
+import com.pplip.member.persistence.entity.Account;
+import com.pplip.member.persistence.entity.Role;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.JwtParser;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
+
+import static com.pplip.auth.jwt.JwtProperties.*;
+
+@Component
+@Slf4j
+@RequiredArgsConstructor
+public class JwtResolver {
+
+    @Value("${JWT_SECRET}")
+    private String secret;
+
+    private SecretKey secretKey;
+
+    @PostConstruct
+    private void init() {
+        secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
+
+    public Account resolve(String token) {
+        Claims payload = getClaims(token);
+
+        return Account.builder()
+                .id(payload.get(USERID, Long.class))
+                .email(payload.get(EMAIL, String.class))
+                .role(Role.getRole(payload.get(ROLE, String.class)))
+                .build();
+    }
+
+    private Claims getClaims(String token) {
+        try {
+            return Jwts.parser()
+                    .verifyWith(secretKey)
+                    .build()
+                    .parseSignedClaims(token)
+                    .getPayload();
+        } catch (JwtException ex) {
+            throw ex;
+        }
+    }
+}
