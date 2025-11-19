@@ -1,0 +1,41 @@
+package com.pplip.config;
+
+import com.pplip.auth.filter.JwtAuthenticationFilter;
+import com.pplip.auth.provider.JwtAuthenticationProvider;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.expression.ExpressionException;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
+import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
+import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.web.SecurityFilterChain;
+
+@Configuration
+@RequiredArgsConstructor
+@EnableWebSecurity
+public class SecurityConfig {
+
+    private final JwtAuthenticationProvider provider;
+
+    @Bean
+    public JwtAuthenticationFilter jwtAuthenticationFilter(JwtAuthenticationProvider provider) {
+        return new JwtAuthenticationFilter(provider);
+    }
+
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.httpBasic(HttpBasicConfigurer::disable);
+        http.formLogin(FormLoginConfigurer::disable);
+        http.csrf(CsrfConfigurer::disable);
+        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+
+        // api 설계 필요.
+
+        return http.build();
+    }
+}

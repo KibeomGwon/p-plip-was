@@ -33,7 +33,9 @@ public class JwtResolver {
         secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 
-    public Account resolve(String token) {
+    public Account resolve(String header) {
+        String token = extractTokenFromHeader(header);
+
         Claims payload = getClaims(token);
 
         return Account.builder()
@@ -41,6 +43,14 @@ public class JwtResolver {
                 .email(payload.get(EMAIL, String.class))
                 .role(Role.getRole(payload.get(ROLE, String.class)))
                 .build();
+    }
+
+    private String extractTokenFromHeader(String header) {
+        if (header.startsWith(TOKEN_PREFIX)) {
+            return header.substring(TOKEN_PREFIX.length());
+        } else {
+            throw new JwtException("잘못된 토큰 형식입니다.");
+        }
     }
 
     private Claims getClaims(String token) {
