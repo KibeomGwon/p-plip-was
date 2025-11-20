@@ -1,4 +1,4 @@
-package com.pplip.auth.jwt;
+package com.pplip.domain.auth.jwt;
 
 public class JwtProperties {
     public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 5;

@@ -1,6 +1,6 @@
-package com.pplip.auth.jwt;
+package com.pplip.domain.auth.jwt;
 
-import com.pplip.member.persistence.entity.Account;
+import com.pplip.domain.auth.persistence.entity.Account;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;

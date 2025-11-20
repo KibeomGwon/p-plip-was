@@ -1,9 +1,6 @@
-package com.pplip.auth.filter;
+package com.pplip.domain.auth.filter;
 
-import com.pplip.auth.jwt.JwtProperties;
-import com.pplip.auth.jwt.JwtUtil;
-import com.pplip.auth.provider.JwtAuthenticationProvider;
-import com.pplip.member.persistence.entity.Account;
+import com.pplip.domain.auth.provider.JwtAuthenticationProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,7 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-import static com.pplip.auth.jwt.JwtProperties.*;
+import static com.pplip.domain.auth.jwt.JwtProperties.*;
 
 @RequiredArgsConstructor
 @Slf4j

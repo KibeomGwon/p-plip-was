@@ -1,4 +1,4 @@
-package com.pplip.auth.jwt;
+package com.pplip.domain.auth.jwt;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

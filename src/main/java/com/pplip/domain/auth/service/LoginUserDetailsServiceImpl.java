@@ -1,6 +1,6 @@
-package com.pplip.auth.service;
+package com.pplip.domain.auth.service;
 
-import com.pplip.member.persistence.entity.Account;
+import com.pplip.domain.auth.persistence.repository.AccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -18,7 +18,7 @@ public class LoginUserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Account info = repository.findByEmail(username);
-        return info;
+        return repository.findByEmail(username)
+                .orElseThrow(() -> new UsernameNotFoundException("ID 혹은 비밀번호가 잘못되었습니다."));
     }
 }

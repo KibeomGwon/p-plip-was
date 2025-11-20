@@ -1,6 +1,6 @@
-package com.pplip.auth.jwt;
+package com.pplip.domain.auth.jwt;
 
-import com.pplip.member.persistence.entity.Account;
+import com.pplip.domain.auth.persistence.entity.Account;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
@@ -11,9 +11,8 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.Properties;
 
-import static com.pplip.auth.jwt.JwtProperties.*;
+import static com.pplip.domain.auth.jwt.JwtProperties.*;
 
 @Component
 @Slf4j
