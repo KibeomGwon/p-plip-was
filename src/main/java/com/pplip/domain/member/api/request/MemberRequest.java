@@ -17,6 +17,9 @@ public class MemberRequest {
     public static class Join{
         private String email;
         private LocalDate birth;
+        private String nickname;
+        private String password;
+        private String description;
     }
 
     @Data

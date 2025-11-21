@@ -22,6 +22,4 @@ public interface MemberDocsController {
 
     public CommonResponse<MemberResponse.EmailCheck> verificationEmail(MemberRequest.Email email);
 
-    public CommonResponse<MemberResponse.ModifyNickName> modifyNickname(String nickname, UserDetails principal);
-
 }
