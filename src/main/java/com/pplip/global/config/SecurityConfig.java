@@ -33,6 +33,8 @@ public class SecurityConfig {
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         // api 설계 필요.
+        http.authorizeHttpRequests(req->
+                req.anyRequest().permitAll());
 
         return http.build();
     }

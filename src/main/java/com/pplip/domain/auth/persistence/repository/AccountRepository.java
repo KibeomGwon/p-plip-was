@@ -11,6 +11,5 @@ public interface AccountRepository {
 
     Optional<Account> findByEmail(String username);
 
-    Account findBy
 
 }
