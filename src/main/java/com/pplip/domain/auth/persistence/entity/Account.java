@@ -1,9 +1,6 @@
 package com.pplip.domain.auth.persistence.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -12,11 +9,14 @@ import java.util.Collection;
 import java.util.List;
 
 @Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
 public class Account implements UserDetails {
     private Long id;
+    private Long userId;
+
     private String email;
     private String password;
     private Role role;
