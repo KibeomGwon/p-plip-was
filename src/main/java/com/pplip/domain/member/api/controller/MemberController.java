@@ -5,6 +5,7 @@ import com.pplip.domain.member.api.request.MemberRequest;
 import com.pplip.domain.member.api.response.MemberResponse;
 import com.pplip.global.api.code.SuccessCode;
 import com.pplip.global.api.response.CommonResponse;
+import com.pplip.global.docs.MemberDocsController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,7 +16,7 @@ import java.security.Principal;
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
-public class MemberController {
+public class MemberController implements MemberDocsController {
 
     /**
      * 성공시 isDuplicated Field가 false로 응답
