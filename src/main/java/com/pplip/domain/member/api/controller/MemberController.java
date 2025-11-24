@@ -65,14 +65,4 @@ public class MemberController implements MemberDocsController {
         return CommonResponse.success(SuccessCode.SUCCESS, null);
     }
 
-    /**
-     * @Param nickname 변경할 닉네임
-     * @return 변경된 닉네임
-     */
-    @PatchMapping("/nickname")
-    public CommonResponse<MemberResponse.ModifyNickName> modifyNickname(@RequestParam String nickname,
-                                                                        @AuthenticationPrincipal UserDetails principal){
-        return CommonResponse.success(SuccessCode.UPDATED, null);
-    }
-
 }
