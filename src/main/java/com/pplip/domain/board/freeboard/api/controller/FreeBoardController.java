@@ -8,6 +8,7 @@ import com.pplip.global.docs.FreeBoardDocsController;
 import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,22 +25,39 @@ public class FreeBoardController implements FreeBoardDocsController {
 
     @Override
     @GetMapping("/{id}")
-    public CommonResponse<FreeBoardResponse.Detail> getFreeBoardDetail(@PathVariable Long id) {
-        return null;
+    public CommonResponse<FreeBoardResponse.Detail> postFreeBoardDetail(@PathVariable Long id) {
+        return CommonResponse.success(SuccessCode.SUCCESS, null);
     }
 
     @Override
-    public CommonResponse<FreeBoardResponse.Detail> getFreeBoardDetail(FreeBoardRequest.BoardPost request, UserDetails principal) {
-        return null;
+    @PostMapping
+    public CommonResponse<FreeBoardResponse.Detail> postFreeBoardDetail(
+            @RequestBody
+            FreeBoardRequest.BoardPost request,
+            @AuthenticationPrincipal
+            UserDetails principal) {
+        return CommonResponse.success(SuccessCode.SUCCESS, null);
     }
 
     @Override
-    public CommonResponse<FreeBoardResponse.Update> postFreeBoardUpdate(FreeBoardRequest.BoardUpdate update, Long id, UserDetails principal) {
-        return null;
+    @PutMapping("/{id}")
+    public CommonResponse<FreeBoardResponse.Update> updateFreeBoardUpdate(
+            @RequestBody
+            FreeBoardRequest.BoardUpdate update,
+            @PathVariable
+            Long id,
+            @AuthenticationPrincipal
+            UserDetails principal) {
+        return CommonResponse.success(SuccessCode.SUCCESS, null);
     }
 
     @Override
-    public CommonResponse<FreeBoardResponse.Remove> postBoardUpdate(Long id, UserDetails principal) {
-        return null;
+    @DeleteMapping("/{id}")
+    public CommonResponse<FreeBoardResponse.Remove> removeFreeBoard(
+            @PathVariable
+            Long id,
+            @AuthenticationPrincipal
+            UserDetails principal) {
+        return CommonResponse.success(SuccessCode.SUCCESS, null);
     }
 }

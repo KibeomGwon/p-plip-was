@@ -2,7 +2,6 @@ package com.pplip.domain.trip.attraction.persistence.entity;
 
 import lombok.*;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Getter
@@ -10,7 +9,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class tag {
+public class Tag {
     private Long id;
     private String name;
 
