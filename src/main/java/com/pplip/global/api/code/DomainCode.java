@@ -9,6 +9,7 @@ public enum DomainCode {
     USER(1),
     BOARD(2),
     ATTRACTION(3),
-    PLAN(4);
+    PLAN(4),
+    FILE(5);
     private int value;
 }

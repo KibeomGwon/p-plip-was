@@ -11,9 +11,4 @@ import lombok.*;
 public class FreeBoardImageProperty extends FileProperty {
 
     private Long boardId;
-
-    @Override
-    public ImageType supports() {
-        return ImageType.FREE_BOARD;
-    }
 }
