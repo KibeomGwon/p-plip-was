@@ -5,6 +5,8 @@ import com.pplip.domain.member.api.request.MemberRequest;
 import com.pplip.domain.member.api.response.MemberResponse;
 import com.pplip.global.api.code.SuccessCode;
 import com.pplip.global.api.response.CommonResponse;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +24,9 @@ public interface MemberDocsController {
      * @param nickname 확인할 닉네임
      * @return 중복 확인 결과
      */
-    CommonResponse<MemberResponse.DupCheck> emailDupCheck(String nickname);
+    @Operation(summary = "이메일 중복 확인")
+    @ApiResponse(responseCode = "200", description = "성공")
+    CommonResponse<MemberResponse.DupCheck> emailDupCheck(@RequestParam String nickname);
 
     /**
      * 회원가입을 처리합니다.
@@ -30,7 +34,9 @@ public interface MemberDocsController {
      * @param join 회원가입 요청 정보
      * @return 처리 결과
      */
-    public CommonResponse<Void> join(MemberRequest.Join join);
+    @Operation(summary = "회원가입")
+    @ApiResponse(responseCode = "201", description = "생성")
+    public CommonResponse<Void> join(@RequestBody MemberRequest.Join join);
 
     /**
      * 인증 이메일을 발송합니다.
@@ -38,7 +44,9 @@ public interface MemberDocsController {
      * @param email 이메일 발송 요청 정보
      * @return 처리 결과
      */
-    public CommonResponse<Void> sendVerificationEmail(MemberRequest.Email email);
+    @Operation(summary = "인증 이메일 발송")
+    @ApiResponse(responseCode = "201", description = "생성")
+    public CommonResponse<Void> sendVerificationEmail(@RequestBody MemberRequest.Email email);
 
     /**
      * 이메일 인증을 확인합니다.
@@ -46,6 +54,8 @@ public interface MemberDocsController {
      * @param email 이메일 인증 요청 정보
      * @return 인증 확인 결과
      */
-    public CommonResponse<MemberResponse.EmailCheck> verificationEmail(MemberRequest.Email email);
+    @Operation(summary = "이메일 인증 확인")
+    @ApiResponse(responseCode = "200", description = "성공")
+    public CommonResponse<MemberResponse.EmailCheck> verificationEmail(@RequestBody MemberRequest.Email email);
 
 }

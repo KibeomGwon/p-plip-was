@@ -5,6 +5,7 @@ import com.pplip.domain.member.api.response.MemberResponse;
 import com.pplip.domain.member.api.response.ProfileResponse;
 import com.pplip.global.api.code.SuccessCode;
 import com.pplip.global.api.response.CommonResponse;
+import com.pplip.global.docs.ProfileDocsController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -16,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/member/profile")
 @RequiredArgsConstructor
-public class ProfileController {
+public class ProfileController implements ProfileDocsController {
 
     /**
      * 사용자의 닉네임을 변경합니다.
@@ -26,6 +27,7 @@ public class ProfileController {
      * @return 변경된 닉네임 정보
      */
     @PatchMapping("/nickname")
+    @Override
     public CommonResponse<ProfileResponse.ModifyNickName> modifyNickname(@RequestParam String nickname,
                                                                          @AuthenticationPrincipal UserDetails principal){
         return CommonResponse.success(SuccessCode.UPDATED, null);
@@ -39,6 +41,7 @@ public class ProfileController {
      * @return 수정된 이미지의 URL
      */
     @PatchMapping("/image")
+    @Override
     public CommonResponse<ProfileResponse.ImageUrl> modifyProfileImage(@RequestBody ProfileRequest.Image image,
                                                                    @AuthenticationPrincipal UserDetails principal) {
         return CommonResponse.success(SuccessCode.UPDATED, null);

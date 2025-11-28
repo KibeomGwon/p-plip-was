@@ -3,6 +3,9 @@ package com.pplip.global.config;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pplip.domain.auth.filter.CustomLoginFilter;
 import com.pplip.domain.auth.filter.JwtAuthenticationFilter;
+import com.pplip.domain.auth.filter.JwtExceptionFilter;
+import com.pplip.domain.auth.filter.handler.CustomLoginFailureHandler;
+import com.pplip.domain.auth.filter.handler.CustomLoginSuccessHandler;
 import com.pplip.domain.auth.provider.JwtAuthenticationProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -14,6 +17,7 @@ import org.springframework.security.config.annotation.web.configurers.FormLoginC
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
@@ -35,14 +39,24 @@ public class SecurityConfig {
         http.formLogin(FormLoginConfigurer::disable);
         http.csrf(CsrfConfigurer::disable);
         http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
         // api 설계 필요.
-        http.authorizeHttpRequests(req->
-                req.anyRequest().permitAll());
-        http.addFilterBefore(new JwtAuthenticationFilter(provider), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterAt(new CustomLoginFilter(om), UsernamePasswordAuthenticationFilter.class);
-
-
+        http.authorizeHttpRequests(req ->
+                req.anyRequest()
+                        .permitAll());
+        http.addFilterAt(customLoginFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(
+                new JwtAuthenticationFilter(provider), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(new JwtExceptionFilter(om), JwtAuthenticationFilter.class);
         return http.build();
     }
+
+    @Bean
+    public AbstractAuthenticationProcessingFilter customLoginFilter() {
+        CustomLoginFilter clf = new CustomLoginFilter(om);
+        clf.setAuthenticationSuccessHandler(new CustomLoginSuccessHandler());
+        clf.setAuthenticationFailureHandler(new CustomLoginFailureHandler(om));
+        return clf;
+    }
+
+
 }
