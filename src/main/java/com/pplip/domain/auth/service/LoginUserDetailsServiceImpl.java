@@ -1,6 +1,6 @@
 package com.pplip.domain.auth.service;
 
-import com.pplip.domain.auth.persistence.repository.AccountRepository;
+import com.pplip.domain.auth.persistence.dao.AccountDao;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 public class LoginUserDetailsServiceImpl implements UserDetailsService {
 
     // TODO : AccountRepository 구현
-    private final AccountRepository repository;
+    private final AccountDao repository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

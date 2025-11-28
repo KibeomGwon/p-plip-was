@@ -50,7 +50,6 @@ public class SecurityConfig {
         return http.build();
     }
 
-    @Bean
     public AbstractAuthenticationProcessingFilter customLoginFilter() {
         CustomLoginFilter clf = new CustomLoginFilter(om);
         clf.setAuthenticationSuccessHandler(new CustomLoginSuccessHandler());
