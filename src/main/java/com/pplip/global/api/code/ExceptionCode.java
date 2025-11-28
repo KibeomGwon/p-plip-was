@@ -6,7 +6,13 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum ExceptionCode {
-    NOT_FOUND(1);
+    EMPTY(0),
+    NOT_FOUND(1),
+    NOT_SUPPORT(2),
+    UN_EXPECTED(5),
+    EXPIRED(6),
+    MALFORMED(7),
+    INVALID(8), ;
     private int value;
 
 }

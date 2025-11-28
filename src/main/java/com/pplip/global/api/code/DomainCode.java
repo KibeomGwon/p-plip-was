@@ -8,7 +8,10 @@ import lombok.Getter;
 public enum DomainCode {
     USER(1),
     BOARD(2),
-    ATTRACTION(3),
-    PLAN(4);
+    COMMENT(3),
+    AUTH(4),
+    ATTRACTION(5),
+    PLAN(6),
+    FILE(7);
     private int value;
 }

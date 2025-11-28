@@ -5,34 +5,43 @@ import com.pplip.domain.member.api.response.MemberResponse;
 import com.pplip.domain.member.api.response.ProfileResponse;
 import com.pplip.global.api.code.SuccessCode;
 import com.pplip.global.api.response.CommonResponse;
+import com.pplip.global.docs.ProfileDocsController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 사용자 프로필 관련 API 요청을 처리하는 컨트롤러
+ */
 @RestController
 @RequestMapping("/member/profile")
 @RequiredArgsConstructor
-public class ProfileController {
+public class ProfileController implements ProfileDocsController {
 
     /**
-     * @Param nickname 변경할 닉네임
-     * @return 변경된 닉네임
+     * 사용자의 닉네임을 변경합니다.
+     *
+     * @param nickname  변경할 새 닉네임
+     * @param principal 현재 인증된 사용자 정보
+     * @return 변경된 닉네임 정보
      */
     @PatchMapping("/nickname")
+    @Override
     public CommonResponse<ProfileResponse.ModifyNickName> modifyNickname(@RequestParam String nickname,
                                                                          @AuthenticationPrincipal UserDetails principal){
         return CommonResponse.success(SuccessCode.UPDATED, null);
     }
 
     /**
-     * 프로파일 이미지 수정 완료 시 success code 응답. 실패시 error code. 실패 경우 : 이미지 업로드 실패
+     * 사용자의 프로필 이미지를 수정합니다.
      *
-     * @param image
-     * @param principal
-     * @return 이미지 파일 경로.
+     * @param image     새 프로필 이미지 정보
+     * @param principal 현재 인증된 사용자 정보
+     * @return 수정된 이미지의 URL
      */
     @PatchMapping("/image")
+    @Override
     public CommonResponse<ProfileResponse.ImageUrl> modifyProfileImage(@RequestBody ProfileRequest.Image image,
                                                                    @AuthenticationPrincipal UserDetails principal) {
         return CommonResponse.success(SuccessCode.UPDATED, null);

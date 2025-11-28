@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class NoticeBoard {
-    private Long  id;
+    private Long id;
     private Long authorId;
 
     private String title;

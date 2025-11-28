@@ -18,5 +18,4 @@ public abstract class FileProperty {
 
     private LocalDateTime updatedAt;
 
-    abstract ImageType supports();
 }
