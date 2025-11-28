@@ -55,15 +55,4 @@ public class NoticeResponse {
         private String id;
         private String title;
     }
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class CommentList {
-        private String authorName;
-        private String content;
-        private LocalDateTime createdAt;
-        private LocalDateTime updatedAt;
-    }
 }

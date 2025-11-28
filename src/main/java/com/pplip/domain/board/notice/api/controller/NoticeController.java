@@ -22,7 +22,7 @@ public class NoticeController implements NoticeDocsController {
     }
 
     @PostMapping
-    public CommonResponse<NoticeResponse.Detail> postNoticeBoard(NoticeRequest.BoardPost request,
+    public CommonResponse<NoticeResponse.Detail> postNoticeBoard(NoticeRequest.Post request,
                                                                  @AuthenticationPrincipal UserDetails userDetails) {
         return null;
     }
@@ -33,25 +33,12 @@ public class NoticeController implements NoticeDocsController {
     }
 
     @PutMapping("/{id}")
-    public CommonResponse<NoticeResponse.BoardUpdate> updateNoticeBoard(NoticeRequest.BoardUpdate update, @PathVariable Long id) {
+    public CommonResponse<NoticeResponse.BoardUpdate> updateNoticeBoard(NoticeRequest.Update update, @PathVariable Long id) {
         return null;
     }
 
     @DeleteMapping("/{id}")
     public CommonResponse<NoticeResponse.BoardRemove> removeNoticeBoard(@PathVariable Long id) {
-        return null;
-    }
-
-    @GetMapping("/{id}/comment")
-    public CommonResponse<Page<NoticeResponse.CommentList>> listNoticeBoardComment(@PathVariable Long id) {
-        return null;
-    }
-
-    @PostMapping("/{id}/comment")
-    public CommonResponse<NoticeResponse.CommentList> postNoticeBoardComment(
-            NoticeRequest.CommentPost request,
-            @PathVariable Long id,
-            @AuthenticationPrincipal UserDetails userDetails) {
         return null;
     }
 }
