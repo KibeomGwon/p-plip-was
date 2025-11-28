@@ -13,53 +13,57 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
+/**
+ * 회원 관련 API 요청을 처리하는 컨트롤러
+ */
 @RestController
 @RequestMapping("/member")
 @RequiredArgsConstructor
 public class MemberController implements MemberDocsController {
 
     /**
-     * 성공시 isDuplicated Field가 false로 응답
-     * 실패시 isDuplicated Field가 true로 응답
-     * 실패 케이스 : 닉네임이 중복된 경우
-     * @Param nickname 사용자 닉네임
+     * 닉네임 중복 여부를 확인합니다.
+     *
+     * @param nickname 확인할 닉네임
      * @return 닉네임 중복 여부
      */
+    @Override
     @GetMapping("/join/nickname-dupcheck")
     public CommonResponse<MemberResponse.DupCheck> emailDupCheck(@RequestParam String nickname) {
         return CommonResponse.success(SuccessCode.SUCCESS, null);
     }
 
     /**
-     * 회원가입 성공시 success code 응답
-     * 실패시 error code 응답
-     * 실패 케이스 : 이메일 인증을 하지 않은 경우, 필수 값을 입력하지 않은 경우
-     * @Param join 사용자 정보
-     * @return 생성 응답
+     * 회원가입을 처리합니다.
+     *
+     * @param join 회원가입 요청 정보
+     * @return 생성 성공 응답
      */
+    @Override
     @PostMapping("/join")
     public CommonResponse<Void> join(@RequestBody MemberRequest.Join join) {
         return CommonResponse.success(SuccessCode.CREATED, null);
     }
 
     /**
-     * 이메일 인증코드 발송 성공시 success code 응답
-     * 실패시 error code 응답
-     * 실패 케이스 : 이미 가입된 이메일인 경우
-     * @Param email 사용자 이메일
-     * @return 생성 응답
+     * 인증 이메일을 발송합니다.
+     *
+     * @param email 발송할 이메일 정보
+     * @return 생성 성공 응답
      */
+    @Override
     @PostMapping("/join/send-verification-email")
     public CommonResponse<Void> sendVerificationEmail(@RequestBody MemberRequest.Email email) {
         return CommonResponse.success(SuccessCode.CREATED, null);
     }
 
     /**
-     * 실패 케이스 : 이메일 인증코드 발급을 신청하지 않은 경우, 발급된 인증코드와 상이한 경우
+     * 이메일 인증 코드를 확인합니다.
      *
-     * @Param email 사용자 이메일, 코드
-     * @return 성공시 EmailCheck에 성공 메시지와 isSuccess Field가 true로 응답, 실패시 EmailCheck에 실패 메시지와 isSuccess Field가 false로 응답
+     * @param email 확인할 이메일 및 인증 코드
+     * @return 이메일 인증 확인 결과
      */
+    @Override
     @GetMapping("/join/verification-email")
     public CommonResponse<MemberResponse.EmailCheck> verificationEmail(@RequestBody MemberRequest.Email email) {
         return CommonResponse.success(SuccessCode.SUCCESS, null);

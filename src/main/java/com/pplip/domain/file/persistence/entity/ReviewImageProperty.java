@@ -10,8 +10,4 @@ import lombok.*;
 public class ReviewImageProperty extends FileProperty {
     private Long reviewId;
 
-    @Override
-    public ImageType supports() {
-        return ImageType.REVIEW;
-    }
 }

@@ -11,8 +11,4 @@ public class NoticeBoardImageProperty extends FileProperty {
 
     private Long boardId;
 
-    @Override
-    public ImageType supports() {
-        return ImageType.NOTICE;
-    }
 }

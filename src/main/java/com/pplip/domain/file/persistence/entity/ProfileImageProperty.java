@@ -12,8 +12,4 @@ public class ProfileImageProperty extends FileProperty {
 
     private Long profileId;
 
-    @Override
-    public ImageType supports() {
-        return ImageType.PROFILE;
-    }
 }
