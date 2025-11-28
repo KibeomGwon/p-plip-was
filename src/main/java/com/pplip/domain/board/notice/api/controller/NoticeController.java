@@ -2,6 +2,7 @@ package com.pplip.domain.board.notice.api.controller;
 
 import com.pplip.domain.board.notice.api.request.NoticeRequest;
 import com.pplip.domain.board.notice.api.response.NoticeResponse;
+import com.pplip.global.api.code.SuccessCode;
 import com.pplip.global.api.response.CommonResponse;
 import com.pplip.global.docs.NoticeDocsController;
 import com.pplip.global.page.Page;
@@ -24,7 +25,7 @@ public class NoticeController implements NoticeDocsController {
      */
     @GetMapping
     public CommonResponse<Page<NoticeResponse.Summary>> listNoticeBoard(@ModelAttribute PageRequest pageRequest) {
-        return null;
+        return CommonResponse.success(SuccessCode.SUCCESS, null);
     }
 
     /**
@@ -37,7 +38,7 @@ public class NoticeController implements NoticeDocsController {
     @PostMapping
     public CommonResponse<NoticeResponse.Detail> postNoticeBoard(NoticeRequest.Post request,
                                                                  @AuthenticationPrincipal UserDetails userDetails) {
-        return null;
+        return CommonResponse.success(SuccessCode.CREATED, null);
     }
 
     /**
@@ -48,7 +49,7 @@ public class NoticeController implements NoticeDocsController {
      */
     @GetMapping("/{id}")
     public CommonResponse<NoticeResponse.Detail> findNoticeBoard(@PathVariable Long id) {
-        return null;
+        return CommonResponse.success(SuccessCode.SUCCESS, null);
     }
 
     /**
@@ -60,7 +61,7 @@ public class NoticeController implements NoticeDocsController {
      */
     @PutMapping("/{id}")
     public CommonResponse<NoticeResponse.Update> updateNoticeBoard(NoticeRequest.Update update, @PathVariable Long id) {
-        return null;
+        return CommonResponse.success(SuccessCode.UPDATED, null);
     }
 
     /**
@@ -71,6 +72,6 @@ public class NoticeController implements NoticeDocsController {
      */
     @DeleteMapping("/{id}")
     public CommonResponse<NoticeResponse.Update> removeNoticeBoard(@PathVariable Long id) {
-        return null;
+        return CommonResponse.success(SuccessCode.REMOVED, null);
     }
 }

@@ -3,6 +3,7 @@ package com.pplip.global.docs;
 import com.pplip.domain.trip.plan.api.request.ToDoRequest;
 import com.pplip.domain.trip.plan.api.response.ToDoResponse;
 import com.pplip.global.api.response.CommonResponse;
+import com.pplip.global.page.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -21,7 +22,7 @@ public interface ToDoDocsController {
      */
     @Operation(summary = "유저종속 TODO 페이징 조회")
     @ApiResponse(responseCode = "200", description = "성공")
-    CommonResponse<ToDoResponse.Summary> listToDo(UserDetails userDetails);
+    CommonResponse<Page<ToDoResponse.Summary>> listToDo(UserDetails userDetails);
 
     /**
      * 계획의 TODO 리스트를 조회합니다.
@@ -31,7 +32,7 @@ public interface ToDoDocsController {
      */
     @Operation(summary = "계획종속 TODO 페이징 조회")
     @ApiResponse(responseCode = "200", description = "성공")
-    CommonResponse<ToDoResponse.Summary> listToDo(Long planId);
+    CommonResponse<List<ToDoResponse.Summary>> listToDo(Long planId);
 
     /**
      * TODO를 생성합니다.

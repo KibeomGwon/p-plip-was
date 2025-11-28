@@ -9,5 +9,4 @@ import lombok.*;
 @Builder
 public class ReviewImageProperty extends FileProperty {
     private Long reviewId;
-
 }
