@@ -11,9 +11,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-/**
- * 자유게시판 댓글 관련 API 요청을 처리하는 컨트롤러
- */
+
 @RestController
 @RequestMapping("/freeboard")
 @RequiredArgsConstructor
