@@ -13,7 +13,7 @@ public class NoticeResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class BoardList {
+    public static class Summary {
         private Long id;
         private String title;
         private String authorName;

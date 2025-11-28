@@ -13,7 +13,7 @@ public class NoticeCommentResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class List {
+    public static class Summary {
         private Long id;
         private String authorName;
         private FileResponse profileImage;

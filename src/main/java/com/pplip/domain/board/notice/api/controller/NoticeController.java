@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class NoticeController implements NoticeDocsController {
 
     @GetMapping
-    public CommonResponse<Page<NoticeResponse.BoardList>> listNoticeBoard(@ModelAttribute PageRequest pageRequest) {
+    public CommonResponse<Page<NoticeResponse.Summary>> listNoticeBoard(@ModelAttribute PageRequest pageRequest) {
         return null;
     }
 

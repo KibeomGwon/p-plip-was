@@ -15,7 +15,7 @@ public interface NoticeDocsController {
 
     @Operation(summary = "공지게시판 페이징 조회")
     @ApiResponse(responseCode = "200", description = "성공")
-    CommonResponse<Page<NoticeResponse.BoardList>> listNoticeBoard(PageRequest pageRequest);
+    CommonResponse<Page<NoticeResponse.Summary>> listNoticeBoard(PageRequest pageRequest);
 
     @Operation(summary = "공지게시판 게시글 작성")
     @ApiResponse(responseCode = "201", description = "생성")

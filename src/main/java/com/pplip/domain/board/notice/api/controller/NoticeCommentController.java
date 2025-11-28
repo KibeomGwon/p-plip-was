@@ -1,14 +1,11 @@
 package com.pplip.domain.board.notice.api.controller;
 
 import com.pplip.domain.board.notice.api.request.NoticeCommentRequest;
-import com.pplip.domain.board.notice.api.request.NoticeRequest;
 import com.pplip.domain.board.notice.api.response.NoticeCommentResponse;
-import com.pplip.domain.board.notice.api.response.NoticeResponse;
 import com.pplip.global.api.response.CommonResponse;
 import com.pplip.global.docs.NoticeCommentDocsController;
 import com.pplip.global.page.Page;
 import lombok.RequiredArgsConstructor;
-import org.apache.ibatis.annotations.Delete;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -20,7 +17,7 @@ public class NoticeCommentController implements NoticeCommentDocsController {
 
     @Override
     @GetMapping("/{id}/comment")
-    public CommonResponse<Page<NoticeCommentResponse.List>> listNoticeBoardComment(@PathVariable Long id) {
+    public CommonResponse<Page<NoticeCommentResponse.Summary>> listNoticeBoardComment(@PathVariable Long id) {
         return null;
     }
 
