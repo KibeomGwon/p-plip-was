@@ -2,12 +2,16 @@ package com.pplip.domain.trip.plan.api.controller;
 
 import com.pplip.domain.trip.plan.api.request.PlanRequest;
 import com.pplip.domain.trip.plan.api.response.PlanResponse;
+import com.pplip.global.api.code.SuccessCode;
 import com.pplip.global.api.response.CommonResponse;
 import com.pplip.global.docs.PlanDocsController;
+import com.pplip.global.page.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * 여행 계획 관련 API를 처리하는 컨트롤러
@@ -23,8 +27,8 @@ public class PlanController implements PlanDocsController {
      */
     @Override
     @GetMapping
-    public CommonResponse<PlanResponse.Summary> listPlan(@AuthenticationPrincipal UserDetails userDetails) {
-        return null;
+    public CommonResponse<Page<PlanResponse.Summary>> listPlan(@AuthenticationPrincipal UserDetails userDetails) {
+        return CommonResponse.success(SuccessCode.SUCCESS, null);
     }
 
     /**
@@ -35,7 +39,7 @@ public class PlanController implements PlanDocsController {
     @Override
     @GetMapping("/{id}")
     public CommonResponse<PlanResponse.Detail> getPlan(Long id) {
-        return null;
+        return CommonResponse.success(SuccessCode.SUCCESS, null);
     }
 
     /**
@@ -47,7 +51,7 @@ public class PlanController implements PlanDocsController {
     @Override
     @PostMapping
     public CommonResponse<PlanResponse.Detail> postPlan(PlanRequest.Post request, @AuthenticationPrincipal UserDetails userDetails) {
-        return null;
+        return CommonResponse.success(SuccessCode.CREATED, null);
     }
 
     /**
@@ -59,7 +63,7 @@ public class PlanController implements PlanDocsController {
     @Override
     @PutMapping("/{id}")
     public CommonResponse<PlanResponse.Update> updatePlan(PlanRequest.Update update, @PathVariable Long id) {
-        return null;
+        return CommonResponse.success(SuccessCode.UPDATED, null);
     }
 
     /**
@@ -70,6 +74,6 @@ public class PlanController implements PlanDocsController {
     @Override
     @DeleteMapping("/{id}")
     public CommonResponse<?> deletePlan(Long id) {
-        return null;
+        return CommonResponse.success(SuccessCode.REMOVED, null);
     }
 }

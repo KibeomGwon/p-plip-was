@@ -3,10 +3,13 @@ package com.pplip.global.docs;
 import com.pplip.domain.trip.plan.api.request.PlanRequest;
 import com.pplip.domain.trip.plan.api.response.PlanResponse;
 import com.pplip.global.api.response.CommonResponse;
+import com.pplip.global.page.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.util.List;
 
 /**
  * 여행 계획 관련 API 명세서
@@ -21,7 +24,7 @@ public interface PlanDocsController {
      */
     @Operation(summary = "여행 계획 리스트 조회")
     @ApiResponse(responseCode = "200", description = "성공")
-    CommonResponse<PlanResponse.Summary> listPlan(UserDetails userDetails);
+    CommonResponse<Page<PlanResponse.Summary>> listPlan(UserDetails userDetails);
 
     /**
      * 특정 여행 계획의 상세 정보를 조회합니다.

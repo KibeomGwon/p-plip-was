@@ -2,8 +2,10 @@ package com.pplip.domain.trip.plan.api.controller;
 
 import com.pplip.domain.trip.plan.api.request.ToDoRequest;
 import com.pplip.domain.trip.plan.api.response.ToDoResponse;
+import com.pplip.global.api.code.SuccessCode;
 import com.pplip.global.api.response.CommonResponse;
 import com.pplip.global.docs.ToDoDocsController;
+import com.pplip.global.page.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -23,8 +25,8 @@ public class ToDoController implements ToDoDocsController {
      */
     @Override
     @GetMapping("/todo")
-    public CommonResponse<ToDoResponse.Summary> listToDo(UserDetails userDetails) {
-        return null;
+    public CommonResponse<Page<ToDoResponse.Summary>> listToDo(UserDetails userDetails) {
+        return CommonResponse.success(SuccessCode.SUCCESS, null);
     }
 
     /**
@@ -35,8 +37,8 @@ public class ToDoController implements ToDoDocsController {
      */
     @Override
     @GetMapping("/{planId}/todo")
-    public CommonResponse<ToDoResponse.Summary> listToDo(Long planId) {
-        return null;
+    public CommonResponse<List<ToDoResponse.Summary>> listToDo(Long planId) {
+        return CommonResponse.success(SuccessCode.SUCCESS, null);
     }
 
     /**
@@ -49,7 +51,7 @@ public class ToDoController implements ToDoDocsController {
     @Override
     @PostMapping("/{planId}/todo")
     public CommonResponse<ToDoResponse.Detail> listToDo(List<ToDoRequest.Post> request, Long planId) {
-        return null;
+        return CommonResponse.success(SuccessCode.CREATED, null);
     }
 
     /**
@@ -61,7 +63,7 @@ public class ToDoController implements ToDoDocsController {
     @Override
     @GetMapping("/todo/{id}")
     public CommonResponse<ToDoResponse.Detail> getToDo(Long id) {
-        return null;
+        return CommonResponse.success(SuccessCode.SUCCESS, null);
     }
 
     /**
@@ -74,7 +76,7 @@ public class ToDoController implements ToDoDocsController {
     @Override
     @PutMapping("/{planId}/todo")
     public CommonResponse<ToDoResponse.Update> updateToDo(List<ToDoRequest.Update> update, Long planId) {
-        return null;
+        return CommonResponse.success(SuccessCode.UPDATED, null);
     }
 
     /**
@@ -86,6 +88,6 @@ public class ToDoController implements ToDoDocsController {
     @Override
     @DeleteMapping("/todo/{id}")
     public CommonResponse<?> deleteToDo(Long id) {
-        return null;
+        return CommonResponse.success(SuccessCode.REMOVED, null);
     }
 }
