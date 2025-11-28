@@ -22,20 +22,20 @@ public interface FreeBoardDocsController {
 
     @Operation(summary = "자유게시판 게시글 상세 조회")
     @ApiResponse(responseCode = "200", description = "성공")
-    CommonResponse<FreeBoardResponse.Detail> getFreeBoardDetail(Long id);
+    CommonResponse<FreeBoardResponse.Detail> postFreeBoardDetail(Long id);
 
 
     @Operation(summary = "자유게시판 게시글 작성")
     @ApiResponse(responseCode = "201", description = "생성")
-    CommonResponse<FreeBoardResponse.Detail> getFreeBoardDetail(FreeBoardRequest.BoardPost request, UserDetails principal);
+    CommonResponse<FreeBoardResponse.Detail> postFreeBoardDetail(FreeBoardRequest.BoardPost request, UserDetails principal);
 
     @Operation(summary = "자유게시판 게시글 수정")
     @ApiResponse(responseCode = "202", description = "수정")
-    CommonResponse<FreeBoardResponse.Update> postFreeBoardUpdate(FreeBoardRequest.BoardUpdate update, Long id, UserDetails principal);
+    CommonResponse<FreeBoardResponse.Update> updateFreeBoardUpdate(FreeBoardRequest.BoardUpdate update, Long id, UserDetails principal);
 
 
     @Operation(summary = "자유게시판 게시글 삭제")
     @ApiResponse(responseCode = "203", description = "삭제")
-    CommonResponse<FreeBoardResponse.Remove> postBoardUpdate(Long id, UserDetails principal);
+    CommonResponse<FreeBoardResponse.Remove> removeFreeBoard(Long id, UserDetails principal);
 
 }
