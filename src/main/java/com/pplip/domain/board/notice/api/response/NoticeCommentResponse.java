@@ -1,5 +1,6 @@
 package com.pplip.domain.board.notice.api.response;
 
+import com.pplip.domain.file.api.response.FileResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,10 +14,36 @@ public class NoticeCommentResponse {
     @AllArgsConstructor
     @Builder
     public static class List {
+        private Long id;
         private String authorName;
+        private FileResponse profileImage;
         private String content;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
 
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class Detail {
+        private Long id;
+        private String authorName;
+        private FileResponse profileImage;
+        private String content;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class Update {
+        private String authorName;
+        private FileResponse profileImage;
+        private String content;
+        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+    }
 }

@@ -27,11 +27,11 @@ public interface NoticeDocsController {
 
 
     @Operation(summary = "공지게시판 게시판 수정")
-    @ApiResponse(responseCode = "202", description = "성공")
-    CommonResponse<NoticeResponse.BoardUpdate> updateNoticeBoard(NoticeRequest.Update update, Long id);
+    @ApiResponse(responseCode = "202", description = "수정")
+    CommonResponse<NoticeResponse.Update> updateNoticeBoard(NoticeRequest.Update update, Long id);
 
     @Operation(summary = "공지게시판 게시판 삭제")
-    @ApiResponse(responseCode = "203", description = "성공")
-    CommonResponse<NoticeResponse.BoardRemove> removeNoticeBoard(Long id);
+    @ApiResponse(responseCode = "203", description = "삭제")
+    CommonResponse<NoticeResponse.Update> removeNoticeBoard(Long id);
 
 }

@@ -33,12 +33,12 @@ public class NoticeController implements NoticeDocsController {
     }
 
     @PutMapping("/{id}")
-    public CommonResponse<NoticeResponse.BoardUpdate> updateNoticeBoard(NoticeRequest.Update update, @PathVariable Long id) {
+    public CommonResponse<NoticeResponse.Update> updateNoticeBoard(NoticeRequest.Update update, @PathVariable Long id) {
         return null;
     }
 
     @DeleteMapping("/{id}")
-    public CommonResponse<NoticeResponse.BoardRemove> removeNoticeBoard(@PathVariable Long id) {
+    public CommonResponse<NoticeResponse.Update> removeNoticeBoard(@PathVariable Long id) {
         return null;
     }
 }

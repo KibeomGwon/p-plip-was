@@ -14,6 +14,7 @@ public class NoticeResponse {
     @AllArgsConstructor
     @Builder
     public static class BoardList {
+        private Long id;
         private String title;
         private String authorName;
         private int viewCnt;
@@ -26,6 +27,7 @@ public class NoticeResponse {
     @AllArgsConstructor
     @Builder
     public static class Detail {
+        private Long id;
         private String title;
         private String authorName;
         private String content;
@@ -38,21 +40,13 @@ public class NoticeResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-    public static class BoardUpdate {
+    public static class Update {
+        private Long id;
         private String title;
         private String authorName;
         private String content;
         private int viewCnt;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
-    }
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class BoardRemove {
-        private String id;
-        private String title;
     }
 }
