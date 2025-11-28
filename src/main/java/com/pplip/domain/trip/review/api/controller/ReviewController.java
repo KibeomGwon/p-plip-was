@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
  * 여행 리뷰와 관련된 요청을 처리합니다.
  */
 @RestController
-@RequestMapping("/attraction")
+@RequestMapping("/trip/attraction")
 public class ReviewController implements ReviewDocsController {
 
     /**
