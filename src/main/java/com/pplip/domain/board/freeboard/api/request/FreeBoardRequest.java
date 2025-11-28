@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 public class FreeBoardRequest {
     @Builder
     @NoArgsConstructor
@@ -13,6 +15,7 @@ public class FreeBoardRequest {
     public static class BoardPost{
         private String title;
         private String content;
+        private List<Long> imageIds;
     }
 
     @Data

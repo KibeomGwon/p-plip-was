@@ -1,4 +1,4 @@
-package com.pplip.domain.auth.persistence.repository;
+package com.pplip.domain.auth.persistence.dao;
 
 
 import com.pplip.domain.auth.persistence.entity.Account;
@@ -10,7 +10,7 @@ import java.util.Optional;
  * Account 데이터에 접근하기 위한 MyBatis 매퍼 인터페이스
  */
 @Mapper
-public interface AccountRepository {
+public interface AccountDao {
 
     /**
      * 이메일 주소를 기준으로 계정 정보를 조회합니다.
