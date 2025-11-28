@@ -8,7 +8,9 @@ import com.pplip.global.page.PageRequest;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.ModelAttribute;
 
 /**
  * 자유게시판 관련 API 명세를 정의하는 인터페이스
@@ -25,7 +27,7 @@ public interface FreeBoardDocsController {
      */
     @Operation(summary = "자유게시판 페이징 조회")
     @ApiResponse(responseCode = "200", description = "성공")
-    public CommonResponse<Page<FreeBoardResponse.BoardList>> retrieveFreeBoard(PageRequest pageRequest);
+    public CommonResponse<Page<FreeBoardResponse.BoardList>> retrieveFreeBoard(@ModelAttribute PageRequest pageRequest);
 
 
     /**
@@ -48,7 +50,7 @@ public interface FreeBoardDocsController {
      */
     @Operation(summary = "자유게시판 게시글 작성")
     @ApiResponse(responseCode = "201", description = "생성")
-    CommonResponse<FreeBoardResponse.Detail> postFreeBoardDetail(FreeBoardRequest.BoardPost request, UserDetails principal);
+    CommonResponse<FreeBoardResponse.Detail> postFreeBoardDetail(FreeBoardRequest.BoardPost request, @AuthenticationPrincipal UserDetails principal);
 
     /**
      * 기존 자유게시판 게시글을 수정합니다.
@@ -60,7 +62,7 @@ public interface FreeBoardDocsController {
      */
     @Operation(summary = "자유게시판 게시글 수정")
     @ApiResponse(responseCode = "202", description = "수정")
-    CommonResponse<FreeBoardResponse.Update> updateFreeBoardUpdate(FreeBoardRequest.BoardUpdate update, Long id, UserDetails principal);
+    CommonResponse<FreeBoardResponse.Update> updateFreeBoardUpdate(FreeBoardRequest.BoardUpdate update, Long id, @AuthenticationPrincipal UserDetails principal);
 
 
     /**
@@ -72,6 +74,6 @@ public interface FreeBoardDocsController {
      */
     @Operation(summary = "자유게시판 게시글 삭제")
     @ApiResponse(responseCode = "203", description = "삭제")
-    CommonResponse<FreeBoardResponse.Remove> removeFreeBoard(Long id, UserDetails principal);
+    CommonResponse<FreeBoardResponse.Remove> removeFreeBoard(Long id, @AuthenticationPrincipal UserDetails principal);
 
 }

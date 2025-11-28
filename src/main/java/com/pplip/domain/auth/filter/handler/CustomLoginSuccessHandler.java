@@ -22,6 +22,7 @@ public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         Jwt generate = jwtUtil.generate(authentication);
         PrintWriter writer = response.getWriter();
+        response.setContentType("application/json;charset=UTF-8");
         writer.print(om.writeValueAsString(CommonResponse.success(
                 SuccessCode.SUCCESS,
                 generate,

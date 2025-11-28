@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * 자유게시판 관련 API 요청을 처리하는 컨트롤러
  */
 @RestController
-@RequestMapping("/free-board")
+@RequestMapping("/freeboard")
 @RequiredArgsConstructor
 public class FreeBoardController implements FreeBoardDocsController {
 

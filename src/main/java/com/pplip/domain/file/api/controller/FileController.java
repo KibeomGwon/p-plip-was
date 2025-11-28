@@ -4,6 +4,7 @@ import com.pplip.domain.file.api.response.FileResponse;
 import com.pplip.domain.file.persistence.entity.ImageType;
 import com.pplip.global.api.code.SuccessCode;
 import com.pplip.global.api.response.CommonResponse;
+import com.pplip.global.docs.FileDocsController;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 @RequestMapping("/file")
 @RequiredArgsConstructor
-public class FileController {
+public class FileController implements FileDocsController {
 
     /**
      * 이미지 파일을 업로드합니다.
@@ -25,6 +26,7 @@ public class FileController {
      * @return 업로드된 파일 정보와 함께 성공 응답을 반환
      */
     @PostMapping(path = "/image", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @Override
     public CommonResponse<FileResponse> upload(
             @RequestPart
             MultipartFile multipartFile,
@@ -41,6 +43,7 @@ public class FileController {
      * @return 삭제된 파일 정보와 함께 성공 응답을 반환
      */
     @DeleteMapping("/images/{id}")
+    @Override
     public CommonResponse<FileResponse> deleteFile(@PathVariable Long id){
         return CommonResponse.success(SuccessCode.REMOVED, null);
     }
