@@ -2,31 +2,43 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pplip.domain.board.freeboard.persistence.dao.FreeBoardCommentDao">
 
-    <select id="findAll" resultMap="retrieveMap">
-        select
-            fc.id as id,
-            fc.content as content,
-            p.nickname as authorNickName,
-            fc.created_at as createdAt,
-            fc.updated_at as updatedAt,
-            p.id as profileId
-        from free_comment fc
-                 join user u on fc.author_id = u.id
-                 join profile p on u.profile_id = p.id
-        where fc.board_id = #{boardId} and fc.is_removed = false;
-    </select>
-
     <resultMap id="retrieveMap" type="com.pplip.domain.board.freeboard.api.response.FreeBoardCommentResponse.Retrieve">
-        <id property="id" column="id"/>
+        <id property="id" column="comment_id"/>
         <result property="content" column="content"/>
         <result property="authorNickName" column="authorNickName"/>
         <result property="createdAt" column="createdAt"/>
         <result property="updatedAt" column="updatedAt"/>
-        <association property="profileImage"
-                     select="findProfileImageByProfileId"
-                     column="profileId"
-                     javaType="com.pplip.domain.file.api.response.FileResponse"/>
+
+        <association property="profileImage" javaType="com.pplip.domain.file.api.response.FileResponse">
+            <id property="id" column="file_id"/>
+            <result property="name" column="file_name"/>
+            <result property="path" column="file_path"/>
+            <result property="size" column="file_size"/>
+        </association>
     </resultMap>
+
+    <select id="findAll" resultMap="retrieveMap">
+        SELECT
+            fc.id           AS comment_id,
+            fc.content      AS content,
+            fc.created_at   AS createdAt,
+            fc.updated_at   AS updatedAt,
+            p.nickname      AS authorNickName,
+
+            pip.id              AS file_id,
+            pip.saved_file_name AS file_name,
+            pip.path            AS file_path,
+            pip.size            AS file_size
+
+        FROM free_comment fc
+                 JOIN user u ON fc.author_id = u.id
+                 JOIN profile p ON u.profile_id = p.id
+                 LEFT JOIN profile_image_property pip ON p.id = pip.profile_id
+
+        WHERE fc.board_id = #{boardId}
+          AND fc.is_removed = false
+        ORDER BY fc.created_at DESC
+    </select>
 
     <select id="findProfileImageByProfileId" resultType="com.pplip.domain.file.api.response.FileResponse">
         select id,

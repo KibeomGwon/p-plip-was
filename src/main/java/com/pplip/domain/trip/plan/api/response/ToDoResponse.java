@@ -21,7 +21,7 @@ public class ToDoResponse {
         private Long attractionId;
 
         private String attractionTitle;
-        private FileResponse attractionImage;
+        private String attractionImage;
 
         private LocalDate willStartAt;
         private LocalDate willEndAt;
@@ -39,7 +39,7 @@ public class ToDoResponse {
         private Long attractionId;
 
         private String attractionTitle;
-        private FileResponse attractionImage;
+        private String attractionImage;
 
         private String description;
         private LocalDate willStartAt;
@@ -58,7 +58,7 @@ public class ToDoResponse {
         private Long attractionId;
 
         private String attractionTitle;
-        private FileResponse attractionImage;
+        private String attractionImage;
 
         private String description;
         private LocalDate willStartAt;

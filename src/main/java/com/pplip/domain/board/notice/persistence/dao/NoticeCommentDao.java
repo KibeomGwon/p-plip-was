@@ -6,12 +6,14 @@ import com.pplip.domain.board.notice.persistence.entity.NoticeBoard;
 import com.pplip.domain.board.notice.persistence.entity.NoticeComment;
 import com.pplip.global.page.PageRequest;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
 @Mapper
 public interface NoticeCommentDao {
-    List<NoticeCommentResponse.Summary> findAll(Long noticeId, PageRequest pageRequest);
+    List<NoticeCommentResponse.Summary> findAll(@Param("noticeId") Long noticeId,
+                                                @Param("pageRequest") PageRequest pageRequest);
 
     int noticeBoardCommentAllCount(Long id);
 
