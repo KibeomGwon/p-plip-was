@@ -20,5 +20,7 @@ public interface AccountDao {
      */
     Optional<Account> findByEmail(String username);
 
+    int insert(Account account);
 
+    int updatePassword(Account account);
 }
