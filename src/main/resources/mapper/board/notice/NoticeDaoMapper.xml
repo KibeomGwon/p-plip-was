@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pplip.domain.board.notice.persistence.dao.NoticeDao">
+    <select id="findAll" resultMap="summaryMap">
+        select nb.id as 'id', nb.title as 'title', pf.nickname as 'authorName', nb.view_cnt as 'viewCnt', nb.created_at as 'createdAt', nb.updated_at as 'updatedAt'
+        from notice_board nb
+                 join user u on nb.author_id = u.id
+                 join profile pf on pf.id = u.profile_id
+            limit #{pageSize}
+        where is_removed = false
+        offset #{offset};
+    </select>
+
+    <resultMap id="summaryMap" type="NoticeResponse.Summary" autoMapping="true"></resultMap>
+
+    <select id="findById" resultMap="detailMap">
+        select nb.id as 'id', nb.title as 'title', pf.nickname as 'authorName', nb.content as 'content', nb.view_cnt as 'viewCnt', nb.created_at as 'createdAt', nb.updated_at as 'updatedAt'
+        from notice_board nb
+                 join user u on nb.author_id = u.id
+                 join profile pf on pf.id = u.profile_id
+        where nb.id = #{id}
+    </select>
+
+    <resultMap id="detailMap" type="NoticeResponse.Detail" autoMapping="true">
+        <id property="id" column="id"/>
+        <collection property="noticeImages"
+                    select="findImagesByNoticeId"
+                    column="id"
+                    javaType="java.util.List"
+                    resultMap="fileResponseMap"/>
+    </resultMap>
+
+    <select id="findImagesByNoticeId" resultMap="fileResponseMap">
+        select id,
+               saved_file_name as name,
+               path,
+               size
+        from notice_board_image_property
+        where board_id = #{id}
+    </select>
+
+    <resultMap id="fileResponseMap" type="com.pplip.domain.file.api.response.FileResponse"
+               autoMapping="true"></resultMap>
+
+    <insert id="insert">
+        insert into notice_board (author_id, title, content, view_cnt, is_removed, created_at, updated_at)
+        values (#{authorId}, #{title}, #{content}, #{viewCnt}, #{isRemoved}, #{createdAt}, #{updatedAt});
+    </insert>
+
+    <update id="delete">
+        update notice_board
+        set
+            is_removed = false,
+            updated_at = NOW()
+        where id = #{id};
+    </update>
+
+    <update id="update">
+        update notice_board
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            updated_at = NOW()
+        </set>
+        where id = #{id};
+    </update>
+</mapper>

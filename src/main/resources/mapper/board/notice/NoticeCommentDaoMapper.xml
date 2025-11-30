@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pplip.domain.board.notice.persistence.dao.NoticeCommentDao">
+
+    <select id="findAll" resultMap="summaryMap">
+        select
+            nc.id as id,
+            p.nickname as authorName,
+            nc.content as content,
+            nc.created_at as createdAt,
+            nc.updated_at as updatedAt,
+            p.id as profileId
+        from notice_comment nc
+
+        join user u on nc.author_id = u.id
+        join profile p on u.profile_id = p.id
+        where nc.board_id = #{noticeId}
+            and is_removed = false
+        limit #{pageRequest.pageSize} offset #{pageRequest.offset};
+    </select>
+
+    <resultMap id="summaryMap" type="com.pplip.domain.board.notice.api.response.NoticeCommentResponse.Summary">
+        <id property="id" column="id"/>
+        <result property="authorName" column="authorName"/>
+        <result property="content" column="content"/>
+        <result property="createdAt" column="createdAt"/>
+        <result property="updatedAt" column="updatedAt"/>
+        <association property="profileImage"
+                     select="findProfileImageByProfileId"
+                     column="profileId"
+                     javaType="com.pplip.domain.file.api.response.FileResponse"/>
+    </resultMap>
+
+    <select id="findProfileImageByProfileId" resultType="com.pplip.domain.file.api.response.FileResponse">
+        select id,
+               saved_file_name as name,
+               path,
+               size
+        from profile_image_property where id = #{profileId}
+    </select>
+
+    <select id="noticeBoardCommentAllCount" resultType="int">
+        select count(*)
+        from notice_comment
+        where board_id = #{id}
+        and is_removed = false;
+    </select>
+
+    <insert id="insert" parameterType="com.pplip.domain.board.notice.persistence.entity.NoticeComment">
+        insert into notice_comment (board_id, author_id, content, is_removed, created_at, updated_at)
+        values (#{noticeBoardId}, #{authorId}, #{content}, #{isRemoved}, #{createdAt}, #{updatedAt});
+    </insert>
+
+    <update id="delete">
+        update notice_comment
+        set
+            is_removed = true,
+            updated_at = NOW()
+        where id = #{id};
+    </update>
+
+    <update id="update" parameterType="com.pplip.domain.board.notice.persistence.entity.NoticeComment">
+        update notice_comment
+        <set>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            updated_at = NOW()
+        </set>
+        where id = #{id};
+    </update>
+
+</mapper>

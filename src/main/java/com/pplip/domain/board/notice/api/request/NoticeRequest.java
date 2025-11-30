@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 public class NoticeRequest {
 
     @Data
@@ -14,6 +16,7 @@ public class NoticeRequest {
     public static class Post {
         private String title;
         private String content;
+        private List<Long> imageIds;
     }
 
     @Data
@@ -23,5 +26,6 @@ public class NoticeRequest {
     public static class Update {
         private String title;
         private String content;
+        private List<Long> imageIds;
     }
 }

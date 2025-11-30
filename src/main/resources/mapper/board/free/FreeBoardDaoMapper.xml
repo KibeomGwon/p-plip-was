@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pplip.domain.board.freeboard.persistence.dao.FreeBoardDao">
+
+    <select id="findAll" resultMap="boardListMap">
+        select fb.id as id,
+               fb.title as title,
+               p.nickname as authorName,
+               fb.created_at as createdAt,
+               fb.updated_at as updatedAt,
+               (select count(*) from user_like_board ulb where ulb.board_id = fb.id) as likeCnt
+        from free_board fb
+                 join user u on fb.author_id = u.id
+                 join profile p on u.profile_id = p.id
+        where fb.is_removed = false
+            limit #{pageSize} offset #{offset};
+    </select>
+
+    <resultMap id="boardListMap" type="com.pplip.domain.board.freeboard.api.response.FreeBoardResponse.BoardList" autoMapping="true">
+        <id property="id" column="id"/>
+        <result property="authorName" column="authorName"/>
+        <result property="likeCnt" column="likeCnt"/>
+    </resultMap>
+
+    <select id="freeBoardAllCount" resultType="int">
+        select count(*)
+        from free_board
+        where is_removed = false;
+    </select>
+
+    <select id="findById" resultMap="detailMap">
+        select fb.id as id,
+               fb.title as title,
+               p.nickname as authorName,
+               fb.content as content,
+               fb.created_at as createdAt,
+               fb.updated_at as updatedAt,
+               (select count(*) from user_like_board ulb where ulb.board_id = fb.id) as likeCnt
+        from free_board fb
+                 join user u on fb.author_id = u.id
+                 join profile p on u.profile_id = p.id
+        where fb.id = #{id} and fb.is_removed = false;
+    </select>
+
+    <resultMap id="detailMap" type="com.pplip.domain.board.freeboard.api.response.FreeBoardResponse.Detail" autoMapping="true">
+        <id property="id" column="id"/>
+        <result property="authorName" column="authorName"/>
+        <result property="likeCnt" column="likeCnt"/>
+        <collection property="freeBoardImages"
+                    select="findImagesByFreeBoardId"
+                    column="id"
+                    javaType="java.util.List"
+                    resultMap="fileResponseMap"/>
+    </resultMap>
+
+    <select id="findImagesByFreeBoardId" resultMap="fileResponseMap">
+        select id,
+               saved_file_name as name,
+               path,
+                size
+        from free_board_image_property
+        where board_id = #{id}
+    </select>
+
+    <resultMap id="fileResponseMap" type="com.pplip.domain.file.api.response.FileResponse" autoMapping="true"></resultMap>
+
+
+    <insert id="insert" parameterType="com.pplip.domain.board.freeboard.persistence.entity.FreeBoard" useGeneratedKeys="true" keyProperty="id">
+        insert into free_board (author_id, title, content, view_cnt, is_removed, created_at, updated_at)
+        values (#{authorId}, #{title}, #{content}, #{viewCnt}, #{isRemoved}, #{createdAt}, #{updatedAt});
+    </insert>
+
+    <update id="update" parameterType="com.pplip.domain.board.freeboard.persistence.entity.FreeBoard">
+        update free_board
+        <set>
+            <if test="title != null">
+                title = #{title},
+            </if>
+            <if test="content != null">
+                content = #{content},
+            </if>
+            <if test="viewCnt != 0">
+                view_cnt = #{viewCnt},
+            </if>
+            updatedAt = NOW()
+        </set>
+        where id = #{id};
+    </update>
+
+    <update id="delete">
+        update free_board
+        set is_removed = true,
+            updated_at = NOW()
+        where id = #{id};
+    </update>
+
+</mapper>
