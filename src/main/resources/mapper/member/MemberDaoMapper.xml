@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pplip.domain.member.persistence.dao.MemberDao">
+
+    <select id="findById" resultType="com.pplip.domain.member.persistence.entity.Member">
+        select
+            id,
+            profile_id as profileId,
+            name,
+            birth
+        from member
+        where id = #{id};
+    </select>
+
+    <insert id="insert" parameterType="com.pplip.domain.member.persistence.entity.Member" useGeneratedKeys="true" keyProperty="id">
+        insert into member (profile_id, name, birth)
+        values (#{profileId}, #{name}, #{birth});
+    </insert>
+
+    <update id="update" parameterType="com.pplip.domain.member.persistence.entity.Member">
+        update member
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="birth != null">
+                birth = #{birth},
+            </if>
+        </set>
+        where id = #{id};
+    </update>
+
+    <delete id="delete">
+        delete from member where id = #{id};
+    </delete>
+
+</mapper>

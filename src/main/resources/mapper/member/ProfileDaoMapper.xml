@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pplip.domain.member.persistence.dao.ProfileDao">
+
+    <insert id="insert" parameterType="com.pplip.domain.member.persistence.entity.Profile" useGeneratedKeys="true" keyProperty="id">
+        insert into profile (description, nickname)
+        values (#{description}, #{nickname});
+    </insert>
+
+    <select id="findById" resultType="com.pplip.domain.member.persistence.entity.Profile">
+        select
+            id,
+            description,
+            nickname
+        from profile
+        where id = #{id};
+    </select>
+
+    <select id="existsNickname" resultType="boolean">
+        select count(*) > 0
+        from profile
+        where nickname = #{nickname};
+    </select>
+
+    <update id="update" parameterType="com.pplip.domain.member.persistence.entity.Profile">
+        update profile
+        <set>
+            <if test="description != null">
+                description = #{description},
+            </if>
+            <if test="nickname != null">
+                nickname = #{nickname},
+            </if>
+        </set>
+        where id = #{id};
+    </update>
+
+    <delete id="delete">
+        delete from profile where id = #{id};
+    </delete>
+
+</mapper>
