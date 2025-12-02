@@ -11,12 +11,16 @@
                (SELECT COUNT(*) FROM user_like_board ulb WHERE ulb.board_id = fb.id) AS likeCnt
         FROM free_board fb
                  JOIN user u ON fb.author_id = u.id
-                 JOIN profile p ON u.profile_id = p.id
+                 JOIN profile p ON p.user_id = u.id
         WHERE fb.is_removed = false
         ORDER BY fb.created_at DESC  LIMIT #{pageSize} OFFSET #{offset}
     </select>
 
-    <resultMap id="detailMap" type="com.pplip.domain.board.freeboard.api.response.FreeBoardResponse.Detail" autoMapping="true">
+    <resultMap id="boardListMap" type="com.pplip.domain.board.freeboard.api.response.FreeBoardResponse$BoardList" autoMapping="true">
+        <id column="id" property="id"></id>
+    </resultMap>
+
+    <resultMap id="detailMap" type="com.pplip.domain.board.freeboard.api.response.FreeBoardResponse$Detail" autoMapping="true">
         <id property="id" column="board_id"/>
         <result property="authorName" column="authorName"/>
         <result property="likeCnt" column="likeCnt"/>
@@ -45,7 +49,7 @@
 
         FROM free_board fb
                  JOIN user u ON fb.author_id = u.id
-                 JOIN profile p ON u.profile_id = p.id
+                 JOIN profile p ON u.id = p.user_id
                  LEFT JOIN free_board_image_property fbip ON fb.id = fbip.board_id
         WHERE fb.id = #{id} AND fb.is_removed = false
     </select>

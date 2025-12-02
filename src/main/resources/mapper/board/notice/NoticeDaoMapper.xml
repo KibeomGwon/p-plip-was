@@ -11,13 +11,13 @@
                nb.updated_at as updatedAt
         FROM notice_board nb
                  JOIN user u ON nb.author_id = u.id
-                 JOIN profile pf ON pf.id = u.profile_id
+                 JOIN profile pf ON pf.user_id = u.id
         WHERE nb.is_removed = false
         ORDER BY nb.created_at DESC
             LIMIT #{pageSize} OFFSET #{offset}
     </select>
 
-    <resultMap id="summaryMap" type="NoticeResponse.Summary" autoMapping="true"></resultMap>
+    <resultMap id="summaryMap" type="com.pplip.domain.board.notice.api.response.NoticeResponse$Summary" autoMapping="true"></resultMap>
 
     <select id="findById" resultMap="detailMap">
         SELECT nb.id as notice_id,
@@ -35,13 +35,13 @@
 
         FROM notice_board nb
                  JOIN user u ON nb.author_id = u.id
-                 JOIN profile pf ON pf.id = u.profile_id
+                 JOIN profile pf ON pf.user_id = u.id
                  LEFT JOIN notice_board_image_property nip ON nb.id = nip.board_id
 
         WHERE nb.id = #{id} AND nb.is_removed = false
     </select>
 
-    <resultMap id="detailMap" type="NoticeResponse.Detail" autoMapping="true">
+    <resultMap id="detailMap" type="com.pplip.domain.board.notice.api.response.NoticeResponse$Detail" autoMapping="true">
         <id property="id" column="notice_id"/>
         <result property="title" column="title"/>
         <collection property="noticeImages" ofType="com.pplip.domain.file.api.response.FileResponse">

@@ -12,8 +12,7 @@ import java.util.List;
 
 @Mapper
 public interface NoticeCommentDao {
-    List<NoticeCommentResponse.Summary> findAll(@Param("noticeId") Long noticeId,
-                                                @Param("pageRequest") PageRequest pageRequest);
+    List<NoticeCommentResponse.Summary> findAll(Long noticeId);
 
     int noticeBoardCommentAllCount(Long id);
 

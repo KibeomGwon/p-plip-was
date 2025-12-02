@@ -2,7 +2,7 @@ package com.pplip.domain.file.utils.factory;
 
 import com.pplip.domain.file.persistence.entity.FileProperty;
 import com.pplip.domain.file.persistence.entity.ImageType;
-import com.pplip.domain.member.persistence.entity.Member;
+import com.pplip.domain.user.persistence.entity.User;
 
 /**
  * FileProperty 객체 생성을 위한 팩토리 인터페이스
@@ -20,7 +20,7 @@ public interface FilePropertyFactory {
      * @param imageType      이미지 타입
      * @return 생성된 FileProperty 객체
      */
-    FileProperty create(String originFileName, String saveFileName, String path, String contentType, Long size, Member uploader, ImageType imageType);
+    FileProperty create(String originFileName, String saveFileName, String path, String contentType, Long size, User uploader, ImageType imageType);
 
     /**
      * 해당 이미지 타입을 지원하는지 여부를 확인합니다.
