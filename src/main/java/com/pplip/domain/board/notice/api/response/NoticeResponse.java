@@ -1,11 +1,13 @@
 package com.pplip.domain.board.notice.api.response;
 
+import com.pplip.domain.file.api.response.FileResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class NoticeResponse {
 
@@ -32,6 +34,7 @@ public class NoticeResponse {
         private String authorName;
         private String content;
         private int viewCnt;
+        private List<FileResponse> noticeImages;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }

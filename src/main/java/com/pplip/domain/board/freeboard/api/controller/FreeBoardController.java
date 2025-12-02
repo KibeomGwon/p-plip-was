@@ -40,7 +40,7 @@ public class FreeBoardController implements FreeBoardDocsController {
      */
     @Override
     @GetMapping("/{id}")
-    public CommonResponse<FreeBoardResponse.Detail> postFreeBoardDetail(@PathVariable Long id) {
+    public CommonResponse<FreeBoardResponse.Detail> detailFreeBoardDetail(@PathVariable Long id) {
         return CommonResponse.success(SuccessCode.SUCCESS, null);
     }
 

@@ -25,5 +25,6 @@ public class FreeBoardRequest {
     public static class BoardUpdate {
         private String title;
         private String content;
+        private List<Long> imageIds;
     }
 }

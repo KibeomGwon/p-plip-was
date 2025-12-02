@@ -8,7 +8,5 @@ import lombok.*;
 @NoArgsConstructor
 @Builder
 public class NoticeBoardImageProperty extends FileProperty {
-
     private Long boardId;
-
 }

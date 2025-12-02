@@ -1,5 +1,6 @@
 package com.pplip.domain.board.freeboard.api.response;
 
+import com.pplip.domain.file.api.response.FileResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.cglib.core.Local;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class FreeBoardResponse {
     @Data
@@ -29,6 +31,7 @@ public class FreeBoardResponse {
         private String title;
         private String authorName;
         private String content;
+        private List<FileResponse> freeBoardImages;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
         private int likeCnt;
@@ -44,6 +47,7 @@ public class FreeBoardResponse {
         private String authorName;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
+        private List<FileResponse> freeBoardImages;
         private int likeCnt;
     }
 

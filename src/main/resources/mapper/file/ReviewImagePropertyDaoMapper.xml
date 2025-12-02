@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.pplip.domain.file.persistence.dao.ReviewImagePropertyDao">
+    <insert id="insert">
+        insert into review_image_property (review_id, origin_file_name, path, saved_file_name, size, created_at,
+                                              updated_at)
+        values (#{reviewId}, #{originFileName}, #{path}, #{savedFileName}, #{size}, #{createdAt}, #{updatedAt});
+    </insert>
+
+    <delete id="delete">
+        delete
+        from review_image_property
+        where id = #{id};
+    </delete>
+
+    <update id="bulkUpdateReviewId">
+        <foreach collection="imageIds" item="imageId" separator=";">
+            update review_image_property
+            set review_id = #{review_id}
+            where id = #{imageId};
+        </foreach>
+    </update>
+</mapper>

@@ -1,7 +1,7 @@
 package com.pplip.global.docs;
 
-import com.pplip.domain.member.api.request.ProfileRequest;
-import com.pplip.domain.member.api.response.ProfileResponse;
+import com.pplip.domain.user.api.request.ProfileRequest;
+import com.pplip.domain.user.api.response.ProfileResponse;
 import com.pplip.global.api.response.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

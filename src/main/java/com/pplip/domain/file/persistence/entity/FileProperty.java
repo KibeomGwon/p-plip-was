@@ -16,6 +16,6 @@ public abstract class FileProperty {
     private String savedFileName;
     private long size;
 
+    private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-
 }

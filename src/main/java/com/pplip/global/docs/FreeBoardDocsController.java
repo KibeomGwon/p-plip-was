@@ -38,7 +38,7 @@ public interface FreeBoardDocsController {
      */
     @Operation(summary = "자유게시판 게시글 상세 조회")
     @ApiResponse(responseCode = "200", description = "성공")
-    CommonResponse<FreeBoardResponse.Detail> postFreeBoardDetail(Long id);
+    CommonResponse<FreeBoardResponse.Detail> detailFreeBoardDetail(Long id);
 
 
     /**
