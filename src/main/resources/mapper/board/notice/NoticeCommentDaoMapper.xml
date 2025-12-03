@@ -18,17 +18,16 @@
 
         FROM notice_comment nc
                  JOIN user u ON nc.author_id = u.id
-                 JOIN profile p ON u.profile_id = p.id
+                 JOIN profile p ON u.id = p.user_id
             -- [버그 수정] p.id = pip.profile_id 로 조인해야 정확합니다.
                  LEFT JOIN profile_image_property pip ON p.id = pip.profile_id
 
         WHERE nc.board_id = #{noticeId}
           AND nc.is_removed = false -- nc.is_removed로 명시하는 게 좋습니다.
         ORDER BY nc.created_at DESC
-            LIMIT #{pageRequest.pageSize} OFFSET #{pageRequest.offset}
     </select>
 
-    <resultMap id="summaryMap" type="com.pplip.domain.board.notice.api.response.NoticeCommentResponse.Summary">
+    <resultMap id="summaryMap" type="com.pplip.domain.board.notice.api.response.NoticeCommentResponse$Summary">
         <id property="id" column="id"/>
         <result property="authorName" column="authorName"/>
         <result property="content" column="content"/>

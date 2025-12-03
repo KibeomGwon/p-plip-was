@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pplip.domain.board.freeboard.persistence.dao.FreeBoardCommentDao">
 
-    <resultMap id="retrieveMap" type="com.pplip.domain.board.freeboard.api.response.FreeBoardCommentResponse.Retrieve">
+    <resultMap id="retrieveMap" type="com.pplip.domain.board.freeboard.api.response.FreeBoardCommentResponse$Retrieve">
         <id property="id" column="comment_id"/>
         <result property="content" column="content"/>
         <result property="authorNickName" column="authorNickName"/>
@@ -32,7 +32,7 @@
 
         FROM free_comment fc
                  JOIN user u ON fc.author_id = u.id
-                 JOIN profile p ON u.profile_id = p.id
+                 JOIN profile p ON u.id = p.user_id
                  LEFT JOIN profile_image_property pip ON p.id = pip.profile_id
 
         WHERE fc.board_id = #{boardId}
