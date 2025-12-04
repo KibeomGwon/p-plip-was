@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 public class NoticeComment {
     private Long id;
-    private Long NoticeboardId;
+    private Long noticeBoardId;
     private Long authorId;
 
     private String content;

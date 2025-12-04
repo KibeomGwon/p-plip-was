@@ -25,37 +25,42 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtAuthenticationProvider provider;
-    private final ObjectMapper om;
+	private final JwtAuthenticationProvider provider;
+	private final ObjectMapper om;
 
-    @Bean
-    public JwtAuthenticationFilter jwtAuthenticationFilter(JwtAuthenticationProvider provider) {
-        return new JwtAuthenticationFilter(provider);
-    }
+	@Bean
+	public JwtAuthenticationFilter jwtAuthenticationFilter(JwtAuthenticationProvider provider) {
+		return new JwtAuthenticationFilter(provider);
+	}
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.httpBasic(HttpBasicConfigurer::disable);
-        http.formLogin(FormLoginConfigurer::disable);
-        http.csrf(CsrfConfigurer::disable);
-        http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-        // api 설계 필요.
-        http.authorizeHttpRequests(req ->
-                req.anyRequest()
-                        .permitAll());
-        http.addFilterAt(customLoginFilter(), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(
-                new JwtAuthenticationFilter(provider), UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(new JwtExceptionFilter(om), JwtAuthenticationFilter.class);
-        return http.build();
-    }
+	@Bean
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		http.httpBasic(HttpBasicConfigurer::disable);
+		http.formLogin(FormLoginConfigurer::disable);
+		http.csrf(CsrfConfigurer::disable);
+		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+		// api 설계 필요.
+		http.authorizeHttpRequests(req ->
+				req
+						.requestMatchers(
+								"/v3/api-docs/**",
+								"/swagger-ui/**",
+								"/swagger-ui.html"
+						).permitAll().anyRequest()
+						.permitAll());
+		http.addFilterAt(customLoginFilter(), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(
+				new JwtAuthenticationFilter(provider), UsernamePasswordAuthenticationFilter.class);
+		http.addFilterBefore(new JwtExceptionFilter(om), JwtAuthenticationFilter.class);
+		return http.build();
+	}
 
-    public AbstractAuthenticationProcessingFilter customLoginFilter() {
-        CustomLoginFilter clf = new CustomLoginFilter(om);
-        clf.setAuthenticationSuccessHandler(new CustomLoginSuccessHandler());
-        clf.setAuthenticationFailureHandler(new CustomLoginFailureHandler(om));
-        return clf;
-    }
+	public AbstractAuthenticationProcessingFilter customLoginFilter() {
+		CustomLoginFilter clf = new CustomLoginFilter(om);
+		clf.setAuthenticationSuccessHandler(new CustomLoginSuccessHandler());
+		clf.setAuthenticationFailureHandler(new CustomLoginFailureHandler(om));
+		return clf;
+	}
 
 
 }

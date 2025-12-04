@@ -12,7 +12,7 @@ public enum ExceptionCode {
     UN_EXPECTED(5),
     EXPIRED(6),
     MALFORMED(7),
-    INVALID(8), ;
+    INVALID(8), FAILURE(4);
     private int value;
 
 }

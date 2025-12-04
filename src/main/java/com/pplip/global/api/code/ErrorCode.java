@@ -7,7 +7,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public enum ErrorCode {
     USER_NOT_FOUND_ERROR(DomainCode.USER, ExceptionCode.NOT_FOUND, "USER_NOT_FOUND_ERROR"),
+    INVALIDATED_USER_ERROR(DomainCode.USER, ExceptionCode.INVALID, "USER_INVALIDATED"),
     FILE_TYPE_NOT_SUPPORT(DomainCode.FILE, ExceptionCode.NOT_SUPPORT, "FILE_TYPE_NOT_SUPPORT"),
+    FILE_PROCESS_FAILURE(DomainCode.FILE, ExceptionCode.FAILURE, "FILE_PROCESS_FAILURE"),
+    FILE_NOT_FOUND(DomainCode.FILE, ExceptionCode.NOT_FOUND,"FILE_NOT_FOUND"),
     UN_EXPECTED_TOKEN_VALIDATION(DomainCode.AUTH, ExceptionCode.UN_EXPECTED, "UN_EXPECTED_TOKEN_VALIDATION"),
     TOKEN_EXPIRED(DomainCode.AUTH, ExceptionCode.EXPIRED, "토큰이 만료되었습니다."),
     TOKEN_MALFORMED(DomainCode.AUTH, ExceptionCode.MALFORMED, "토큰이 위조되었습니다"),
