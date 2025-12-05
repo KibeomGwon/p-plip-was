@@ -30,4 +30,6 @@ public interface AttractionDao {
     List<AttractionResponse.Summary> findAll(PageRequest pageRequest);
 
     Optional<AttractionResponse.Details> findByNo(Long no);
+
+    int insert(com.pplip.domain.trip.attraction.persistence.entity.Attraction attraction);
 }

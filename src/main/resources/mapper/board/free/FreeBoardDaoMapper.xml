@@ -77,10 +77,7 @@
     </update>
 
     <insert id="insert" parameterType="com.pplip.domain.board.freeboard.persistence.entity.FreeBoard" useGeneratedKeys="true" keyProperty="id">
-
         insert into free_board (author_id, title, content, view_cnt, is_removed, created_at, updated_at)
-
         values (#{authorId}, #{title}, #{content}, #{viewCnt}, #{isRemoved}, #{createdAt}, #{updatedAt});
-
     </insert>
 </mapper>

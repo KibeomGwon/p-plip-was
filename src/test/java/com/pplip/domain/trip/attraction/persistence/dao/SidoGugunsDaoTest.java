@@ -6,49 +6,55 @@ import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @MybatisTest
+@Transactional
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @DisplayName("SidoGugunDao 테스트")
-class SidoGugunDaoTest {
+class SidoGugunsDaoTest {
 
     @Autowired
-    private SidoGugunDao sidoGugunDao;
+    private SidoGugunsDao sidoGugunsDao;
 
     @Test
     @DisplayName("성공: 모든 지역 정보 조회")
     void findAllRegion_Success() {
-        // Given & When
-        List<AttractionResponse.Region> regions = assertDoesNotThrow(() -> sidoGugunDao.findAllRegion());
+        // Given
+
+        // When
+        List<AttractionResponse.Region> regions = sidoGugunsDao.findAllRegion();
 
         // Then
-        assertNotNull(regions);
+        assertThat(regions).isNotNull().isNotEmpty();
     }
 
     @Test
     @DisplayName("성공: 모든 시도 정보 조회")
     void findAllSido_Success() {
-        // Given & When
-        List<AttractionResponse.Sido> sidos = assertDoesNotThrow(() -> sidoGugunDao.findAllSido());
+        // Given
+
+        // When
+        List<AttractionResponse.Sido> sidos = sidoGugunsDao.findAllSido();
 
         // Then
-        assertNotNull(sidos);
+        assertThat(sidos).isNotNull().isNotEmpty();
     }
 
     @Test
     @DisplayName("성공: 모든 구군 정보 조회")
     void findAllGugun_Success() {
-        // Given & When
-        List<AttractionResponse.Gugun> guguns = assertDoesNotThrow(() -> sidoGugunDao.findAllGugun());
+        // Given
+
+        // When
+        List<AttractionResponse.Gugun> guguns = sidoGugunsDao.findAllGugun();
 
         // Then
-        assertNotNull(guguns);
+        assertThat(guguns).isNotNull().isNotEmpty();
     }
 
     @Test
@@ -58,23 +64,22 @@ class SidoGugunDaoTest {
         Long sidoCode = 1L; // Assuming 1 is a valid sido_code (e.g., 서울)
 
         // When
-        List<AttractionResponse.Gugun> guguns = assertDoesNotThrow(() -> sidoGugunDao.findAllGugunInSido(sidoCode));
+        List<AttractionResponse.Gugun> guguns = sidoGugunsDao.findAllGugunInSido(sidoCode);
 
         // Then
-        assertNotNull(guguns);
+        assertThat(guguns).isNotNull().isNotEmpty();
     }
 
     @Test
-    @DisplayName("엣지 케이스: 존재하지 않는 시도 코드로 구군 정보 조회")
+    @DisplayName("실패: 존재하지 않는 시도 코드로 조회 시 빈 리스트 반환")
     void findAllGugunInSido_Fail_WhenSidoCodeNotFound() {
         // Given
         Long nonExistentSidoCode = 9999L;
 
         // When
-        List<AttractionResponse.Gugun> guguns = assertDoesNotThrow(() -> sidoGugunDao.findAllGugunInSido(nonExistentSidoCode));
+        List<AttractionResponse.Gugun> guguns = sidoGugunsDao.findAllGugunInSido(nonExistentSidoCode);
 
         // Then
-        assertNotNull(guguns);
-        assertThat(guguns).isEmpty();
+        assertThat(guguns).isNotNull().isEmpty();
     }
 }

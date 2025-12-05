@@ -45,7 +45,8 @@
                  join attractions a on a.no = t.attraction_id
         where t.id = #{id};
     </select>
-    <insert id="insert">
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into to_do (plan_id, attraction_id, description, will_start_at, will_end_at, created_at)
         values (#{planId}, #{attractionId}, #{description}, #{willStartAt}, #{willEndAt}, #{createdAt});
     </insert>

@@ -9,7 +9,7 @@
     </resultMap>
 
     <select id="findAll" resultMap="tagMap">
-        select id, name, created_at from tag
+        select id, name, created_at from tags
         limit #{pageSize} offset #{offset};
     </select>
 
@@ -17,7 +17,7 @@
         select t.id,
                t.name,
                t.created_at
-        from tag t
+        from tags t
         join attraction_tag at on at.tag_id = t.id
         where at.attraction_id = #{no};
     </select>

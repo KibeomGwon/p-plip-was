@@ -15,8 +15,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
@@ -41,7 +41,7 @@ class FilePropertyProviderTest {
         String fileName = "test.jpg";
         String contentType = "image/jpeg";
         Long size = 1024L;
-        User uploader = new User();
+        Long uploader = 1L;
         ImageType imageType = ImageType.FREE_BOARD;
 
         // filePropertyProvider의 fileProperties 필드를 mock FilePropertyFactory를 포함하는 리스트로 설정
@@ -50,15 +50,15 @@ class FilePropertyProviderTest {
         when(filePathGenerator.generatePath(anyString())).thenReturn("some/path/test.jpg");
         when(filePathGenerator.generateSaveFileName(anyString())).thenReturn("saved-name.jpg");
         when(filePropertyFactory.support(imageType)).thenReturn(true);
-        when(filePropertyFactory.create(anyString(), anyString(), anyString(), anyString(), anyLong(), any(User.class), any(ImageType.class)))
+        when(filePropertyFactory.create(anyString(), anyString(), anyString(), anyString(), anyLong(),anyLong(), any(ImageType.class)))
                 .thenReturn(mock(FileProperty.class));
 
         // When
         FileProperty result = filePropertyProvider.create(fileName, contentType, size, uploader, imageType);
 
         // Then
-        assertNotNull(result);
-        verify(filePropertyFactory, times(1)).create(anyString(), anyString(), anyString(), anyString(), anyLong(), any(User.class), any(ImageType.class));
+        assertThat(result).isNotNull();
+        verify(filePropertyFactory, times(1)).create(anyString(), anyString(), anyString(), anyString(), anyLong(), anyLong(), any(ImageType.class));
     }
 
     @Test
@@ -68,7 +68,7 @@ class FilePropertyProviderTest {
         String fileName = "test.jpg";
         String contentType = "image/jpeg";
         Long size = 1024L;
-        User uploader = new User();
+        Long uploader = 1L;
         ImageType imageType = ImageType.FREE_BOARD;
 
         filePropertyProvider = new FilePropertyProvider(Collections.emptyList(), filePathGenerator);
@@ -77,7 +77,7 @@ class FilePropertyProviderTest {
         when(filePathGenerator.generateSaveFileName(anyString())).thenReturn("saved-name.jpg");
 
         // When & Then
-        assertThrows(BusinessLogicException.class,
-                () -> filePropertyProvider.create(fileName, contentType, size, uploader, imageType));
+        assertThatThrownBy(() -> filePropertyProvider.create(fileName, contentType, size, uploader, imageType))
+                .isInstanceOf(BusinessLogicException.class);
     }
 }

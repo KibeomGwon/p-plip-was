@@ -3,7 +3,7 @@
 <mapper namespace="com.pplip.domain.file.persistence.dao.mapper.ProfileImagePropertyMapper">
 
     <resultMap id="profileImagePropertyMap" type="com.pplip.domain.file.persistence.entity.ProfileImageProperty" autoMapping="true"/>
-    <insert id="insert">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into profile_image_property (profile_id, origin_file_name, path, saved_file_name, size, content_type, created_at,
                                               updated_at, uploader_id)
         values (#{profileId}, #{originFileName}, #{path}, #{savedFileName}, #{size}, #{content_type} , #{createdAt}, #{updatedAt}, #{uploaderId});

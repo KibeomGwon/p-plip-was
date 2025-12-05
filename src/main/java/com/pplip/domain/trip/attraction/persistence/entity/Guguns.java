@@ -7,7 +7,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Gugun {
+public class Guguns {
     private Integer no;
     private Integer gugunCode;
     private Integer sidoCode;
