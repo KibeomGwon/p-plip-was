@@ -2,6 +2,8 @@ package com.pplip.domain.file.utils;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 /**
  * 파일 저장소 작업을 위한 계약을 정의하는 인터페이스
  */

@@ -14,17 +14,17 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class FileFactoryProvider {
+public class FilePropertyProvider {
     private final List<FilePropertyFactory> fileProperties;
     private final FilePathGenerator filePathGenerator;
 
-    public FileProperty create(String fileName, String contentType, Long size, User uploader, ImageType imageType) {
+    public FileProperty create(String fileName, String contentType, Long size, long uploaderId, ImageType imageType) {
         String path = filePathGenerator.generatePath(fileName);
         String savedFileName = filePathGenerator.generateSaveFileName(fileName);
 
         for (FilePropertyFactory factory : fileProperties) {
             if (factory.support(imageType)) {
-                return factory.create(fileName, savedFileName, path, contentType, size, uploader, imageType);
+                return factory.create(fileName, savedFileName, path, contentType, size, uploaderId, imageType);
             }
         }
 

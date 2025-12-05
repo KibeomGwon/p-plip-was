@@ -4,7 +4,7 @@
 
     <insert id="insert" parameterType="com.pplip.domain.user.persistence.entity.Profile">
         insert into profile (description, user_id, nickname)
-        values (#{description}, #{user_id}, #{nickname});
+        values (#{description}, #{userId}, #{nickname});
     </insert>
 
     <select id="findById" resultType="com.pplip.domain.user.persistence.entity.Profile">

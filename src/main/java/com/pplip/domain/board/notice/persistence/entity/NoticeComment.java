@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 public class NoticeComment {
     private Long id;
-    private Long NoticeboardId;
+    private Long noticeBoardId;
     private Long authorId;
 
     private String content;
@@ -19,4 +19,9 @@ public class NoticeComment {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public void updateContent(String content) {
+        this.content = content;
+        this.updatedAt = LocalDateTime.now();
+    }
 }

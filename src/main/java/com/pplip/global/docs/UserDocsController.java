@@ -7,6 +7,7 @@ import com.pplip.global.api.response.CommonResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.mail.MessagingException;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -43,16 +44,16 @@ public interface UserDocsController {
      */
     @Operation(summary = "인증 이메일 발송")
     @ApiResponse(responseCode = "201", description = "생성")
-    public CommonResponse<Void> sendVerificationEmail(@RequestBody UserRequest.Email email);
+    public CommonResponse<Void> sendVerificationEmail(@RequestBody UserRequest.Email email) throws MessagingException;
 
     /**
      * 이메일 인증을 확인합니다.
      *
-     * @param email 이메일 인증 요청 정보
+     * @param emailCheck 이메일 인증 요청 정보
      * @return 인증 확인 결과
      */
     @Operation(summary = "이메일 인증 확인")
     @ApiResponse(responseCode = "200", description = "성공")
-    public CommonResponse<UserResponse.EmailCheck> verificationEmail(@RequestBody UserRequest.Email email);
+    public CommonResponse<UserResponse.EmailCheck> verificationEmail(@RequestBody UserRequest.EmailCheck emailCheck);
 
 }
