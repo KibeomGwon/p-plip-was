@@ -21,6 +21,7 @@ class ReviewDaoTest {
     @DisplayName("find all by no")
     void findAllByNo() {
         // when
+
         List<ReviewResponse.Detail> allByAttractionNo = dao.findAllByAttractionNo(1L);
         // then
         Assertions.assertThat(allByAttractionNo.size()).isEqualTo(0);

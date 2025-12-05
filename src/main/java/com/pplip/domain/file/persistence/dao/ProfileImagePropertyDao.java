@@ -1,11 +1,36 @@
 package com.pplip.domain.file.persistence.dao;
 
+import com.pplip.domain.file.persistence.dao.mapper.ProfileImagePropertyMapper;
+import com.pplip.domain.file.persistence.entity.ImageType;
 import com.pplip.domain.file.persistence.entity.ProfileImageProperty;
-import org.apache.ibatis.annotations.Mapper;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
 
-@Mapper
-public interface ProfileImagePropertyDao {
-    int insert(ProfileImageProperty property);
+import java.util.Optional;
 
-    int delete(Long id);
+
+@RequiredArgsConstructor
+@Repository
+public class ProfileImagePropertyDao implements FilePropertyDao<ProfileImageProperty> {
+	private final ProfileImagePropertyMapper profileImagePropertyMapper;
+	@Override
+	public int insert(ProfileImageProperty property) {
+		return profileImagePropertyMapper.insert(property);
+	}
+
+	@Override
+	public int delete(Long id) {
+		return profileImagePropertyMapper.delete(id);
+	}
+
+	@Override
+	public Optional<ProfileImageProperty> findById(Long id) {
+		return profileImagePropertyMapper.findById(id);
+	}
+
+
+	@Override
+	public boolean supports(ImageType imageType) {
+		return ImageType.PROFILE.equals(imageType);
+	}
 }

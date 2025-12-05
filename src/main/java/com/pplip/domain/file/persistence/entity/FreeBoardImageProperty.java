@@ -1,14 +1,19 @@
 package com.pplip.domain.file.persistence.entity;
 
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 
 @Getter
 @Setter
+@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class FreeBoardImageProperty extends FileProperty {
 
-    private Long boardId;
+	private Long boardId;
+
 }

@@ -14,7 +14,7 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class FileFactoryProvider {
+public class FilePropertyProvider {
     private final List<FilePropertyFactory> fileProperties;
     private final FilePathGenerator filePathGenerator;
 
