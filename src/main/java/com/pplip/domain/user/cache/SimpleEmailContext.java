@@ -12,6 +12,8 @@ public class SimpleEmailContext implements EmailValidator {
 
     private static ConcurrentHashMap<String, EmailValidationInfo> context = new ConcurrentHashMap<>();
 
+    private static ConcurrentHashMap<String, String> validationTokenContext = new ConcurrentHashMap<>();
+
     @Override
     public boolean valid(String email) {
         EmailValidationInfo emailValidationInfo = context.get(email);
@@ -40,5 +42,21 @@ public class SimpleEmailContext implements EmailValidator {
     @Override
     public void deleteInfo(String email) {
         context.remove(email);
+    }
+
+    @Override
+    public boolean validVerificationToken(String token, String email) {
+        String result = validationTokenContext.get(token);
+        return email.equals(result);
+    }
+
+    @Override
+    public void putValidVerificationTokenInfo(String token, String email) {
+        validationTokenContext.put(token, email);
+    }
+
+    @Override
+    public void deleteValidationTokenInfo(String token) {
+        validationTokenContext.remove(token);
     }
 }
