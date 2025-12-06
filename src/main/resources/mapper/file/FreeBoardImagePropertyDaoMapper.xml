@@ -3,14 +3,14 @@
 <mapper namespace="com.pplip.domain.file.persistence.dao.mapper.FreeBoardImagePropertyMapper">
 
     <resultMap id="freeBoardImagePropertyMap" type="com.pplip.domain.file.persistence.entity.FreeBoardImageProperty" autoMapping="true"/>
-    <insert id="insert">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into free_board_image_property (board_id, origin_file_name, path, saved_file_name, size, created_at, content_type
                                               ,updated_at, uploader_id)
         values (#{boardId}, #{originFileName}, #{path}, #{savedFileName}, #{size}, #{createdAt}, #{content_type}, #{updatedAt}, #{uploaderId});
     </insert>
 
 
-    <insert id="insertAll">
+    <insert id="insertAll" useGeneratedKeys="true" keyProperty="id">
         insert into free_board_image_property (board_id, origin_file_name, path, saved_file_name, size, created_at,
         content_type
         ,updated_at, uploader_id)

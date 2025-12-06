@@ -16,11 +16,11 @@ public interface FilePropertyFactory {
      * @param path           파일 저장 경로
      * @param contentType    파일의 Content Type
      * @param size           파일 크기
-     * @param uploader       업로더 정보
+     * @param uploaderId       업로더 정보
      * @param imageType      이미지 타입
      * @return 생성된 FileProperty 객체
      */
-    FileProperty create(String originFileName, String saveFileName, String path, String contentType, Long size, User uploader, ImageType imageType);
+    FileProperty create(String originFileName, String saveFileName, String path, String contentType, Long size, long uploaderId, ImageType imageType);
 
     /**
      * 해당 이미지 타입을 지원하는지 여부를 확인합니다.

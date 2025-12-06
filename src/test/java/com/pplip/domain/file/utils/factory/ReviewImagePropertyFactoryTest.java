@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("ReviewImagePropertyFactory 테스트")
 class ReviewImagePropertyFactoryTest {
@@ -29,20 +29,20 @@ class ReviewImagePropertyFactoryTest {
         String path = "path/to/file";
         String contentType = "image/jpeg";
         Long size = 1024L;
-        User uploader = User.builder().id(1L).build();
+        Long uploader = 1L;
 
         // When
         FileProperty property = factory.create(originFileName, savedFileName, path, contentType, size, uploader, ImageType.REVIEW);
 
         // Then
-        assertNotNull(property);
-        assertTrue(property instanceof ReviewImageProperty);
-        assertEquals(originFileName, property.getOriginFileName());
-        assertEquals(savedFileName, property.getSavedFileName());
-        assertEquals(path, property.getPath());
-        assertEquals(contentType, property.getContentType());
-        assertEquals(size, property.getSize());
-        assertEquals(uploader.getId(), property.getUploaderId());
+        assertThat(property).isNotNull();
+        assertThat(property).isInstanceOf(ReviewImageProperty.class);
+        assertThat(property.getOriginFileName()).isEqualTo(originFileName);
+        assertThat(property.getSavedFileName()).isEqualTo(savedFileName);
+        assertThat(property.getPath()).isEqualTo(path);
+        assertThat(property.getContentType()).isEqualTo(contentType);
+        assertThat(property.getSize()).isEqualTo(size);
+        assertThat(property.getUploaderId()).isEqualTo(uploader);
     }
 
     @Test
@@ -52,18 +52,20 @@ class ReviewImagePropertyFactoryTest {
         boolean supports = factory.support(ImageType.REVIEW);
 
         // Then
-        assertTrue(supports);
+        assertThat(supports).isTrue();
     }
 
     @Test
     @DisplayName("실패: 다른 타입 미지원")
     void support_Fail_ForOtherTypes() {
+        // Given
+
         // When
         boolean supportsProfile = factory.support(ImageType.PROFILE);
         boolean supportsFreeBoard = factory.support(ImageType.FREE_BOARD);
 
         // Then
-        assertFalse(supportsProfile);
-        assertFalse(supportsFreeBoard);
+        assertThat(supportsProfile).isFalse();
+        assertThat(supportsFreeBoard).isFalse();
     }
 }

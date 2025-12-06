@@ -3,13 +3,13 @@
 <mapper namespace="com.pplip.domain.file.persistence.dao.mapper.ReviewImagePropertyMapper">
     <resultMap id="reviewImagePropertyMap" type="ReviewImageProperty" autoMapping="true"/>
 
-    <insert id="insert">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into review_image_property (review_id, origin_file_name, path, saved_file_name, content_type,size, created_at,
                                               updated_at, uploader_id)
         values (#{reviewId}, #{originFileName}, #{path}, #{savedFileName},#{content_type}, #{size}, #{createdAt}, #{updatedAt}, #{uploaderId});
     </insert>
 
-    <insert id="insertAll">
+    <insert id="insertAll" useGeneratedKeys="true" keyProperty="id">
         insert into review_image_property (review_id, origin_file_name, path, saved_file_name,content_type , size,
         created_at,
         updated_at, uploader_id)

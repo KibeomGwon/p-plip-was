@@ -1,6 +1,6 @@
 package com.pplip.domain.file.usecase;
 
-import com.pplip.domain.auth.utils.SecurityUtils;
+import com.pplip.domain.auth.persistence.entity.Account;
 import com.pplip.domain.file.api.response.FileResponse;
 import com.pplip.domain.file.persistence.dao.BatchSupportFilePropertyDao;
 import com.pplip.domain.file.persistence.dao.FilePropertyDao;
@@ -8,7 +8,6 @@ import com.pplip.domain.file.persistence.entity.FileProperty;
 import com.pplip.domain.file.persistence.entity.ImageType;
 import com.pplip.domain.file.utils.FilePropertyProvider;
 import com.pplip.domain.file.utils.FileStorage;
-import com.pplip.domain.user.persistence.entity.User;
 import com.pplip.global.api.code.ErrorCode;
 import com.pplip.global.exception.BusinessLogicException;
 import lombok.RequiredArgsConstructor;
@@ -26,14 +25,13 @@ import java.util.List;
 public class FileServiceImpl implements FileService {
 	private final FilePropertyProvider provider;
 	private final FileStorage fileStorage;
-	private final SecurityUtils securityUtils;
 	private final List<FilePropertyDao<FileProperty>> filePropertyDaos;
 	private final List<BatchSupportFilePropertyDao<FileProperty>> batchSupportFilePropertyDaos;
 
 	@Override
 	public FileResponse saveFile(MultipartFile file, ImageType imageType, UserDetails userDetails) {
-		User user = securityUtils.getLoginUser(userDetails);
-		FileProperty fileProperty = provider.create(file.getOriginalFilename(), file.getContentType(), file.getSize(), user, imageType);
+		long userId = ((Account) userDetails).getUserId();
+		FileProperty fileProperty = provider.create(file.getOriginalFilename(), file.getContentType(), file.getSize(), userId, imageType);
 		fileStorage.store(file, fileProperty.getPath());
 
 		return filePropertyDaos.stream().filter(fdao -> fdao.supports(imageType)).map(fdao -> {
@@ -52,10 +50,10 @@ public class FileServiceImpl implements FileService {
 
 	@Override
 	public FileResponse remove(Long id, ImageType imageType, UserDetails userDetails) {
-		User loginUser = securityUtils.getLoginUser(userDetails);
+		long userId= ((Account) userDetails).getUserId();
 		return filePropertyDaos.stream().filter(fdao -> fdao.supports(imageType)).map(fdao -> {
 			FileProperty fileProperty = fdao.findById(id).orElseThrow(() -> new BusinessLogicException(ErrorCode.FILE_TYPE_NOT_SUPPORT, "파일을 찾을 수 없습니다."));
-			if (!fileProperty.getUploaderId().equals(loginUser.getId())) {
+			if (!fileProperty.getUploaderId().equals(userId)) {
 				throw new BusinessLogicException(ErrorCode.INVALIDATED_USER_ERROR, "업로드한 사용자만 삭제할 수 있습니다.");
 			}
 			int delete = fdao.delete(fileProperty.getId());
@@ -75,10 +73,11 @@ public class FileServiceImpl implements FileService {
 
 	@Override
 	public List<FileResponse> saveFiles(List<? extends MultipartFile> files, ImageType imageType, UserDetails userDetails) {
-		User user = securityUtils.getLoginUser(userDetails);
+		long userId = ((Account) userDetails).getUserId();
+
 		List<FileProperty> fileProperties = new ArrayList<>();
 		for (MultipartFile file : files) {
-			FileProperty fileProperty = provider.create(file.getOriginalFilename(), file.getContentType(), file.getSize(), user, imageType);
+			FileProperty fileProperty = provider.create(file.getOriginalFilename(), file.getContentType(), file.getSize(), userId, imageType);
 			fileStorage.store(file, fileProperty.getPath());
 			fileProperties.add(fileProperty);
 		}

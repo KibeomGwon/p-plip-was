@@ -7,7 +7,7 @@
         where email = #{username};
     </select>
 
-    <insert id="insert">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into account (user_id, email, password, role, password_updated_at, created_at)
         values (#{userId}, #{email}, #{password}, #{role}, #{passwordUpdatedAt}, #{createdAt});
     </insert>

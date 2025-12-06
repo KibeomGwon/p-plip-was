@@ -16,6 +16,7 @@ public class ReviewResponse {
     @Builder
     public static class Detail {
         private Long id;
+        private Long authorId;
         private String username;
         private String content;
         private FileResponse userProfileImage;

@@ -16,6 +16,7 @@ public class FreeBoardResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class BoardList{
+        private long id;
         private String title;
         private String authorName;
         private LocalDateTime createdAt;
@@ -28,6 +29,7 @@ public class FreeBoardResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Detail {
+        private long id;
         private String title;
         private String authorName;
         private String content;
@@ -42,6 +44,7 @@ public class FreeBoardResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class Update {
+        private long id;
         private String title;
         private String content;
         private String authorName;

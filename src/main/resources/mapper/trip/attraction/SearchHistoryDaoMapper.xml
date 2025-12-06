@@ -8,7 +8,7 @@
         desc searched_at desc;
     </select>
 
-    <insert id="insert">
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into search_history (user_id, keyword, searched_at)
         values (#{userId}, #{keyword}, #{searchedAt});
     </insert>

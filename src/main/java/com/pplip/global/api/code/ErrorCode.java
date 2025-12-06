@@ -17,7 +17,9 @@ public enum ErrorCode {
     TOKEN_INVALID_SIGNATURE(DomainCode.AUTH,  ExceptionCode.INVALID, "토큰 서명이 일치하지 않습니다"),
     TOKEN_EMPTY(DomainCode.AUTH, ExceptionCode.EMPTY, "토큰이 비어있습니다." ),
     EXPIRED_EMAIL_VALID_CODE(DomainCode.USER, ExceptionCode.EXPIRED, "인증 기한이 만료되었습니다"),
-    INVALID_EMAIL_VALID_CODE(DomainCode.USER, ExceptionCode.INVALID, "인증 번호가 틀립니다.");
+    INVALID_EMAIL_VALID_CODE(DomainCode.USER, ExceptionCode.INVALID, "인증 번호가 틀립니다."),
+    ALREADY_EXIST_NICKNAME(DomainCode.USER, ExceptionCode.CONFLICT, "이미 존재하는 닉네임입니다."),
+    INVALID_INPUT(DomainCode.USER, ExceptionCode.INVALID, "입력값이 유효하지 않습니다.");
 
 
     private DomainCode domainCode;

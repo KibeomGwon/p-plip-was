@@ -1,7 +1,6 @@
 package com.pplip.domain.file.usecase;
 
 import com.pplip.domain.auth.persistence.entity.Account;
-import com.pplip.domain.auth.utils.SecurityUtils;
 import com.pplip.domain.file.api.response.FileResponse;
 import com.pplip.domain.file.persistence.dao.BatchSupportFilePropertyDao;
 import com.pplip.domain.file.persistence.dao.FilePropertyDao;
@@ -22,7 +21,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -43,9 +41,6 @@ class FileServiceImplTest {
 
     @Mock
     private FileStorage fileStorage;
-
-    @Mock
-    private SecurityUtils securityUtils;
     
     @Mock
     private FilePropertyDao<FileProperty> filePropertyDao;
@@ -61,10 +56,11 @@ class FileServiceImplTest {
         testUser = User.builder().id(1L).name("testuser").build();
         testUserDetails = new Account();
         testUserDetails.setUserId(testUser.getId());
+        testUserDetails.setUserId(testUser.getId());
         testUserDetails.setEmail("test@test.com");
         
         // Since the service uses lists of DAOs, we need to re-inject them before each test.
-        fileService = new FileServiceImpl(provider, fileStorage, securityUtils, List.of(filePropertyDao), List.of(batchSupportFilePropertyDao));
+        fileService = new FileServiceImpl(provider, fileStorage, List.of(filePropertyDao), List.of(batchSupportFilePropertyDao));
     }
 
     @Test
@@ -75,8 +71,7 @@ class FileServiceImplTest {
         ImageType imageType = ImageType.PROFILE;
         FileProperty fileProperty = ProfileImageProperty.builder().id(1L).path("/path/to/test.jpg").originFileName("test.jpg").contentType("image/jpeg").size(100L).uploaderId(testUser.getId()).build();
 
-        when(securityUtils.getLoginUser(any())).thenReturn(testUser);
-        when(provider.create(any(), any(), any(), any(), any())).thenReturn(fileProperty);
+        when(provider.create(anyString(), anyString(), anyLong(), anyLong(), any(ImageType.class))).thenReturn(fileProperty);
         when(filePropertyDao.supports(imageType)).thenReturn(true);
         when(filePropertyDao.insert(any())).thenReturn(1);
         doNothing().when(fileStorage).store(any(), any());
@@ -98,8 +93,8 @@ class FileServiceImplTest {
         MultipartFile file = new MockMultipartFile("file", "test.jpg", "image/jpeg", "test data".getBytes());
         ImageType imageType = ImageType.PROFILE;
 
-        when(securityUtils.getLoginUser(any())).thenReturn(testUser);
-        when(provider.create(any(), any(), any(), any(), any())).thenReturn(ProfileImageProperty.builder().build());
+
+        when(provider.create(anyString(), anyString(), anyLong(), anyLong(), any(ImageType.class))).thenReturn(ProfileImageProperty.builder().build());
         when(filePropertyDao.supports(imageType)).thenReturn(false);
 
         // When & Then
@@ -116,7 +111,6 @@ class FileServiceImplTest {
         ImageType imageType = ImageType.PROFILE;
         FileProperty fileProperty = ProfileImageProperty.builder().id(fileId).uploaderId(testUser.getId()).path("/path/to/file").build();
 
-        when(securityUtils.getLoginUser(any())).thenReturn(testUser);
         when(filePropertyDao.supports(imageType)).thenReturn(true);
         when(filePropertyDao.findById(fileId)).thenReturn(Optional.of(fileProperty));
         when(filePropertyDao.delete(fileId)).thenReturn(1);
@@ -139,7 +133,6 @@ class FileServiceImplTest {
         ImageType imageType = ImageType.PROFILE;
         FileProperty fileProperty = ProfileImageProperty.builder().id(fileId).uploaderId(2L).build(); // Different user ID
 
-        when(securityUtils.getLoginUser(any())).thenReturn(testUser);
         when(filePropertyDao.supports(imageType)).thenReturn(true);
         when(filePropertyDao.findById(fileId)).thenReturn(Optional.of(fileProperty));
 
@@ -161,9 +154,8 @@ class FileServiceImplTest {
         FileProperty fp1 = ProfileImageProperty.builder().id(1L).build();
         FileProperty fp2 = ProfileImageProperty.builder().id(2L).build();
 
-        when(securityUtils.getLoginUser(any())).thenReturn(testUser);
-        when(provider.create(eq("test1.jpg"), any(), any(), any(), any())).thenReturn(fp1);
-        when(provider.create(eq("test2.jpg"), any(), any(), any(), any())).thenReturn(fp2);
+        when(provider.create(eq("test1.jpg"), anyString(), anyLong(), anyLong(), any(ImageType.class))).thenReturn(fp1);
+        when(provider.create(eq("test2.jpg"), anyString(), anyLong(), anyLong(), any(ImageType.class))).thenReturn(fp2);
         when(batchSupportFilePropertyDao.supports(imageType)).thenReturn(true);
         
         // When

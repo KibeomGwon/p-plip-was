@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Component
 public class FreeBoardImagePropertyFactory implements FilePropertyFactory {
 	@Override
-	public FileProperty create(String originFileName, String saveFileName, String path, String contentType, Long size, User uploader, ImageType imageType) {
+	public FileProperty create(String originFileName, String saveFileName, String path, String contentType, Long size, long uploader, ImageType imageType) {
 		return FreeBoardImageProperty
 				.builder()
 				.originFileName(originFileName)
@@ -19,7 +19,7 @@ public class FreeBoardImagePropertyFactory implements FilePropertyFactory {
 				.path(path)
 				.contentType(contentType)
 				.size(size)
-				.uploaderId(uploader.getId())
+				.uploaderId(uploader)
 				.createdAt(LocalDateTime.now()).build();
 	}
 

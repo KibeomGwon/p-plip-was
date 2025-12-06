@@ -6,4 +6,9 @@
         from attractions
         where no = #{no};
     </select>
+
+    <insert id="insert" parameterType="com.pplip.domain.trip.attraction.persistence.entity.Attraction" useGeneratedKeys="true" keyProperty="no">
+        INSERT INTO attractions (title, area_code, si_gun_gu_code, content_id, content_type_id, first_image1, first_image2, homepage, latitude, longitude, map_level, overview, tel)
+        VALUES (#{title}, #{areaCode}, #{siGunGuCode}, #{contentId}, #{contentType.id}, #{firstImage1}, #{firstImage2}, #{homepage}, #{latitude}, #{longitude}, #{mapLevel}, #{overview}, #{tel})
+    </insert>
 </mapper>

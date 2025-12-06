@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @DisplayName("FilePathGenerator 테스트")
 class FilePathGeneratorTest {
@@ -24,14 +24,14 @@ class FilePathGeneratorTest {
         // Given
         String saveName = "test-save-name.jpg";
         LocalDateTime now = LocalDateTime.now();
-        String expectedPathPrefix = now.getYear() + "/" + now.getMonth() + "/" + now.getDayOfMonth();
+        String expectedPathPrefix = now.getYear() + "/" + now.getMonth().toString() + "/" + now.getDayOfMonth();
 
         // When
         String generatedPath = filePathGenerator.generatePath(saveName);
 
         // Then
-        assertTrue(generatedPath.startsWith(expectedPathPrefix));
-        assertTrue(generatedPath.endsWith(saveName));
+        assertThat(generatedPath).startsWith(expectedPathPrefix);
+        assertThat(generatedPath).endsWith(saveName);
     }
 
     @Test
@@ -44,9 +44,9 @@ class FilePathGeneratorTest {
         String saveFileName = filePathGenerator.generateSaveFileName(originFileName);
 
         // Then
-        assertNotNull(saveFileName);
-        assertNotEquals(originFileName, saveFileName);
-        assertTrue(saveFileName.endsWith(".png"));
-        assertFalse(saveFileName.contains("-"));
+        assertThat(saveFileName).isNotNull();
+        assertThat(saveFileName).isNotEqualTo(originFileName);
+        assertThat(saveFileName).endsWith(".png");
+        assertThat(saveFileName).doesNotContain("-");
     }
 }

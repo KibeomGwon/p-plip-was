@@ -24,7 +24,7 @@ public interface UserDocsController {
      */
     @Operation(summary = "이메일 중복 확인")
     @ApiResponse(responseCode = "200", description = "성공")
-    CommonResponse<UserResponse.DupCheck> emailDupCheck(@RequestParam String nickname);
+    CommonResponse<UserResponse.DupCheck> nicknameDupCheck(@RequestParam String nickname);
 
     /**
      * 회원가입을 처리합니다.

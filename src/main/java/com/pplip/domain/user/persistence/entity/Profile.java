@@ -9,7 +9,6 @@ import lombok.*;
 @Builder
 public class Profile {
     private Long id;
-
     private Long userId;
     private String description;
     private String nickname;
