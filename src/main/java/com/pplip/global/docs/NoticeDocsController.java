@@ -64,6 +64,6 @@ public interface NoticeDocsController {
      */
     @Operation(summary = "공지게시판 게시판 삭제")
     @ApiResponse(responseCode = "203", description = "삭제")
-    CommonResponse<NoticeResponse.Update> removeNoticeBoard(Long id);
+    CommonResponse<Void> removeNoticeBoard(Long id);
 
 }

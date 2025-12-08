@@ -2,6 +2,7 @@ package com.pplip.domain.board.notice.api.controller;
 
 import com.pplip.domain.board.notice.api.request.NoticeRequest;
 import com.pplip.domain.board.notice.api.response.NoticeResponse;
+import com.pplip.domain.board.notice.usecase.NoticeService;
 import com.pplip.global.api.code.SuccessCode;
 import com.pplip.global.api.response.CommonResponse;
 import com.pplip.global.docs.NoticeDocsController;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/notice")
 public class NoticeController implements NoticeDocsController {
 
+    private final NoticeService noticeService;
+
     /**
      * 공지게시판의 게시글들을 불러옵니다.
      *
@@ -25,7 +28,7 @@ public class NoticeController implements NoticeDocsController {
      */
     @GetMapping
     public CommonResponse<Page<NoticeResponse.Summary>> listNoticeBoard(@ModelAttribute PageRequest pageRequest) {
-        return CommonResponse.success(SuccessCode.SUCCESS, null);
+        return CommonResponse.success(SuccessCode.SUCCESS, noticeService.findAll(pageRequest));
     }
 
     /**
@@ -38,7 +41,7 @@ public class NoticeController implements NoticeDocsController {
     @PostMapping
     public CommonResponse<NoticeResponse.Detail> postNoticeBoard(NoticeRequest.Post request,
                                                                  @AuthenticationPrincipal UserDetails userDetails) {
-        return CommonResponse.success(SuccessCode.CREATED, null);
+        return CommonResponse.success(SuccessCode.CREATED, noticeService.post(request, userDetails));
     }
 
     /**
@@ -49,7 +52,7 @@ public class NoticeController implements NoticeDocsController {
      */
     @GetMapping("/{id}")
     public CommonResponse<NoticeResponse.Detail> findNoticeBoard(@PathVariable Long id) {
-        return CommonResponse.success(SuccessCode.SUCCESS, null);
+        return CommonResponse.success(SuccessCode.SUCCESS, noticeService.findById(id));
     }
 
     /**
@@ -61,7 +64,7 @@ public class NoticeController implements NoticeDocsController {
      */
     @PutMapping("/{id}")
     public CommonResponse<NoticeResponse.Update> updateNoticeBoard(NoticeRequest.Update update, @PathVariable Long id) {
-        return CommonResponse.success(SuccessCode.UPDATED, null);
+        return CommonResponse.success(SuccessCode.UPDATED, noticeService.update(update, id));
     }
 
     /**
@@ -71,7 +74,9 @@ public class NoticeController implements NoticeDocsController {
      * @return 203 ( 삭제 ).
      */
     @DeleteMapping("/{id}")
-    public CommonResponse<NoticeResponse.Update> removeNoticeBoard(@PathVariable Long id) {
+    public CommonResponse<Void> removeNoticeBoard(@PathVariable Long id) {
+        noticeService.remove(id);
+
         return CommonResponse.success(SuccessCode.REMOVED, null);
     }
 }
