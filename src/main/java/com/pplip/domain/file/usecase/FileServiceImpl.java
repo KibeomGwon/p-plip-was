@@ -25,34 +25,35 @@ import java.util.*;
 public class FileServiceImpl implements FileService {
 	private final FilePropertyProvider provider;
 	private final FileStorage fileStorage;
-	private final Map<ImageType, FilePropertyDao<FileProperty>> filePropertyMap;
-	private final Map<ImageType, BatchSupportFilePropertyDao<FileProperty>> batchSupportFilePropertyMap;
+	private final Map<ImageType, FilePropertyDao<? extends FileProperty>> filePropertyMap;
+	private final Map<ImageType, BatchSupportFilePropertyDao<? extends FileProperty>> batchSupportFilePropertyMap;
 
 	@Autowired
 	public FileServiceImpl(FilePropertyProvider provider,
 	                       FileStorage fileStorage,
-	                       List<FilePropertyDao<FileProperty>> filePropertyDaos,
-	                       List<BatchSupportFilePropertyDao<FileProperty>> batchSupportFilePropertyDaos) {
+	                       List<FilePropertyDao<? extends FileProperty>> filePropertyDaos,
+	                       List<BatchSupportFilePropertyDao<? extends FileProperty>> batchSupportFilePropertyDaos) {
 		this.fileStorage = fileStorage;
 		this.provider = provider;
 		this.filePropertyMap = new HashMap<>();
-		for (FilePropertyDao<FileProperty> filePropertyDao : filePropertyDaos) {
+		for (FilePropertyDao<? extends FileProperty> filePropertyDao : filePropertyDaos) {
 			filePropertyMap.put(filePropertyDao.supports(), filePropertyDao);
 		}
 		this.batchSupportFilePropertyMap = new HashMap<>();
-		for (BatchSupportFilePropertyDao<FileProperty> filePropertyDao : batchSupportFilePropertyDaos) {
+		for (BatchSupportFilePropertyDao<? extends FileProperty> filePropertyDao : batchSupportFilePropertyDaos) {
 			batchSupportFilePropertyMap.put(filePropertyDao.supports(), filePropertyDao);
 		}
 
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public FileResponse saveFile(MultipartFile file, ImageType imageType, UserDetails userDetails) {
 		long userId = ((Account) userDetails).getUserId();
 		FileProperty fileProperty = provider.create(file.getOriginalFilename(), file.getContentType(), file.getSize(), userId, imageType);
 		fileStorage.store(file, fileProperty.getPath());
 
-		FilePropertyDao<FileProperty> fdao = Optional.of(filePropertyMap.get(imageType)).orElseThrow(() -> new BusinessLogicException(ErrorCode.FILE_TYPE_NOT_SUPPORT));
+		FilePropertyDao<FileProperty> fdao = (FilePropertyDao<FileProperty>) Optional.ofNullable(filePropertyMap.get(imageType)).orElseThrow(() -> new BusinessLogicException(ErrorCode.FILE_TYPE_NOT_SUPPORT));
 		fdao.insert(fileProperty);
 		return FileResponse.builder()
 				.id(fileProperty.getId())
@@ -81,7 +82,7 @@ public class FileServiceImpl implements FileService {
 	@Override
 	public void deleteSavedFiles(List<Long> ids, ImageType imageType) {
 		if (ids.isEmpty()) return;
-		BatchSupportFilePropertyDao<FileProperty> fdao = Optional.of(batchSupportFilePropertyMap.get(imageType)).orElseThrow(() -> new BusinessLogicException(ErrorCode.FILE_TYPE_NOT_SUPPORT));
+		BatchSupportFilePropertyDao<? extends FileProperty> fdao = Optional.ofNullable(batchSupportFilePropertyMap.get(imageType)).orElseThrow(() -> new BusinessLogicException(ErrorCode.FILE_TYPE_NOT_SUPPORT));
 		fdao.deleteAllById(ids);
 	}
 
@@ -89,7 +90,7 @@ public class FileServiceImpl implements FileService {
 	@Override
 	public FileResponse remove(Long id, ImageType imageType, UserDetails userDetails) {
 		long userId = ((Account) userDetails).getUserId();
-		FilePropertyDao<FileProperty> fdao = Optional.of(filePropertyMap.get(imageType)).orElseThrow(() -> new BusinessLogicException(ErrorCode.FILE_TYPE_NOT_SUPPORT));
+		FilePropertyDao<? extends FileProperty> fdao = Optional.ofNullable(filePropertyMap.get(imageType)).orElseThrow(() -> new BusinessLogicException(ErrorCode.FILE_TYPE_NOT_SUPPORT));
 		FileProperty fileProperty = fdao.findById(id).orElseThrow(() -> new BusinessLogicException(ErrorCode.FILE_TYPE_NOT_SUPPORT, "파일을 찾을 수 없습니다."));
 		if (!fileProperty.getUploaderId().equals(userId)) {
 			throw new BusinessLogicException(ErrorCode.INVALIDATED_USER_ERROR, "업로드한 사용자만 삭제할 수 있습니다.");
@@ -108,6 +109,7 @@ public class FileServiceImpl implements FileService {
 				.imageType(imageType).build();
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public List<FileResponse> saveFiles(List<? extends MultipartFile> files, ImageType imageType, UserDetails userDetails) {
 		long userId = ((Account) userDetails).getUserId();
@@ -118,7 +120,7 @@ public class FileServiceImpl implements FileService {
 			fileStorage.store(file, fileProperty.getPath());
 			fileProperties.add(fileProperty);
 		}
-		BatchSupportFilePropertyDao<FileProperty> fdao = Optional.of(batchSupportFilePropertyMap.get(imageType)).orElseThrow(() -> new BusinessLogicException(ErrorCode.FILE_TYPE_NOT_SUPPORT));
+		BatchSupportFilePropertyDao<FileProperty> fdao = (BatchSupportFilePropertyDao<FileProperty>) Optional.ofNullable(batchSupportFilePropertyMap.get(imageType)).orElseThrow(() -> new BusinessLogicException(ErrorCode.FILE_TYPE_NOT_SUPPORT));
 		fdao.insertAll(fileProperties);
 		return fileProperties.stream().map(fileProperty -> FileResponse.builder()
 				.id(fileProperty.getId())
@@ -130,8 +132,9 @@ public class FileServiceImpl implements FileService {
 				.build()).toList();
 	}
 
+	@SuppressWarnings("unchecked")
 	public int bulkUpdateFiles(List<Long> fileIds, ImageType imageType, Long refId) {
-		BatchSupportFilePropertyDao<FileProperty> fdao = Optional.of(batchSupportFilePropertyMap.get(imageType)).orElseThrow(() -> new BusinessLogicException(ErrorCode.FILE_TYPE_NOT_SUPPORT));
+		BatchSupportFilePropertyDao<FileProperty> fdao = (BatchSupportFilePropertyDao<FileProperty>) Optional.ofNullable(batchSupportFilePropertyMap.get(imageType)).orElseThrow(() -> new BusinessLogicException(ErrorCode.FILE_TYPE_NOT_SUPPORT));
 		return fdao.bulkUpdate(fileIds, refId);
 	}
 }

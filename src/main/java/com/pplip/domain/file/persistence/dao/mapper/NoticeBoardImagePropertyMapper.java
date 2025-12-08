@@ -33,7 +33,7 @@ public interface NoticeBoardImagePropertyMapper{
      * @param list 삽입할 이미지 속성 객체 리스트
      * @return 삽입된 행의 수
      */
-    int insertAll(List<NoticeBoardImageProperty> list);
+    int insertAll(List<? extends NoticeBoardImageProperty> list);
 
     /**
      * 지정된 ID를 가진 공지사항 이미지 속성을 찾습니다.

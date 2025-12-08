@@ -43,6 +43,8 @@ public class FreeBoardResponse {
         private long id;
         private String title;
         private String content;
+        private String authorName;
+
         private List<FileResponse> freeBoardImages;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;

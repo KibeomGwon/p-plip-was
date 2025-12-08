@@ -1,6 +1,7 @@
 package com.pplip.domain.file.persistence.dao;
 
 import com.pplip.domain.file.persistence.dao.mapper.NoticeBoardImagePropertyMapper;
+import com.pplip.domain.file.persistence.entity.FileProperty;
 import com.pplip.domain.file.persistence.entity.ImageType;
 import com.pplip.domain.file.persistence.entity.NoticeBoardImageProperty;
 import lombok.RequiredArgsConstructor;
