@@ -12,13 +12,17 @@ import java.util.Optional;
 public interface FreeBoardDao {
     List<FreeBoardResponse.BoardList> findAll(PageRequest pageRequest);
 
-    int freeBoardAllCount();
+    int countAll();
 
     Optional<FreeBoardResponse.Detail> findById(Long id);
+
+    Optional<FreeBoard> findByIdToEntity(Long id);
 
     int insert(FreeBoard freeBoard);
 
     int update(FreeBoard freeBoard);
 
     int delete(Long id);
+
+    void updateViewCount(Long id);
 }

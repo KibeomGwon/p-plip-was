@@ -21,7 +21,7 @@
     </resultMap>
 
     <resultMap id="detailMap" type="com.pplip.domain.board.freeboard.api.response.FreeBoardResponse$Detail" autoMapping="true">
-        <id property="id" column="board_id"/>
+        <id property="id" column="id"/>
         <result property="authorName" column="authorName"/>
         <result property="likeCnt" column="likeCnt"/>
 
@@ -33,8 +33,10 @@
         </collection>
     </resultMap>
 
+    <resultMap id="boardModelMap" type="com.pplip.domain.board.freeboard.usecase.model.FreeBoardModel" autoMapping="true"/>
+    <resultMap id="boardEntityMap" type="com.pplip.domain.board.freeboard.persistence.entity.FreeBoard" autoMapping="true"/>
     <select id="findById" resultMap="detailMap">
-        SELECT fb.id AS board_id,
+        SELECT fb.id AS id,
                fb.title AS title,
                p.nickname AS authorName,
                fb.content AS content,
@@ -52,6 +54,13 @@
                  JOIN profile p ON u.id = p.user_id
                  LEFT JOIN free_board_image_property fbip ON fb.id = fbip.board_id
         WHERE fb.id = #{id} AND fb.is_removed = false
+    </select>
+
+    <select id="findByIdToEntity" resultMap="boardEntityMap">
+        select *
+        from free_board
+        where id = #{id}
+          and is_removed = false;
     </select>
 
     <update id="update" parameterType="com.pplip.domain.board.freeboard.persistence.entity.FreeBoard">
@@ -80,4 +89,16 @@
         insert into free_board (author_id, title, content, view_cnt, is_removed, created_at, updated_at)
         values (#{authorId}, #{title}, #{content}, #{viewCnt}, #{isRemoved}, #{createdAt}, #{updatedAt});
     </insert>
+
+    <select id="countAll">
+        select count(*)
+        from free_board
+        where is_removed = false;
+    </select>
+
+    <update id="updateViewCount">
+        UPDATE free_board
+        SET view_cnt = view_cnt + 1
+        WHERE id = #{id}
+    </update>
 </mapper>

@@ -60,4 +60,6 @@ public interface ReviewImagePropertyMapper{
      * @return 리뷰 이미지 속성 목록
      */
     List<ReviewImageProperty> findAllByIds(List<Long> fileIds);
+
+	void deleteAllById(List<Long> ids);
 }

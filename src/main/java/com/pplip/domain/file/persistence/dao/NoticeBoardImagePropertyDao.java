@@ -45,7 +45,17 @@ public class NoticeBoardImagePropertyDao implements BatchSupportFilePropertyDao<
 	}
 
 	@Override
+	public void deleteAllById(List<Long> ids) {
+		mapper.deleteAllById(ids);
+	}
+
+	@Override
 	public boolean supports(ImageType imageType) {
 		return ImageType.NOTICE.equals(imageType);
+	}
+
+	@Override
+	public ImageType supports() {
+		return ImageType.NOTICE;
 	}
 }

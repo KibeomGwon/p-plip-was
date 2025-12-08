@@ -18,6 +18,7 @@ public class FreeBoardCommentResponse {
         private Long id;
         private String content;
         private String authorNickName;
+        private boolean isAuthor;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
         private FileResponse profileImage;
@@ -31,6 +32,7 @@ public class FreeBoardCommentResponse {
         private Long id;
         private String content;
         private String authorNickName;
+        private boolean isAuthor;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
         private FileResponse profileImage;
@@ -44,6 +46,8 @@ public class FreeBoardCommentResponse {
         private Long id;
         private String content;
         private String authorNickName;
+        private boolean isAuthor;
+
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
         private FileResponse profileImage;

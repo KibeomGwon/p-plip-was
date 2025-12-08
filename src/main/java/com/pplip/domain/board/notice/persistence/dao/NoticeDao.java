@@ -21,4 +21,6 @@ public interface NoticeDao {
     int delete(Long id);
 
     int update(NoticeBoard noticeBoard);
+
+	void updateViewCount(Long id);
 }

@@ -63,8 +63,8 @@ class TodoDaoTest {
                 .planId(planId)
                 .description("경복궁 가기")
                 .attractionId(56647L)
-                .willStartAt(LocalDate.now())
-                .willEndAt(LocalDate.now().plusDays(5))
+                .willStartAt(LocalDateTime.now())
+                .willEndAt(LocalDateTime.now().plusDays(5))
                 .createdAt(LocalDateTime.now())
                 .build();
         dao.insert(todo);

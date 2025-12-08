@@ -1,8 +1,6 @@
 package com.pplip.domain.file.persistence.dao.mapper;
 
-import com.pplip.domain.file.persistence.entity.FreeBoardImageProperty;
 import com.pplip.domain.file.persistence.entity.NoticeBoardImageProperty;
-import com.pplip.domain.file.persistence.entity.ReviewImageProperty;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -61,4 +59,6 @@ public interface NoticeBoardImagePropertyMapper{
      * @return 공지사항 이미지 속성 목록
      */
     List<NoticeBoardImageProperty> findAllByIds(List<Long> fileIds);
+
+	void deleteAllById(List<Long> ids);
 }

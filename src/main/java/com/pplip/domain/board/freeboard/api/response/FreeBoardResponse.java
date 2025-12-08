@@ -21,7 +21,18 @@ public class FreeBoardResponse {
         private String authorName;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
+        private boolean isAuthor;
         private int likeCnt;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Post{
+        private long id;
+        private String title;
+        private String content;
     }
 
     @Data
@@ -31,28 +42,14 @@ public class FreeBoardResponse {
     public static class Detail {
         private long id;
         private String title;
-        private String authorName;
         private String content;
         private List<FileResponse> freeBoardImages;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
+        private boolean isAuthor;
         private int likeCnt;
     }
 
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Update {
-        private long id;
-        private String title;
-        private String content;
-        private String authorName;
-        private LocalDateTime createdAt;
-        private LocalDateTime updatedAt;
-        private List<FileResponse> freeBoardImages;
-        private int likeCnt;
-    }
 
     @Data
     @NoArgsConstructor

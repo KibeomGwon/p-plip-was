@@ -60,4 +60,8 @@ public interface FreeBoardImagePropertyMapper{
      * @return 자유 게시판 이미지 속성 목록
      */
     List<FreeBoardImageProperty> findAllByIds(List<Long> fileIds);
+
+	List<FreeBoardImageProperty> findByBoardId(Long boardId);
+
+    void deleteAllByid(List<Long> ids);
 }
