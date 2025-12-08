@@ -9,10 +9,13 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 @Mapper
 public interface NoticeCommentDao {
-    List<NoticeCommentResponse.Summary> findAll(Long noticeId);
+    List<NoticeCommentResponse.Summary> findAll(Long noticeId, PageRequest pageRequest);
+
+    Optional<NoticeCommentResponse.Detail> findById(Long id);
 
     int noticeBoardCommentAllCount(Long id);
 

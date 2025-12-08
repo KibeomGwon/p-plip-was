@@ -1,11 +1,9 @@
 package com.pplip.domain.board.notice.usecase.model;
 
 import com.pplip.domain.board.notice.api.request.NoticeRequest;
-import com.pplip.domain.board.notice.api.response.NoticeResponse;
 import com.pplip.domain.board.notice.persistence.entity.NoticeBoard;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 public class NoticeBoardModel {
     private Long id;
@@ -37,11 +35,11 @@ public class NoticeBoardModel {
 
     public NoticeBoard toEntity() {
         return NoticeBoard.builder()
+                .id(id)
                 .authorId(authorId)
                 .content(content)
                 .title(title)
                 .createdAt(createdAt)
-
                 .viewCnt(viewCnt)
                 .isRemoved(isRemoved)
                 .build();
