@@ -57,7 +57,7 @@ public interface NoticeDocsController {
      */
     @Operation(summary = "공지게시판 게시판 수정")
     @ApiResponse(responseCode = "202", description = "수정")
-    CommonResponse<NoticeResponse.Update> updateNoticeBoard(NoticeRequest.Update update, Long id);
+    CommonResponse<NoticeResponse.Update> updateNoticeBoard(NoticeRequest.Update update, Long id, UserDetails userDetails);
 
     /**
      * 공지게시판의 게시글을 삭제합니다..
@@ -67,6 +67,6 @@ public interface NoticeDocsController {
      */
     @Operation(summary = "공지게시판 게시판 삭제")
     @ApiResponse(responseCode = "203", description = "삭제")
-    CommonResponse<Void> removeNoticeBoard(Long id);
+    CommonResponse<Void> removeNoticeBoard(Long id, UserDetails userDetails);
 
 }

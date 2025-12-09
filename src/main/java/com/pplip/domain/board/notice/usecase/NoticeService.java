@@ -13,7 +13,7 @@ public interface NoticeService {
 
     NoticeResponse.Detail findById(Long id);
 
-    NoticeResponse.Update update(NoticeRequest.Update update, Long id);
+    NoticeResponse.Update update(NoticeRequest.Update update, Long id, UserDetails userDetails);
 
-    void remove(Long id);
+    void remove(Long id, UserDetails userDetails);
 }

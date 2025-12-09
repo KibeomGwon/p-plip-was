@@ -1,5 +1,6 @@
 package com.pplip.domain.board.notice.api.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.pplip.domain.file.api.response.FileResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,6 +19,10 @@ public class NoticeCommentResponse {
         private String authorName;
         private FileResponse profileImage;
         private String content;
+
+        @JsonIgnore
+        private long authorId;
+        private boolean isAuthor;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
@@ -31,6 +36,11 @@ public class NoticeCommentResponse {
         private String authorName;
         private FileResponse profileImage;
         private String content;
+
+        @JsonIgnore
+        private long authorId;
+        private boolean isAuthor;
+
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
@@ -43,6 +53,11 @@ public class NoticeCommentResponse {
         private String authorName;
         private FileResponse profileImage;
         private String content;
+
+        @JsonIgnore
+        private long authorId;
+        private boolean isAuthor;
+
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
