@@ -96,7 +96,7 @@ class FreeBoardServiceImplTest {
 
             // when & then
             BusinessLogicException exception = assertThrows(BusinessLogicException.class, () -> freeBoardService.remove(boardId, account));
-            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.BOARD_NOT_FOUND);
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.BOARD_NOT_FOUND_ERROR);
         }
 
         @Test
@@ -108,7 +108,7 @@ class FreeBoardServiceImplTest {
 
             // when & then
             BusinessLogicException exception = assertThrows(BusinessLogicException.class, () -> freeBoardService.remove(freeBoard.getId(), otherAccount));
-            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALIDATED_USER_ERROR);
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.FORBIDDEN);
         }
     }
 
@@ -221,7 +221,7 @@ class FreeBoardServiceImplTest {
 
             // when & then
             BusinessLogicException exception = assertThrows(BusinessLogicException.class, () -> freeBoardService.retrieveDetail(boardId));
-            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.BOARD_NOT_FOUND);
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.BOARD_NOT_FOUND_ERROR);
         }
     }
 
