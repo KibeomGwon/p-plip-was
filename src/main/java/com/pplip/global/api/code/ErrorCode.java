@@ -19,6 +19,13 @@ public enum ErrorCode {
     EXPIRED_EMAIL_VALID_CODE(DomainCode.USER, ExceptionCode.EXPIRED, "인증 기한이 만료되었습니다"),
     INVALID_EMAIL_VALID_CODE(DomainCode.USER, ExceptionCode.INVALID, "인증 번호가 틀립니다."),
     ALREADY_EXIST_NICKNAME(DomainCode.USER, ExceptionCode.CONFLICT, "이미 존재하는 닉네임입니다."),
+    FAIL_TO_CREATE_BOARD(DomainCode.BOARD, ExceptionCode.FAILURE, "게시글 작성에 실패했습니다."),
+    BOARD_NOT_FOUND_ERROR(DomainCode.BOARD, ExceptionCode.NOT_FOUND, "게시글을 찾을 수 없습니다."),
+    BOARD_NOT_UPDATE(DomainCode.BOARD, ExceptionCode.INVALID, "게시글이 바뀌지 않았습니다."),
+    BOARD_FAIL_DELETE(DomainCode.BOARD, ExceptionCode.FAILURE, "게시글 삭제에 실패했습니다."),
+    COMMENT_CREATE_ERROR(DomainCode.COMMENT, ExceptionCode.FAILURE, "댓글 작성에 실패했습니다."),
+    COMMENT_NOT_FOUND(DomainCode.COMMENT, ExceptionCode.NOT_FOUND, "댓글을 찾지 못하였습니다."),
+    COMMENT_DELETE_FAIL_ERROR(DomainCode.COMMENT, ExceptionCode.FAILURE, "댓글 삭제에 실패했습니다."),
     INVALID_INPUT(DomainCode.USER, ExceptionCode.INVALID, "입력값이 유효하지 않습니다.");
 
 

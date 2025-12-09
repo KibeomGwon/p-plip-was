@@ -2,9 +2,12 @@ package com.pplip.domain.board.notice.api.controller;
 
 import com.pplip.domain.board.notice.api.request.NoticeCommentRequest;
 import com.pplip.domain.board.notice.api.response.NoticeCommentResponse;
+import com.pplip.domain.board.notice.usecase.NoticeCommentService;
+import com.pplip.global.api.code.SuccessCode;
 import com.pplip.global.api.response.CommonResponse;
 import com.pplip.global.docs.NoticeCommentDocsController;
 import com.pplip.global.page.Page;
+import com.pplip.global.page.PageRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/notice")
 public class NoticeCommentController implements NoticeCommentDocsController {
 
+    private final NoticeCommentService service;
+
     /**
      * 공지게시판의 댓글 리스트를 조회합니다.
      *
@@ -23,8 +28,9 @@ public class NoticeCommentController implements NoticeCommentDocsController {
      */
     @Override
     @GetMapping("/{id}/comment")
-    public CommonResponse<Page<NoticeCommentResponse.Summary>> listNoticeBoardComment(@PathVariable Long id) {
-        return null;
+    public CommonResponse<Page<NoticeCommentResponse.Summary>> listNoticeBoardComment(@PathVariable Long id,
+                                                                                      @ModelAttribute PageRequest pageRequest) {
+        return CommonResponse.success(SuccessCode.SUCCESS, service.findAllByBoardId(id, pageRequest));
     }
 
     /**
@@ -41,7 +47,8 @@ public class NoticeCommentController implements NoticeCommentDocsController {
             NoticeCommentRequest.Post request,
             @PathVariable Long id,
             @AuthenticationPrincipal UserDetails userDetails) {
-        return null;
+
+        return CommonResponse.success(SuccessCode.CREATED, service.post(request, id, userDetails));
     }
 
 
@@ -55,8 +62,9 @@ public class NoticeCommentController implements NoticeCommentDocsController {
     @Override
     @PutMapping("/comment/{id}")
     public CommonResponse<NoticeCommentResponse.Update> updateNoticeBoardComment(NoticeCommentRequest.Update update,
-                                                                                 @PathVariable Long id) {
-        return null;
+                                                                                 @PathVariable Long id,
+                                                                                 @AuthenticationPrincipal UserDetails userDetails) {
+        return CommonResponse.success(SuccessCode.UPDATED, service.update(update, id, userDetails));
     }
 
     /**
@@ -64,11 +72,13 @@ public class NoticeCommentController implements NoticeCommentDocsController {
      *
      * @param id 삭제될 댓글 아이디
      * @return 203 (No Content)
-     * */
+     */
     @Override
     @DeleteMapping("/comment/{id}")
     public CommonResponse<?> deleteNoticeBoardComment(@PathVariable Long id) {
-        return null;
+        service.delete(id);
+
+        return CommonResponse.success(SuccessCode.REMOVED, null);
     }
 
 }
