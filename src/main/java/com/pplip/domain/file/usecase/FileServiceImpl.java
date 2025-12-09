@@ -90,7 +90,7 @@ public class FileServiceImpl implements FileService {
 	@Override
 	public FileResponse remove(Long id, ImageType imageType, UserDetails userDetails) {
 		long userId = ((Account) userDetails).getUserId();
-		FilePropertyDao<? extends FileProperty> fdao = Optional.ofNullable(filePropertyMap.get(imageType)).orElseThrow(() -> new BusinessLogicException(ErrorCode.FILE_TYPE_NOT_SUPPORT));
+		FilePropertyDao<? extends FileProperty> fdao = Optional.ofNullable(filePropertyMap.get(imageType)).orElseThrow(() -> new BusinessLogicException(ErrorCode.FILE_NOT_FOUND));
 		FileProperty fileProperty = fdao.findById(id).orElseThrow(() -> new BusinessLogicException(ErrorCode.FILE_TYPE_NOT_SUPPORT, "파일을 찾을 수 없습니다."));
 		if (!fileProperty.getUploaderId().equals(userId)) {
 			throw new BusinessLogicException(ErrorCode.INVALIDATED_USER_ERROR, "업로드한 사용자만 삭제할 수 있습니다.");

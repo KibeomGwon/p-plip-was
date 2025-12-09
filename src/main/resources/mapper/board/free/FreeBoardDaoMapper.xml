@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pplip.domain.board.freeboard.persistence.dao.FreeBoardDao">
+    <resultMap id="boardModelMap" type="com.pplip.domain.board.freeboard.usecase.model.FreeBoardModel" autoMapping="true"/>
+    <resultMap id="boardEntityMap" type="com.pplip.domain.board.freeboard.persistence.entity.FreeBoard" autoMapping="true"/>
+    <resultMap id="boardListMap" type="com.pplip.domain.board.freeboard.api.response.FreeBoardResponse$BoardList" autoMapping="true">
+        <id column="id" property="id"></id>
+    </resultMap>
 
     <select id="findAll" resultMap="boardListMap">
         SELECT fb.id AS id,
@@ -16,9 +21,6 @@
         ORDER BY fb.created_at DESC  LIMIT #{pageSize} OFFSET #{offset}
     </select>
 
-    <resultMap id="boardListMap" type="com.pplip.domain.board.freeboard.api.response.FreeBoardResponse$BoardList" autoMapping="true">
-        <id column="id" property="id"></id>
-    </resultMap>
 
     <resultMap id="detailMap" type="com.pplip.domain.board.freeboard.api.response.FreeBoardResponse$Detail" autoMapping="true">
         <id property="id" column="id"/>
@@ -33,17 +35,17 @@
         </collection>
     </resultMap>
 
-    <resultMap id="boardModelMap" type="com.pplip.domain.board.freeboard.usecase.model.FreeBoardModel" autoMapping="true"/>
-    <resultMap id="boardEntityMap" type="com.pplip.domain.board.freeboard.persistence.entity.FreeBoard" autoMapping="true"/>
+
+
     <select id="findById" resultMap="detailMap">
         SELECT fb.id AS id,
                fb.title AS title,
                p.nickname AS authorName,
+               u.id as userId,
                fb.content AS content,
                fb.created_at AS createdAt,
                fb.updated_at AS updatedAt,
                (SELECT COUNT(*) FROM user_like_board ulb WHERE ulb.board_id = fb.id) AS likeCnt,
-
                fbip.id AS img_id,
                fbip.saved_file_name AS img_name,
                fbip.path AS img_path,

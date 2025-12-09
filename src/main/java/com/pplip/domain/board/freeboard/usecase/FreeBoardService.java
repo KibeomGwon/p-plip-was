@@ -6,6 +6,9 @@ import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/**
+ * 자유게시판 관련 비즈니스 로직을 처리하는 서비스 인터페이스
+ */
 public interface FreeBoardService {
 
 	FreeBoardResponse.Remove remove(Long id, UserDetails principal);
