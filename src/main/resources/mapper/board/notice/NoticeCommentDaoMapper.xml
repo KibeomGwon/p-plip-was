@@ -6,6 +6,7 @@
         SELECT
             nc.id           AS id,
             p.nickname      AS authorName,
+            nc.author_id     AS authorId,
             nc.content      AS content,
             nc.created_at   AS createdAt,
             nc.updated_at   AS updatedAt,
@@ -32,6 +33,7 @@
         SELECT
             nc.id           AS id,
             p.nickname      AS authorName,
+            nc.author_id    AS authorId,
             nc.content      AS content,
             nc.created_at   AS createdAt,
             nc.updated_at   AS updatedAt,
@@ -81,6 +83,12 @@
             <result property="size" column="file_size"/>
         </association>
     </resultMap>
+
+    <select id="findByIdToEntity" resultType="com.pplip.domain.board.notice.persistence.entity.NoticeComment">
+        select *
+        from notice_comment
+        where id = #{id} and is_removed=false;
+    </select>
 
     <select id="noticeBoardCommentAllCount" resultType="int">
         SELECT count(*)

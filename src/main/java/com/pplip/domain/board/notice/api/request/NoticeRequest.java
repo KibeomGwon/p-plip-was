@@ -1,5 +1,6 @@
 package com.pplip.domain.board.notice.api.request;
 
+import com.pplip.domain.file.api.request.FileRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -26,6 +27,6 @@ public class NoticeRequest {
     public static class Update {
         private String title;
         private String content;
-        private List<Long> imageIds;
+        private List<FileRequest> images;
     }
 }

@@ -63,5 +63,5 @@ public interface NoticeCommentDocsController {
      */
     @Operation(summary = "공지게시판 게시판 댓글 삭제")
     @ApiResponse(responseCode = "203", description = "삭제")
-    CommonResponse<?> deleteNoticeBoardComment(Long id);
+    CommonResponse<?> deleteNoticeBoardComment(Long id, UserDetails userDetails);
 }

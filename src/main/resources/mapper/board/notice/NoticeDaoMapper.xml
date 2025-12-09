@@ -7,6 +7,7 @@
                nb.title as title,
                pf.nickname as authorName,
                nb.view_cnt as viewCnt,
+               nb.author_id as authorId,
                nb.created_at as createdAt,
                nb.updated_at as updatedAt
         FROM notice_board nb
@@ -23,6 +24,7 @@
         SELECT nb.id as notice_id,
                nb.title as title,
                pf.nickname as authorName,
+               nb.author_id as authorId,
                nb.content as content,
                nb.view_cnt as viewCnt,
                nb.created_at as createdAt,
@@ -48,6 +50,17 @@
                  LEFT JOIN notice_board_image_property nip ON nb.id = nip.board_id
 
         WHERE nb.id = #{id} AND nb.is_removed = false
+    </select>
+
+    <select id="findByIdToEntity" resultType="com.pplip.domain.board.notice.persistence.entity.NoticeBoard">
+        SELECT *
+        FROM notice_board
+        where id = #{id} and is_removed=false;
+    </select>
+
+    <select id="noticeBoardAllCount" resultType="int">
+        select count(*)
+        from notice_board;
     </select>
 
     <resultMap id="detailMap" type="com.pplip.domain.board.notice.api.response.NoticeResponse$Detail" autoMapping="true">

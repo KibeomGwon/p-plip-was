@@ -1,5 +1,6 @@
 package com.pplip.domain.board.notice.persistence.entity;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -15,7 +16,7 @@ public class NoticeComment {
     private Long authorId;
 
     private String content;
-    private Boolean isRemoved;
+    private boolean isRemoved;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

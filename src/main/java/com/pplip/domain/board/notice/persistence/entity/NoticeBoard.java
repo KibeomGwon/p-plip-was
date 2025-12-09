@@ -16,9 +16,14 @@ public class NoticeBoard {
 
     private String title;
     private String content;
-    private Integer viewCnt;
-    private Boolean isRemoved;
+    private int viewCnt;
+    private boolean isRemoved;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public void update(NoticeRequest.Update update) {
+        this.title = update.getTitle();
+        this.content = update.getContent();
+    }
 }

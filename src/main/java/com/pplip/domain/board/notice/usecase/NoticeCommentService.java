@@ -13,5 +13,5 @@ public interface NoticeCommentService {
 
     NoticeCommentResponse.Update update(NoticeCommentRequest.Update update, Long id, UserDetails userDetails);
 
-    void delete(Long id);
+    void delete(Long id, UserDetails userDetails);
 }
