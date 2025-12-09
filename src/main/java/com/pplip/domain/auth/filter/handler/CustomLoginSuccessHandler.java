@@ -8,21 +8,24 @@ import com.pplip.global.api.response.CommonResponse;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 
+@RequiredArgsConstructor
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
-    private JwtUtil jwtUtil;
-    private ObjectMapper om;
+    private final JwtUtil jwtUtil;
+    private final ObjectMapper om;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         Jwt generate = jwtUtil.generate(authentication);
-        PrintWriter writer = response.getWriter();
         response.setContentType("application/json;charset=UTF-8");
+        response.setCharacterEncoding("UTF-8");
+        PrintWriter writer = response.getWriter();
         writer.print(om.writeValueAsString(CommonResponse.success(
                 SuccessCode.SUCCESS,
                 generate,

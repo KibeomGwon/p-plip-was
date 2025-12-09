@@ -34,15 +34,19 @@ public class JwtResolver {
 
     public Account resolve(String header) {
         String token = extractTokenFromHeader(header);
+        return parse(token);
+    }
 
+    public Account parse(String token){
         Claims payload = getClaims(token);
 
         return Account.builder()
-                .id(payload.get(USERID, Long.class))
-                .email(payload.get(EMAIL, String.class))
+                .userId(payload.get(USERID, Long.class))
                 .role(Role.getRole(payload.get(ROLE, String.class)))
                 .build();
+
     }
+
 
     private String extractTokenFromHeader(String header) {
         if (header.startsWith(TOKEN_PREFIX)) {

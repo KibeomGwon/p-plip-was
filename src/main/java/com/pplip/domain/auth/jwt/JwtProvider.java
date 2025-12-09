@@ -37,8 +37,7 @@ public class JwtProvider {
         SecretKey secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
 
         return Jwts.builder()
-                .claim(USERID, account.getId())
-                .claim(EMAIL, account.getEmail())
+                .claim(USERID, account.getUserId())
                 .claim(ROLE, account.getRole().name())
                 .expiration(expiredDate)
                 .issuedAt(new Date())
