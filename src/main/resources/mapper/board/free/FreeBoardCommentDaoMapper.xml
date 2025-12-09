@@ -51,9 +51,10 @@
 
         WHERE fc.board_id = #{boardId}
           AND fc.is_removed = false
+
+        ORDER BY fc.created_at DESC
         limit #{page.pageSize}
         offset #{page.pageNum}
-        ORDER BY fc.created_at DESC
     </select>
 
     <select id="countAllByBoardId">
