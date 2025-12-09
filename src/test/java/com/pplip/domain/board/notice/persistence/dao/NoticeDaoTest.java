@@ -94,4 +94,13 @@ class NoticeDaoTest {
         assertThat(all).isNotNull();
         assertThat(all.size()).isGreaterThanOrEqualTo(2);
     }
+
+    @Test
+    public void findByIdTest() throws Exception {
+        // given
+        NoticeBoard noticeBoard = dao.findByIdToEntity(144L).get();
+        // when
+        System.out.println(noticeBoard.toString());
+        // then
+    }
 }

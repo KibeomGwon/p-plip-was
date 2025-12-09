@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class NoticeBoard {
     private Long id;
     private Long authorId;
@@ -21,4 +22,9 @@ public class NoticeBoard {
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+
+    public void update(NoticeRequest.Update update) {
+        this.title = update.getTitle();
+        this.content = update.getContent();
+    }
 }

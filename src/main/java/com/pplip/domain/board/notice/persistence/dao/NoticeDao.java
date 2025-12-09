@@ -19,6 +19,8 @@ public interface NoticeDao {
 
     Optional<NoticeResponse.Detail> findById(Long id);
 
+    Optional<NoticeBoard> findByIdToEntity(Long id);
+
     int insert(NoticeBoard noticeBoard);
 
     int delete(Long id);

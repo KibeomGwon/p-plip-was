@@ -1,6 +1,9 @@
 package com.pplip.domain.board.notice.usecase.impl;
 
 import com.pplip.domain.auth.persistence.entity.Account;
+import com.pplip.domain.auth.utils.SecurityUtils;
+import com.pplip.domain.board.aop.annotation.CountView;
+import com.pplip.domain.board.aop.enums.BoardType;
 import com.pplip.domain.board.notice.api.request.NoticeRequest;
 import com.pplip.domain.board.notice.api.response.NoticeResponse;
 import com.pplip.domain.board.notice.persistence.dao.NoticeDao;
@@ -8,9 +11,16 @@ import com.pplip.domain.board.notice.persistence.entity.NoticeBoard;
 import com.pplip.domain.board.notice.usecase.NoticeService;
 import com.pplip.domain.board.notice.usecase.model.NoticeBoardModel;
 import com.pplip.domain.board.notice.utils.NoticeBoardParser;
+import com.pplip.domain.file.api.request.FileRequest;
 import com.pplip.domain.file.persistence.dao.NoticeBoardImagePropertyDao;
+import com.pplip.domain.file.persistence.entity.FileProperty;
+import com.pplip.domain.file.persistence.entity.FileStatus;
+import com.pplip.domain.file.persistence.entity.ImageType;
+import com.pplip.domain.file.persistence.entity.NoticeBoardImageProperty;
+import com.pplip.domain.file.usecase.FileService;
 import com.pplip.global.api.code.ErrorCode;
 import com.pplip.global.exception.BoardLogicException;
+import com.pplip.global.exception.BusinessLogicException;
 import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
 import lombok.RequiredArgsConstructor;
@@ -30,12 +40,19 @@ public class NoticeServiceImpl implements NoticeService {
     private final NoticeDao dao;
     private final NoticeBoardImagePropertyDao imagePropertyDao;
     private final NoticeBoardParser noticeBoardParser;
+    private final FileService fileService;
 
     @Override
     public Page<NoticeResponse.Summary> findAll(PageRequest pageRequest) {
         List<NoticeResponse.Summary> datas = dao.findAll(pageRequest);
         int count = dao.noticeBoardAllCount();
-
+        if (!SecurityUtils.isAnonymous()) {
+            Long authorId = SecurityUtils.getCurrentUser().getUserId();
+            datas = datas.stream().map(data -> {
+                data.setAuthor(data.getAuthorId() == authorId);
+                return data;
+            }).toList();
+        }
         return new Page<>(datas, pageRequest.getPageNum(), pageRequest.getPageSize(), count);
     }
 
@@ -55,35 +72,71 @@ public class NoticeServiceImpl implements NoticeService {
             throw new BoardLogicException(ErrorCode.FAIL_TO_CREATE_BOARD);
         }
 
-        return dao.findById(entity.getId())
+        NoticeResponse.Detail resData = dao.findById(entity.getId())
                 .orElseThrow(() -> new BoardLogicException(ErrorCode.FAIL_TO_CREATE_BOARD));
+
+        resData.setAuthor(resData.getAuthorId() == userId);
+        return resData;
     }
 
     @Override
+    @CountView(BoardType.NOTICE)
+    @Transactional(readOnly = true)
     public NoticeResponse.Detail findById(Long id) {
-        return dao.findById(id)
+        NoticeResponse.Detail resData = dao.findById(id)
                 .orElseThrow(() -> new BoardLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR));
+
+        if (!SecurityUtils.isAnonymous()) {
+            Long userId = SecurityUtils.getCurrentUser().getUserId();
+            resData.setAuthor(resData.getAuthorId() == userId);
+        }
+
+        return resData;
     }
 
     @Override
-    public NoticeResponse.Update update(NoticeRequest.Update update, Long id) {
-        NoticeBoardModel model = new NoticeBoardModel(update, id);
+    public NoticeResponse.Update update(NoticeRequest.Update update, Long id, UserDetails userDetails) {
+        Long userId = ((Account) userDetails).getUserId();
 
-        NoticeBoard entity = model.toEntity();
+        NoticeBoard entity = dao.findByIdToEntity(id)
+                .orElseThrow(() -> new BoardLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR));
+
+        if (entity.getAuthorId() != userId) {
+            throw new BoardLogicException(ErrorCode.FORBIDDEN, "작성자만 수정할 수 있습니다.");
+        }
+
+        entity.update(update);
         dao.update(entity);
 
-        imagePropertyDao.bulkUpdate(update.getImageIds(), id);
+        List<Long> removeImgIds = update.getImages().stream().filter(img -> img.getStatus().equals(FileStatus.REMOVE)).map(FileRequest::getId).toList();
+        List<NoticeBoardImageProperty> removeImgs = imagePropertyDao.findAllByIds(removeImgIds);
+
+        fileService.deleteSavedFiles(removeImgIds, ImageType.NOTICE);
+        fileService.deleteOriginFiles(removeImgs.stream().map(FileProperty::getPath).toList());
+
+        List<Long> updateImgIds = update.getImages().stream().filter(img -> img.getStatus().equals(FileStatus.NEW)).map(FileRequest::getId).toList();
+        imagePropertyDao.bulkUpdate(updateImgIds, id);
 
         NoticeResponse.Detail detail = dao.findById(id)
                 .orElseThrow(() -> new BoardLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR));
+
+        detail.setAuthor(detail.getAuthorId() == userId);
 
         return noticeBoardParser.detailResToUpdateRes(detail);
     }
 
     @Override
-    public void remove(Long id) {
+    public void remove(Long id, UserDetails userDetails) {
+        Long userId = ((Account) userDetails).getUserId();
+        NoticeBoard entity = dao.findByIdToEntity(id)
+                .orElseThrow(() -> new BoardLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR));
+
+        if (entity.getAuthorId() != userId) {
+            throw new BoardLogicException(ErrorCode.FORBIDDEN, "작성자만 삭제할 수 있습니다.");
+        }
+
         if (dao.delete(id) != 1) {
-            throw new BoardLogicException(ErrorCode.BOARD_FAIL_DELETE);
+            throw new BoardLogicException(ErrorCode.BOARD_FAIL_DELETE, "게시판 삭제에 실패했습니다.");
         }
     }
 }
