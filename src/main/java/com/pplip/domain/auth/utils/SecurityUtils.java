@@ -22,4 +22,5 @@ public class SecurityUtils {
 		}
 		return (Account) authentication.getPrincipal();
 	}
+
 }

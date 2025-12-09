@@ -5,9 +5,7 @@ import com.pplip.domain.board.freeboard.api.request.FreeBoardRequest;
 import com.pplip.domain.board.freeboard.api.response.FreeBoardResponse;
 import com.pplip.domain.board.freeboard.persistence.dao.FreeBoardDao;
 import com.pplip.domain.board.freeboard.persistence.entity.FreeBoard;
-import com.pplip.domain.file.api.request.FileRequest;
 import com.pplip.domain.file.persistence.dao.FreeBoardImagePropertyDao;
-import com.pplip.domain.file.persistence.entity.FileStatus;
 import com.pplip.domain.file.usecase.FileService;
 import com.pplip.global.api.code.ErrorCode;
 import com.pplip.global.exception.BusinessLogicException;
@@ -75,7 +73,7 @@ class FreeBoardServiceImplTest {
         @DisplayName("성공: 작성자가 게시글을 삭제한다")
         void given_BoardIdAndPrincipal_when_RemoveBoard_then_Success() {
             // given
-            given(freeBoardDao.findByIdToEntity(freeBoard.getId())).willReturn(Optional.of(freeBoard));
+            given(freeBoardDao.findById(freeBoard.getId())).willReturn(Optional.of(freeBoard));
 
             // when
             FreeBoardResponse.Remove response = freeBoardService.remove(freeBoard.getId(), account);
@@ -92,7 +90,7 @@ class FreeBoardServiceImplTest {
         void given_NonexistentBoardId_when_RemoveBoard_then_ThrowBusinessLogicException() {
             // given
             Long boardId = 999L;
-            given(freeBoardDao.findByIdToEntity(boardId)).willReturn(Optional.empty());
+            given(freeBoardDao.findById(boardId)).willReturn(Optional.empty());
 
             // when & then
             BusinessLogicException exception = assertThrows(BusinessLogicException.class, () -> freeBoardService.remove(boardId, account));
@@ -104,7 +102,7 @@ class FreeBoardServiceImplTest {
         void given_OtherUserPrincipal_when_RemoveBoard_then_ThrowBusinessLogicException() {
             // given
             Account otherAccount = Account.builder().userId(2L).build();
-            given(freeBoardDao.findByIdToEntity(freeBoard.getId())).willReturn(Optional.of(freeBoard));
+            given(freeBoardDao.findById(freeBoard.getId())).willReturn(Optional.of(freeBoard));
 
             // when & then
             BusinessLogicException exception = assertThrows(BusinessLogicException.class, () -> freeBoardService.remove(freeBoard.getId(), otherAccount));
@@ -126,8 +124,8 @@ class FreeBoardServiceImplTest {
                     .content("수정된 내용")
                     .images(Collections.emptyList())
                     .build();
-            given(freeBoardDao.findByIdToEntity(freeBoard.getId())).willReturn(Optional.of(freeBoard));
-            given(freeBoardDao.findById(freeBoard.getId())).willReturn(Optional.of(new FreeBoardResponse.Detail()));
+            given(freeBoardDao.findById(freeBoard.getId())).willReturn(Optional.of(freeBoard));
+            given(freeBoardDao.findByIdToDto(freeBoard.getId())).willReturn(Optional.of(new FreeBoardResponse.Detail()));
 
             // when
             freeBoardService.modifyFreeBoard(updateRequest, freeBoard.getId(), account);
@@ -143,7 +141,7 @@ class FreeBoardServiceImplTest {
         void given_NonExistentBoard_when_Modify_then_ThrowException() {
             // given
             FreeBoardRequest.BoardUpdate updateRequest = new FreeBoardRequest.BoardUpdate();
-            given(freeBoardDao.findByIdToEntity(any(Long.class))).willReturn(Optional.empty());
+            given(freeBoardDao.findById(any(Long.class))).willReturn(Optional.empty());
 
             // when & then
             assertThrows(BusinessLogicException.class, () -> freeBoardService.modifyFreeBoard(updateRequest, 999L, account));
@@ -155,7 +153,7 @@ class FreeBoardServiceImplTest {
             // given
             FreeBoardRequest.BoardUpdate updateRequest = new FreeBoardRequest.BoardUpdate();
             UserDetails otherUser = Account.builder().userId(2L).build();
-            given(freeBoardDao.findByIdToEntity(freeBoard.getId())).willReturn(Optional.of(freeBoard));
+            given(freeBoardDao.findById(freeBoard.getId())).willReturn(Optional.of(freeBoard));
 
             // when & then
             assertThrows(BusinessLogicException.class, () -> freeBoardService.modifyFreeBoard(updateRequest, freeBoard.getId(), otherUser));
@@ -184,7 +182,7 @@ class FreeBoardServiceImplTest {
             }).given(freeBoardDao).insert(any(FreeBoard.class));
 
             // [수정 2] 위에서 ID가 1L로 세팅되었으므로, findById(1L)이 호출될 것을 기대하고 Stubbing
-            given(freeBoardDao.findById(1L)).willReturn(Optional.of(new FreeBoardResponse.Detail()));
+            given(freeBoardDao.findByIdToDto(1L)).willReturn(Optional.of(new FreeBoardResponse.Detail()));
 
             // when
             freeBoardService.post(postRequest, account);
@@ -203,13 +201,13 @@ class FreeBoardServiceImplTest {
         @DisplayName("성공: 게시글 상세 정보를 조회한다")
         void given_BoardId_when_RetrieveDetail_then_Success() {
             // given
-            given(freeBoardDao.findById(freeBoard.getId())).willReturn(Optional.of(new FreeBoardResponse.Detail()));
+            given(freeBoardDao.findByIdToDto(freeBoard.getId())).willReturn(Optional.of(new FreeBoardResponse.Detail()));
 
             // when
             freeBoardService.retrieveDetail(freeBoard.getId());
 
             // then
-            verify(freeBoardDao).findById(freeBoard.getId());
+            verify(freeBoardDao).findByIdToDto(freeBoard.getId());
         }
 
         @Test
@@ -217,7 +215,7 @@ class FreeBoardServiceImplTest {
         void given_NonExistentBoardId_when_RetrieveDetail_then_ThrowBusinessLogicException() {
             // given
             Long boardId = 999L;
-            given(freeBoardDao.findById(boardId)).willReturn(Optional.empty());
+            given(freeBoardDao.findByIdToDto(boardId)).willReturn(Optional.empty());
 
             // when & then
             BusinessLogicException exception = assertThrows(BusinessLogicException.class, () -> freeBoardService.retrieveDetail(boardId));
