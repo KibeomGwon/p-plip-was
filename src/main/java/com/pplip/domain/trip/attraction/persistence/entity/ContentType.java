@@ -18,4 +18,18 @@ public enum ContentType {
     ContentType(int id) {
         this.id = id;
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public static ContentType getContentType(int id) {
+        for (ContentType type : ContentType.values()) {
+            if (type.getId() == id) {
+                return type;
+            }
+        }
+        System.out.println("매칭되는 숫자가 없습니다: " + id);
+        return null;
+    }
 }

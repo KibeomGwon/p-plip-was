@@ -18,4 +18,5 @@ public interface ReviewDao {
     int update(Review review);
 
     int delete(Long id);
+
 }

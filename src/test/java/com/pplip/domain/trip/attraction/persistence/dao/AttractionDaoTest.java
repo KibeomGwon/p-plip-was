@@ -1,6 +1,8 @@
 package com.pplip.domain.trip.attraction.persistence.dao;
 
+import com.pplip.domain.trip.attraction.api.request.AttractionRequest;
 import com.pplip.domain.trip.attraction.api.response.AttractionResponse;
+import com.pplip.domain.trip.attraction.persistence.entity.ContentType;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
@@ -8,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -45,5 +49,21 @@ class AttractionDaoTest {
 
         // then
         assertThat(byNo).isNotPresent();
+    }
+
+    @Test
+    public void searchTest() throws Exception {
+        // given
+        AttractionRequest.Search search = AttractionRequest.Search.builder()
+                .lat(new BigDecimal(37.5663))
+                .lng(new BigDecimal(126.9779))
+                .m(2000)
+                .contentType(ContentType.ATTRACTION)
+                .build();
+        dao.findAllBySearch(search)
+                .stream()
+                .forEach(System.out::println);
+        // when
+        // then
     }
 }

@@ -17,6 +17,27 @@ public class AttractionRequest {
         private String query;
         private BigDecimal lat;
         private BigDecimal lng;
+        // 관광지, 문화시설, 축제공연행사, 여행코스, 레포츠, 숙박, 쇼핑, 식당
+        private ContentType contentType;
+        // default = 1000m
+        private Integer m = 1000;
     }
 
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Search {
+        private String query;
+        // 관광지, 문화시설, 축제공연행사, 여행코스, 레포츠, 숙박, 쇼핑, 식당
+        private ContentType contentType;
+        private BigDecimal lat;
+        private BigDecimal lng;
+
+        // default = 1000m
+        private Integer m = 1000;
+
+        private int pageNum;
+        private int pageSize;
+    }
 }

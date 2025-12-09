@@ -27,6 +27,9 @@ public enum ErrorCode {
     COMMENT_CREATE_ERROR(DomainCode.COMMENT, ExceptionCode.FAILURE, "댓글 작성에 실패했습니다."),
     COMMENT_NOT_FOUND(DomainCode.COMMENT, ExceptionCode.NOT_FOUND, "댓글을 찾지 못하였습니다."),
     COMMENT_DELETE_FAIL_ERROR(DomainCode.COMMENT, ExceptionCode.FAILURE, "댓글 삭제에 실패했습니다."),
+    ATTRACTION_NOT_FOUND(DomainCode.ATTRACTION, ExceptionCode.NOT_FOUND, "장소를 찾지 못하였습니다."),
+    FAIL_TO_CREATE_SEARCH_HISTORY(DomainCode.ATTRACTION, ExceptionCode.FAILURE, "검색 기록 작성에 실패했습니다."),
+    FAIL_TO_DELETE_SEARCH_HISTORY(DomainCode.ATTRACTION, ExceptionCode.FAILURE, "검색 기록 삭제에 실패했습니다."),
     INVALID_INPUT(DomainCode.USER, ExceptionCode.INVALID, "입력값이 유효하지 않습니다.");
 
 

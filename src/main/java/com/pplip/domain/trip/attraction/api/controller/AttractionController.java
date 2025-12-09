@@ -2,10 +2,13 @@ package com.pplip.domain.trip.attraction.api.controller;
 
 import com.pplip.domain.trip.attraction.api.request.AttractionRequest;
 import com.pplip.domain.trip.attraction.api.response.AttractionResponse;
+import com.pplip.domain.trip.attraction.usecase.AttractionService;
 import com.pplip.global.api.code.SuccessCode;
 import com.pplip.global.api.response.CommonResponse;
 import com.pplip.global.docs.AttractionDocsController;
 import com.pplip.global.page.Page;
+import com.pplip.global.page.PageRequest;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +20,10 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/trip/attraction")
+@RequiredArgsConstructor
 public class AttractionController implements AttractionDocsController {
+
+    private final AttractionService attractionService;
 
     /**
      * 행정구역 정보를 조회합니다.
@@ -33,13 +39,17 @@ public class AttractionController implements AttractionDocsController {
     /**
      * 키워드를 사용하여 관광지를 검색합니다.
      *
-     * @param query 검색어
-     * @param numResult 검색 결과 수
+     * @param search 검색정보
      * @return 검색된 관광지 목록
      */
     @GetMapping("/search")
-    public CommonResponse<Page<AttractionResponse.Summary>> searchAttractions(@RequestParam String query, @RequestParam int numResult) {
-        return CommonResponse.success(SuccessCode.SUCCESS, null);
+    public CommonResponse<Page<AttractionResponse.Summary>> searchAttractions(@ModelAttribute AttractionRequest.Search search) {
+        PageRequest pageRequest = PageRequest.builder()
+                .pageNum(search.getPageNum())
+                .pageSize(search.getPageSize())
+                .build();
+
+        return CommonResponse.success(SuccessCode.SUCCESS, attractionService.findAllBySearch(search, pageRequest));
     }
 
     /**
@@ -50,12 +60,8 @@ public class AttractionController implements AttractionDocsController {
      * @return 추천된 관광지 목록
      */
     @GetMapping("/suggest")
-    public CommonResponse<Page<AttractionResponse.Summary>> suggestAttractions(@RequestBody AttractionRequest.Suggest suggest, @AuthenticationPrincipal UserDetails userDetails){
+    public CommonResponse<Page<AttractionResponse.Summary>> suggestAttractions(@RequestBody AttractionRequest.Suggest suggest,
+                                                                               @AuthenticationPrincipal UserDetails userDetails){
         return CommonResponse.success(SuccessCode.SUCCESS,null);
-
     }
-
-
-
-
 }
