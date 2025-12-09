@@ -37,7 +37,7 @@
 
 
 
-    <select id="findById" resultMap="detailMap">
+    <select id="findByIdToDto" resultMap="detailMap">
         SELECT fb.id AS id,
                fb.title AS title,
                p.nickname AS authorName,
@@ -58,7 +58,7 @@
         WHERE fb.id = #{id} AND fb.is_removed = false
     </select>
 
-    <select id="findByIdToEntity" resultMap="boardEntityMap">
+    <select id="findById" resultMap="boardEntityMap">
         select *
         from free_board
         where id = #{id}

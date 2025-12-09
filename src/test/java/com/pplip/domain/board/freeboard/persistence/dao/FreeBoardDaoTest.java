@@ -49,7 +49,7 @@ class FreeBoardDaoTest {
 
     @Test
     @DisplayName("성공: 새 게시글을 저장한 후 ID로 조회할 수 있다")
-    void insertAndFindById_Success() {
+    void insertAndFindById_To_Success() {
         // given
         FreeBoard board = FreeBoard.builder()
                 .authorId(authorId)
@@ -59,7 +59,7 @@ class FreeBoardDaoTest {
         dao.insert(board);
 
         // when
-        Optional<FreeBoardResponse.Detail> foundBoardOptional = dao.findById(board.getId());
+        Optional<FreeBoardResponse.Detail> foundBoardOptional = dao.findByIdToDto(board.getId());
 
         // then
         assertThat(foundBoardOptional).isPresent();
@@ -70,12 +70,12 @@ class FreeBoardDaoTest {
 
     @Test
     @DisplayName("실패: 존재하지 않는 ID로 조회 시 빈 Optional을 반환한다")
-    void findById_Fail_WhenBoardDoesNotExist() {
+    void findById_To_Fail_WhenBoardDoesNotExist() {
         // given
         long nonExistentId = 999L;
 
         // when
-        Optional<FreeBoardResponse.Detail> detail = dao.findById(nonExistentId);
+        Optional<FreeBoardResponse.Detail> detail = dao.findByIdToDto(nonExistentId);
 
         // then
         assertThat(detail).isNotPresent();

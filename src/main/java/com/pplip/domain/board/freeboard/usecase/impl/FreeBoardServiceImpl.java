@@ -40,7 +40,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	@Override
 	public FreeBoardResponse.Remove remove(Long id, UserDetails principal) {
 		Long userId = ((Account) principal).getUserId();
-		FreeBoard freeBoard = freeBoardDao.findByIdToEntity(id).orElseThrow(() -> new BusinessLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR));
+		FreeBoard freeBoard = freeBoardDao.findById(id).orElseThrow(() -> new BusinessLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR));
 		if (!freeBoard.getAuthorId().equals(userId)) {
 			throw new BusinessLogicException(ErrorCode.FORBIDDEN, "작성자만 삭제할 수 있습니다.");
 		}
@@ -52,7 +52,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	@Override
 	public FreeBoardResponse.Detail modifyFreeBoard(FreeBoardRequest.BoardUpdate update, Long id, UserDetails principal) {
 		Long userId = ((Account) principal).getUserId();
-		FreeBoard freeBoard = freeBoardDao.findByIdToEntity(id).orElseThrow(() -> new BusinessLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR));
+		FreeBoard freeBoard = freeBoardDao.findById(id).orElseThrow(() -> new BusinessLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR));
 		if (!freeBoard.getAuthorId().equals(userId)) {
 			throw new BusinessLogicException(ErrorCode.FORBIDDEN, "작성자만 수정 할 수 있습니다.");
 		}
@@ -69,7 +69,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 
 		fileService.deleteSavedFiles(removeList.stream().map(FreeBoardImageProperty::getId).toList(), ImageType.FREE_BOARD);//엑박 방지하려면 프로퍼티 먼저 삭제
 		fileService.deleteOriginFiles(removeList.stream().map(FreeBoardImageProperty::getPath).toList());
-		FreeBoardResponse.Detail detail = freeBoardDao.findById(id).get();
+		FreeBoardResponse.Detail detail = freeBoardDao.findByIdToDto(id).get();
 		detail.setAuthor(detail.getUserId() == userId);
 		return detail;
 	}
@@ -85,7 +85,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 				.viewCnt(0).build();
 		int insert = freeBoardDao.insert(freeBoard);
 		freeBoardImagePropertyDao.bulkUpdate(request.getIds(), freeBoard.getId());
-		FreeBoardResponse.Detail detail = freeBoardDao.findById(freeBoard.getId()).orElseThrow(() -> new BusinessLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR, "게시글 저장에 실패했습니다."));
+		FreeBoardResponse.Detail detail = freeBoardDao.findByIdToDto(freeBoard.getId()).orElseThrow(() -> new BusinessLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR, "게시글 저장에 실패했습니다."));
 		detail.setAuthor(detail.getUserId() == userId);
 		return detail;
 	}
@@ -95,7 +95,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	@CountView(BoardType.FREE_BOARD)
 	public FreeBoardResponse.Detail retrieveDetail(Long id) {
 
-		FreeBoardResponse.Detail detail = freeBoardDao.findById(id).orElseThrow(() -> new BusinessLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR, "게시글을 찾을 수 없습니다."));
+		FreeBoardResponse.Detail detail = freeBoardDao.findByIdToDto(id).orElseThrow(() -> new BusinessLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR, "게시글을 찾을 수 없습니다."));
 		if(!SecurityUtils.isAnonymous()){
 			Account currentUser = SecurityUtils.getCurrentUser();
 			detail.setAuthor(detail.getUserId() == currentUser.getUserId());

@@ -1,6 +1,8 @@
 package com.pplip.domain.board.notice.usecase.impl;
 
 import com.pplip.domain.auth.persistence.entity.Account;
+import com.pplip.domain.board.aop.annotation.CountView;
+import com.pplip.domain.board.aop.enums.BoardType;
 import com.pplip.domain.board.notice.api.request.NoticeRequest;
 import com.pplip.domain.board.notice.api.response.NoticeResponse;
 import com.pplip.domain.board.notice.persistence.dao.NoticeDao;
