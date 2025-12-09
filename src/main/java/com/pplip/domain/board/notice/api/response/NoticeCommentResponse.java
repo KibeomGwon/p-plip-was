@@ -19,6 +19,9 @@ public class NoticeCommentResponse {
         private String authorName;
         private FileResponse profileImage;
         private String content;
+
+        @JsonIgnore
+        private long authorId;
         private boolean isAuthor;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
@@ -35,7 +38,7 @@ public class NoticeCommentResponse {
         private String content;
 
         @JsonIgnore
-        private long userId;
+        private long authorId;
         private boolean isAuthor;
 
         private LocalDateTime createdAt;
@@ -52,7 +55,7 @@ public class NoticeCommentResponse {
         private String content;
 
         @JsonIgnore
-        private long userId;
+        private long authorId;
         private boolean isAuthor;
 
         private LocalDateTime createdAt;

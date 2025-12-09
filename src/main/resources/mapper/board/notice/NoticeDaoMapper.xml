@@ -55,7 +55,12 @@
     <select id="findByIdToEntity" resultType="com.pplip.domain.board.notice.persistence.entity.NoticeBoard">
         SELECT *
         FROM notice_board
-        where id = #{id};
+        where id = #{id} and is_removed=false;
+    </select>
+
+    <select id="noticeBoardAllCount" resultType="int">
+        select count(*)
+        from notice_board;
     </select>
 
     <resultMap id="detailMap" type="com.pplip.domain.board.notice.api.response.NoticeResponse$Detail" autoMapping="true">

@@ -64,7 +64,7 @@ public class NoticeResponse {
         private int viewCnt;
 
         @JsonIgnore
-        private Long userId;
+        private Long authorId;
         private boolean isAuthor;
 
         private List<FileResponse> noticeImages;

@@ -46,6 +46,7 @@ public class NoticeServiceImpl implements NoticeService {
     public Page<NoticeResponse.Summary> findAll(PageRequest pageRequest) {
         List<NoticeResponse.Summary> datas = dao.findAll(pageRequest);
         int count = dao.noticeBoardAllCount();
+
         if (!SecurityUtils.isAnonymous()) {
             Long authorId = SecurityUtils.getCurrentUser().getUserId();
             datas = datas.stream().map(data -> {
@@ -109,13 +110,19 @@ public class NoticeServiceImpl implements NoticeService {
         dao.update(entity);
 
         List<Long> removeImgIds = update.getImages().stream().filter(img -> img.getStatus().equals(FileStatus.REMOVE)).map(FileRequest::getId).toList();
-        List<NoticeBoardImageProperty> removeImgs = imagePropertyDao.findAllByIds(removeImgIds);
 
-        fileService.deleteSavedFiles(removeImgIds, ImageType.NOTICE);
-        fileService.deleteOriginFiles(removeImgs.stream().map(FileProperty::getPath).toList());
+        if (!removeImgIds.isEmpty()) {
+            List<NoticeBoardImageProperty> removeImgs = imagePropertyDao.findAllByIds(removeImgIds);
+
+            fileService.deleteSavedFiles(removeImgIds, ImageType.NOTICE);
+            fileService.deleteOriginFiles(removeImgs.stream().map(FileProperty::getPath).toList());
+        }
+
 
         List<Long> updateImgIds = update.getImages().stream().filter(img -> img.getStatus().equals(FileStatus.NEW)).map(FileRequest::getId).toList();
-        imagePropertyDao.bulkUpdate(updateImgIds, id);
+        if (!updateImgIds.isEmpty()) {
+            imagePropertyDao.bulkUpdate(updateImgIds, id);
+        }
 
         NoticeResponse.Detail detail = dao.findById(id)
                 .orElseThrow(() -> new BoardLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR));

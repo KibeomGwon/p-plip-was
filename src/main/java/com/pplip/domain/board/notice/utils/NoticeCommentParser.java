@@ -14,6 +14,7 @@ public class NoticeCommentParser {
                 .createdAt(detail.getCreatedAt())
                 .updatedAt(detail.getUpdatedAt())
                 .content(detail.getContent())
+                .isAuthor(detail.isAuthor())
                 .build();
     }
 }

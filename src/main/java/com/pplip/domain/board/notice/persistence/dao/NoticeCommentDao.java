@@ -20,6 +20,8 @@ public interface NoticeCommentDao {
 
     Optional<NoticeCommentResponse.Detail> findById(Long id);
 
+    Optional<NoticeComment> findByIdToEntity(Long id);
+
     int noticeBoardCommentAllCount(Long id);
 
     int insert(NoticeComment comment);

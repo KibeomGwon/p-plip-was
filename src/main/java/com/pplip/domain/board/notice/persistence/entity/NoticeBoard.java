@@ -10,15 +10,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString
 public class NoticeBoard {
     private Long id;
     private Long authorId;
 
     private String title;
     private String content;
-    private Integer viewCnt;
-    private Boolean isRemoved;
+    private int viewCnt;
+    private boolean isRemoved;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

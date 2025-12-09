@@ -65,7 +65,7 @@ public class NoticeController implements NoticeDocsController {
     @PutMapping("/{id}")
     public CommonResponse<NoticeResponse.Update> updateNoticeBoard(NoticeRequest.Update update,
                                                                    @PathVariable Long id,
-                                                                   UserDetails userDetails) {
+                                                                   @AuthenticationPrincipal UserDetails userDetails) {
         return CommonResponse.success(SuccessCode.UPDATED, noticeService.update(update, id, userDetails));
     }
 
@@ -77,7 +77,7 @@ public class NoticeController implements NoticeDocsController {
      */
     @DeleteMapping("/{id}")
     public CommonResponse<Void> removeNoticeBoard(@PathVariable Long id,
-                                                  UserDetails userDetails) {
+                                                  @AuthenticationPrincipal UserDetails userDetails) {
         noticeService.remove(id, userDetails);
 
         return CommonResponse.success(SuccessCode.REMOVED, null);
