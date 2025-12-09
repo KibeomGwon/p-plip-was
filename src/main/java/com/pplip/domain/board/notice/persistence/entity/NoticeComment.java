@@ -15,7 +15,7 @@ public class NoticeComment {
     private Long authorId;
 
     private String content;
-    private boolean isRemoved;
+    private Boolean isRemoved;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

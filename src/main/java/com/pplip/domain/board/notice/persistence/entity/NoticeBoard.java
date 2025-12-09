@@ -1,5 +1,6 @@
 package com.pplip.domain.board.notice.persistence.entity;
 
+import com.pplip.domain.board.notice.api.request.NoticeRequest;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -15,8 +16,8 @@ public class NoticeBoard {
 
     private String title;
     private String content;
-    private int viewCnt;
-    private boolean isRemoved;
+    private Integer viewCnt;
+    private Boolean isRemoved;
 
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
