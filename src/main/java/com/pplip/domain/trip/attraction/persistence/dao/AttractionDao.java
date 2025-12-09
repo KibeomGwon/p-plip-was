@@ -1,6 +1,8 @@
 package com.pplip.domain.trip.attraction.persistence.dao;
 
+import com.pplip.domain.trip.attraction.api.request.AttractionRequest;
 import com.pplip.domain.trip.attraction.api.response.AttractionResponse;
+import com.pplip.domain.trip.attraction.persistence.entity.Attraction;
 import com.pplip.global.page.PageRequest;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -30,9 +32,13 @@ public interface AttractionDao {
      * ORDER BY distance_in_meters;
      */
 
-    List<AttractionResponse.Summary> findAll(PageRequest pageRequest);
+    List<AttractionResponse.Summary> findAllBySearch(AttractionRequest.Search search);
 
     Optional<AttractionResponse.Details> findByNo(Long no);
 
-    int insert(com.pplip.domain.trip.attraction.persistence.entity.Attraction attraction);
+    List<AttractionResponse.Summary> findAllByNos(List<Long> nos);
+
+    int insert(Attraction attraction);
+
+    int countAllBySearch(AttractionRequest.Search search);
 }
