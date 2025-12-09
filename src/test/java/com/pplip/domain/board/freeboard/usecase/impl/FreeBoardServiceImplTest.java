@@ -108,7 +108,7 @@ class FreeBoardServiceImplTest {
 
             // when & then
             BusinessLogicException exception = assertThrows(BusinessLogicException.class, () -> freeBoardService.remove(freeBoard.getId(), otherAccount));
-            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.INVALIDATED_USER_ERROR);
+            assertThat(exception.getErrorCode()).isEqualTo(ErrorCode.FORBIDDEN);
         }
     }
 
