@@ -6,6 +6,9 @@ import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+/**
+ * 리뷰 데이터에 접근하는 DAO 인터페이스
+ */
 @Mapper
 public interface ReviewDao {
     int insert(Review review);

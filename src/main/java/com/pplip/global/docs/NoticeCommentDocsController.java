@@ -10,6 +10,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.security.core.userdetails.UserDetails;
 
+/**
+ * 공지게시판 댓글 관련 API 명세를 정의하는 인터페이스
+ */
 @Tag(name = "공지게시판 댓글 API", description = "공지게시판 댓글 API")
 public interface NoticeCommentDocsController {
 

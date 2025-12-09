@@ -8,6 +8,9 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * 공지사항 데이터에 접근하는 DAO 인터페이스
+ */
 @Mapper
 public interface NoticeDao {
     List<NoticeResponse.Summary> findAll(PageRequest pageRequest);
@@ -21,4 +24,6 @@ public interface NoticeDao {
     int delete(Long id);
 
     int update(NoticeBoard noticeBoard);
+
+	void updateViewCount(Long id);
 }

@@ -46,7 +46,6 @@ public class EmailServiceImpl implements EmailService {
 		String validationToken = UUID.randomUUID().toString();
 		validator.putValidVerificationTokenInfo(validationToken, emailCheck.getEmail());
 		validator.deleteValidationTokenInfo(validationToken);
-
 		return UserResponse.EmailCheck.builder().isSuccess(true).verificationToken(validationToken).build();
 	}
 

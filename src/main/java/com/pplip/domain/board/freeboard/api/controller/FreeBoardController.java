@@ -2,6 +2,7 @@ package com.pplip.domain.board.freeboard.api.controller;
 
 import com.pplip.domain.board.freeboard.api.request.FreeBoardRequest;
 import com.pplip.domain.board.freeboard.api.response.FreeBoardResponse;
+import com.pplip.domain.board.freeboard.usecase.FreeBoardService;
 import com.pplip.global.api.code.SuccessCode;
 import com.pplip.global.api.response.CommonResponse;
 import com.pplip.global.docs.FreeBoardDocsController;
@@ -20,6 +21,8 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class FreeBoardController implements FreeBoardDocsController {
 
+    private final FreeBoardService freeBoardService;
+
     /**
      * 자유게시판 목록을 조회합니다.
      *
@@ -29,7 +32,7 @@ public class FreeBoardController implements FreeBoardDocsController {
     @Override
     @GetMapping
     public CommonResponse<Page<FreeBoardResponse.BoardList>> retrieveFreeBoard(@ModelAttribute PageRequest pageRequest) {
-        return CommonResponse.success(SuccessCode.SUCCESS, null);
+        return CommonResponse.success(SuccessCode.SUCCESS, freeBoardService.retrieve(pageRequest));
     }
 
     /**
@@ -41,7 +44,7 @@ public class FreeBoardController implements FreeBoardDocsController {
     @Override
     @GetMapping("/{id}")
     public CommonResponse<FreeBoardResponse.Detail> detailFreeBoardDetail(@PathVariable Long id) {
-        return CommonResponse.success(SuccessCode.SUCCESS, null);
+        return CommonResponse.success(SuccessCode.SUCCESS, freeBoardService.retrieveDetail(id));
     }
 
     /**
@@ -58,7 +61,7 @@ public class FreeBoardController implements FreeBoardDocsController {
             FreeBoardRequest.BoardPost request,
             @AuthenticationPrincipal
             UserDetails principal) {
-        return CommonResponse.success(SuccessCode.SUCCESS, null);
+        return CommonResponse.success(SuccessCode.SUCCESS, freeBoardService.post(request, principal));
     }
 
     /**
@@ -71,14 +74,14 @@ public class FreeBoardController implements FreeBoardDocsController {
      */
     @Override
     @PutMapping("/{id}")
-    public CommonResponse<FreeBoardResponse.Update> updateFreeBoardUpdate(
+    public CommonResponse<FreeBoardResponse.Detail> updateFreeBoardUpdate(
             @RequestBody
             FreeBoardRequest.BoardUpdate update,
             @PathVariable
             Long id,
             @AuthenticationPrincipal
             UserDetails principal) {
-        return CommonResponse.success(SuccessCode.SUCCESS, null);
+        return CommonResponse.success(SuccessCode.SUCCESS, freeBoardService.modifyFreeBoard(update,id, principal));
     }
 
     /**
@@ -95,6 +98,6 @@ public class FreeBoardController implements FreeBoardDocsController {
             Long id,
             @AuthenticationPrincipal
             UserDetails principal) {
-        return CommonResponse.success(SuccessCode.SUCCESS, null);
+        return CommonResponse.success(SuccessCode.SUCCESS, freeBoardService.remove(id, principal));
     }
 }

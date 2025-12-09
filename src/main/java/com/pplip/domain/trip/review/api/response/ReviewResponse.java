@@ -19,6 +19,8 @@ public class ReviewResponse {
         private Long authorId;
         private String username;
         private String content;
+        private boolean isAuthor;
+
         private FileResponse userProfileImage;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
@@ -33,6 +35,8 @@ public class ReviewResponse {
         private Long id;
         private String username;
         private String content;
+        private boolean isAuthor;
+
         private FileResponse userProfileImage;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;

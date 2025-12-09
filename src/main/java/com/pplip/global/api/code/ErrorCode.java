@@ -6,8 +6,9 @@ import lombok.Getter;
 
 @AllArgsConstructor
 public enum ErrorCode {
-    USER_NOT_FOUND_ERROR(DomainCode.USER, ExceptionCode.NOT_FOUND, "USER_NOT_FOUND_ERROR"),
+	  USER_NOT_FOUND_ERROR(DomainCode.USER, ExceptionCode.NOT_FOUND, "USER_NOT_FOUND_ERROR"),
     INVALIDATED_USER_ERROR(DomainCode.USER, ExceptionCode.INVALID, "USER_INVALIDATED"),
+  	FORBIDDEN(DomainCode.USER, ExceptionCode.FORBIDDEN, "USER_FORBIDDEN"),
     FILE_TYPE_NOT_SUPPORT(DomainCode.FILE, ExceptionCode.NOT_SUPPORT, "FILE_TYPE_NOT_SUPPORT"),
     FILE_PROCESS_FAILURE(DomainCode.FILE, ExceptionCode.FAILURE, "FILE_PROCESS_FAILURE"),
     FILE_NOT_FOUND(DomainCode.FILE, ExceptionCode.NOT_FOUND,"FILE_NOT_FOUND"),

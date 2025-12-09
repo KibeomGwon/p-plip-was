@@ -11,6 +11,9 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.List;
 
+/**
+ * 할 일 관련 API 명세를 정의하는 인터페이스
+ */
 @Tag(name = "여행 TODO API", description = "여행 TODO API")
 public interface ToDoDocsController {
 

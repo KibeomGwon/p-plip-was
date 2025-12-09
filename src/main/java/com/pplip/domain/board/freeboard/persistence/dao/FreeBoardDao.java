@@ -8,17 +8,24 @@ import org.apache.ibatis.annotations.Mapper;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * 자유게시판 데이터에 접근하는 DAO 인터페이스
+ */
 @Mapper
 public interface FreeBoardDao {
     List<FreeBoardResponse.BoardList> findAll(PageRequest pageRequest);
 
-    int freeBoardAllCount();
+    int countAll();
 
     Optional<FreeBoardResponse.Detail> findById(Long id);
+
+    Optional<FreeBoard> findByIdToEntity(Long id);
 
     int insert(FreeBoard freeBoard);
 
     int update(FreeBoard freeBoard);
 
     int delete(Long id);
+
+    void updateViewCount(Long id);
 }

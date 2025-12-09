@@ -33,4 +33,9 @@ public class ProfileImagePropertyDao implements FilePropertyDao<ProfileImageProp
 	public boolean supports(ImageType imageType) {
 		return ImageType.PROFILE.equals(imageType);
 	}
+
+	@Override
+	public ImageType supports() {
+		return ImageType.PROFILE;
+	}
 }

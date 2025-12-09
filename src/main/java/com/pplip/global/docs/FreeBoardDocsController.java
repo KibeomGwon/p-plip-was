@@ -62,7 +62,7 @@ public interface FreeBoardDocsController {
      */
     @Operation(summary = "자유게시판 게시글 수정")
     @ApiResponse(responseCode = "202", description = "수정")
-    CommonResponse<FreeBoardResponse.Update> updateFreeBoardUpdate(FreeBoardRequest.BoardUpdate update, Long id, @AuthenticationPrincipal UserDetails principal);
+    CommonResponse<FreeBoardResponse.Detail> updateFreeBoardUpdate(FreeBoardRequest.BoardUpdate update, Long id, @AuthenticationPrincipal UserDetails principal);
 
 
     /**

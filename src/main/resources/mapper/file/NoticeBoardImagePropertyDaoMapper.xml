@@ -50,4 +50,12 @@
             #{imageId}
         </foreach>
     </update>
+
+    <delete id="deleteAllById">
+        DELETE FROM notice_board_image_property
+        WHERE id IN
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>
