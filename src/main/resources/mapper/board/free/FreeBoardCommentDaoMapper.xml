@@ -21,7 +21,7 @@
         </association>
     </resultMap>
 
-    <resultMap id="createMap" type="com.pplip.domain.board.freeboard.api.response.FreeBoardCommentResponse.Detail" autoMapping="true">
+    <resultMap id="createMap" type="com.pplip.domain.board.freeboard.api.response.FreeBoardCommentResponse$Detail" autoMapping="true">
         <id property="id" column="id"/>
         <association property="profileImage" javaType="com.pplip.domain.file.api.response.FileResponse">
             <id property="id" column="file_id"/>
@@ -51,9 +51,10 @@
 
         WHERE fc.board_id = #{boardId}
           AND fc.is_removed = false
+
+        ORDER BY fc.created_at DESC
         limit #{page.pageSize}
         offset #{page.pageNum}
-        ORDER BY fc.created_at DESC
     </select>
 
     <select id="countAllByBoardId">
