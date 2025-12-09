@@ -63,8 +63,10 @@ public class NoticeController implements NoticeDocsController {
      * @return 수정된 공지게시글 상세 정보.
      */
     @PutMapping("/{id}")
-    public CommonResponse<NoticeResponse.Update> updateNoticeBoard(NoticeRequest.Update update, @PathVariable Long id) {
-        return CommonResponse.success(SuccessCode.UPDATED, noticeService.update(update, id));
+    public CommonResponse<NoticeResponse.Update> updateNoticeBoard(NoticeRequest.Update update,
+                                                                   @PathVariable Long id,
+                                                                   @AuthenticationPrincipal UserDetails userDetails) {
+        return CommonResponse.success(SuccessCode.UPDATED, noticeService.update(update, id, userDetails));
     }
 
     /**
@@ -74,8 +76,9 @@ public class NoticeController implements NoticeDocsController {
      * @return 203 ( 삭제 ).
      */
     @DeleteMapping("/{id}")
-    public CommonResponse<Void> removeNoticeBoard(@PathVariable Long id) {
-        noticeService.remove(id);
+    public CommonResponse<Void> removeNoticeBoard(@PathVariable Long id,
+                                                  @AuthenticationPrincipal UserDetails userDetails) {
+        noticeService.remove(id, userDetails);
 
         return CommonResponse.success(SuccessCode.REMOVED, null);
     }

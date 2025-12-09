@@ -75,8 +75,9 @@ public class NoticeCommentController implements NoticeCommentDocsController {
      */
     @Override
     @DeleteMapping("/comment/{id}")
-    public CommonResponse<?> deleteNoticeBoardComment(@PathVariable Long id) {
-        service.delete(id);
+    public CommonResponse<?> deleteNoticeBoardComment(@PathVariable Long id,
+                                                      @AuthenticationPrincipal UserDetails userDetails) {
+        service.delete(id, userDetails);
 
         return CommonResponse.success(SuccessCode.REMOVED, null);
     }
