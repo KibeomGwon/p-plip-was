@@ -30,6 +30,9 @@ public enum ErrorCode {
     ATTRACTION_NOT_FOUND(DomainCode.ATTRACTION, ExceptionCode.NOT_FOUND, "장소를 찾지 못하였습니다."),
     FAIL_TO_CREATE_SEARCH_HISTORY(DomainCode.ATTRACTION, ExceptionCode.FAILURE, "검색 기록 작성에 실패했습니다."),
     FAIL_TO_DELETE_SEARCH_HISTORY(DomainCode.ATTRACTION, ExceptionCode.FAILURE, "검색 기록 삭제에 실패했습니다."),
+    REVIEW_CREATE_FAILURE(DomainCode.ATTRACTION, ExceptionCode.FAILURE, "리뷰 작성에 실패했습니다."),
+    REVIEW_NOT_FOUND(DomainCode.ATTRACTION, ExceptionCode.NOT_FOUND, "리뷰 조회에 실패했습니다."),
+    REVIEW_FAIL_DELETE(DomainCode.ATTRACTION, ExceptionCode.FAILURE, "리뷰 삭제에 실패했습니다."),
     INVALID_INPUT(DomainCode.USER, ExceptionCode.INVALID, "입력값이 유효하지 않습니다.");
 
 

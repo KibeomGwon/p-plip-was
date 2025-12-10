@@ -59,4 +59,8 @@ public class ReviewImagePropertyDao implements BatchSupportFilePropertyDao<Revie
 	public ImageType supports() {
 		return ImageType.REVIEW;
 	}
+
+	public List<ReviewImageProperty> findAllByReviewId(Long reviewId) {
+		return mapper.findAllByReviewId(reviewId);
+	}
 }
