@@ -33,7 +33,9 @@ public enum ErrorCode {
     REVIEW_CREATE_FAILURE(DomainCode.ATTRACTION, ExceptionCode.FAILURE, "리뷰 작성에 실패했습니다."),
     REVIEW_NOT_FOUND(DomainCode.ATTRACTION, ExceptionCode.NOT_FOUND, "리뷰 조회에 실패했습니다."),
     REVIEW_FAIL_DELETE(DomainCode.ATTRACTION, ExceptionCode.FAILURE, "리뷰 삭제에 실패했습니다."),
-    INVALID_INPUT(DomainCode.USER, ExceptionCode.INVALID, "입력값이 유효하지 않습니다.");
+    INVALID_INPUT(DomainCode.USER, ExceptionCode.INVALID, "입력값이 유효하지 않습니다."),
+    PLAN_NOT_FOUND(DomainCode.PLAN, ExceptionCode.NOT_FOUND,"계획 정보를 찾지 못했습니다."),
+    PLAN_PROCESS_FAIL(DomainCode.PLAN,  ExceptionCode.FAILURE,"계획 작업 중 오류가 발생하였습니다.");
 
 
     private DomainCode domainCode;

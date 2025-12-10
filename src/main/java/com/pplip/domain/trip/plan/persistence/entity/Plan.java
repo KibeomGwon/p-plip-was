@@ -19,4 +19,5 @@ public class Plan {
     private LocalDate endDate;
 
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }

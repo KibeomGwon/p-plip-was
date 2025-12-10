@@ -25,12 +25,9 @@ public class PlanRequest {
     @AllArgsConstructor
     @Builder
     public static class Update {
-        private Long id;
         private String title;
 
         private LocalDate startDate;
         private LocalDate endDate;
-
-        private LocalDateTime createdAt;
     }
 }
