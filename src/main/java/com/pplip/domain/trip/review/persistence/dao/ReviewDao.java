@@ -5,6 +5,7 @@ import com.pplip.domain.trip.review.persistence.entity.Review;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * 리뷰 데이터에 접근하는 DAO 인터페이스
@@ -14,6 +15,12 @@ public interface ReviewDao {
     int insert(Review review);
 
     List<ReviewResponse.Detail> findAllByAttractionNo(Long attractionNo);
+
+    Optional<ReviewResponse.Detail> findById(Long id);
+
+    Optional<Review> findByIdToEntity(Long id);
+
+    int countAllByAttractionNo(Long attractionNo);
 
     int update(Review review);
 

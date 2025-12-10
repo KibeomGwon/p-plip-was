@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class LoginUserDetailsServiceImpl implements UserDetailsService {
 
-    // TODO : AccountRepository 구현
     private final AccountDao repository;
     private final PasswordEncoder passwordEncoder;
 

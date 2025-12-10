@@ -35,10 +35,7 @@ public class NoticeCommentServiceImpl implements NoticeCommentService {
 
         if (!SecurityUtils.isAnonymous()) {
             Long userId = SecurityUtils.getCurrentUser().getUserId();
-            datas = datas.stream().map(data -> {
-                data.setAuthor(data.getAuthorId() == userId);
-                return data;
-            }).toList();
+            datas.forEach(data -> data.setAuthor(data.getAuthorId() == userId));
         }
 
         return new Page<>(dao.findAll(boardId, pageRequest),

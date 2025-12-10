@@ -49,4 +49,15 @@ public interface AttractionDocsController {
     @Operation(summary = "AI 기반 관광지 추천")
     @ApiResponse(responseCode = "200", description = "성공")
     CommonResponse<Page<AttractionResponse.Summary>> suggestAttractions(@RequestBody AttractionRequest.Suggest suggest, UserDetails userDetails);
+
+
+    /**
+     * 사용자의 여행 계획을 기반으로 AI를 사용하여 관광지를 추천합니다.
+     *
+     * @param no 관광지 번호
+     * @return 추천된 관광지 목록
+     */
+    @Operation(summary = "관광지 상세검색")
+    @ApiResponse(responseCode = "200", description = "성공")
+    CommonResponse<AttractionResponse.Details> getAttractionDetail(Long no);
 }

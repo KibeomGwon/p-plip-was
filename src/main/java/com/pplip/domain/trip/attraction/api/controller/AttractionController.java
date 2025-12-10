@@ -64,4 +64,17 @@ public class AttractionController implements AttractionDocsController {
                                                                                @AuthenticationPrincipal UserDetails userDetails){
         return CommonResponse.success(SuccessCode.SUCCESS,null);
     }
+
+
+    /**
+     * 사용자의 여행 계획을 기반으로 AI를 사용하여 관광지를 추천합니다.
+     *
+     * @param no 관광지 번호
+     * @return 추천된 관광지 목록
+     */
+    @Override
+    @GetMapping("/{no}")
+    public CommonResponse<AttractionResponse.Details> getAttractionDetail(Long no) {
+        return CommonResponse.success(SuccessCode.SUCCESS, attractionService.findByNo(no));
+    }
 }
