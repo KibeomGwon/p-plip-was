@@ -56,6 +56,7 @@ public class AttractionServiceImpl implements AttractionService {
 
         resData.setTagNames(tagDao.findAllByAttractionNo(no).stream().map(tag -> tag.getName()).toList());
         resData.setContentType(ContentType.getContentType(resData.getContentTypeId().intValue()));
+
         return resData;
     }
 }
