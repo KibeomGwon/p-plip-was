@@ -75,7 +75,7 @@ public class ReviewServiceImpl implements ReviewService {
         }
 
         ReviewResponse.Detail resData = reviewDao.findById(entity.getId())
-                .orElseThrow(() -> new BoardLogicException(ErrorCode.REVIEW_NOT_FOUND, "리뷰 조회에 실패했습니다."));
+                .orElseThrow(() -> new BusinessLogicException(ErrorCode.REVIEW_NOT_FOUND, "리뷰 조회에 실패했습니다."));
 
         resData.getReviewImages().forEach(img -> img.setImageType(ImageType.REVIEW));
         resData.getUserProfileImage().setImageType(ImageType.PROFILE);
@@ -87,7 +87,7 @@ public class ReviewServiceImpl implements ReviewService {
     @Override
     public ReviewResponse.Update update(ReviewRequest.Update update, Long id, UserDetails userDetails) {
         Review entity = reviewDao.findByIdToEntity(id)
-                .orElseThrow(() -> new BoardLogicException(ErrorCode.REVIEW_NOT_FOUND, "리뷰 조회에 실패했습니다."));
+                .orElseThrow(() -> new BusinessLogicException(ErrorCode.REVIEW_NOT_FOUND, "리뷰 조회에 실패했습니다."));
 
         Long userId = ((Account) userDetails).getUserId();
 

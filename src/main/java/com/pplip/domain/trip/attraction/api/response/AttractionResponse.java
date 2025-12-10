@@ -55,11 +55,11 @@ public class AttractionResponse {
         private String firstImage1;
         private String firstImage2;
         private String homepage;
+        private String address;
 
         private BigDecimal latitude;
         private BigDecimal longitude;
 
-        private int mapLevel;
     }
 
 
@@ -83,7 +83,6 @@ public class AttractionResponse {
         private BigDecimal latitude;
         private BigDecimal longitude;
 
-        private int mapLevel;
         private String overview;
         private String tel;
 

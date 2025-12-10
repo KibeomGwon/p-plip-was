@@ -20,6 +20,7 @@ public class AttractionRequest {
         // 관광지, 문화시설, 축제공연행사, 여행코스, 레포츠, 숙박, 쇼핑, 식당
         private ContentType contentType;
         // default = 1000m
+        @Builder.Default
         private Integer m = 1000;
     }
 
