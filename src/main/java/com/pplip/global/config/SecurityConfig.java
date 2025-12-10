@@ -34,8 +34,6 @@ public class SecurityConfig {
 	private final ObjectMapper om;
 	private final AuthenticationConfiguration authenticationConfiguration;
 
-
-
 	@Bean
 	public JwtAuthenticationFilter jwtAuthenticationFilter(JwtAuthenticationProvider provider) {
 		return new JwtAuthenticationFilter(provider);

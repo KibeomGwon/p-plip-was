@@ -62,4 +62,6 @@ public interface ReviewImagePropertyMapper{
     List<ReviewImageProperty> findAllByIds(List<Long> fileIds);
 
 	void deleteAllById(List<Long> ids);
+
+    List<ReviewImageProperty> findAllByReviewId(Long reviewId);
 }

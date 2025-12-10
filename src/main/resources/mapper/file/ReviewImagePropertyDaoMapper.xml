@@ -35,6 +35,12 @@
         where id = #{id};
     </delete>
 
+    <select id="findAllByReviewId" resultMap="reviewImagePropertyMap">
+        select *
+        from review_image_property
+        where review_id = #{reviewId};
+    </select>
+
     <update id="bulkUpdateReviewId">
         UPDATE review_image_property
         SET

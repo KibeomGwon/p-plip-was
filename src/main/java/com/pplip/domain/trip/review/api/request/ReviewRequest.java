@@ -1,5 +1,6 @@
 package com.pplip.domain.trip.review.api.request;
 
+import com.pplip.domain.file.api.request.FileRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,14 +24,6 @@ public class ReviewRequest {
     @Builder
     public static class Update {
         private String content;
-        private List<Long> fileIds;
-    }
-
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class Delete {
-        private List<Long> fileIds;
+        private List<FileRequest> files;
     }
 }
