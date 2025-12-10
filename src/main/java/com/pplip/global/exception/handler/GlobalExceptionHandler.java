@@ -1,10 +1,7 @@
 package com.pplip.global.exception.handler;
 
 import com.pplip.global.api.response.CommonResponse;
-import com.pplip.global.exception.CustomAuthenticationException;
-import com.pplip.global.exception.BoardLogicException;
-import com.pplip.global.exception.FileException;
-import com.pplip.global.exception.UnvalidEmailCodeException;
+import com.pplip.global.exception.*;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -29,4 +26,10 @@ public class GlobalExceptionHandler {
     public CommonResponse<Void> fileException(FileException e) {
         return CommonResponse.fail(e.getErrorCode(), e.getMessage());
     }
+
+    @ExceptionHandler(BusinessLogicException.class)
+    public CommonResponse<Void> businessLogException(BusinessLogicException e) {
+        return CommonResponse.fail(e.getErrorCode(), e.getMessage());
+    }
+
 }
