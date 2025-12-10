@@ -1,6 +1,7 @@
 package com.pplip.domain.trip.attraction.usecase.impl;
 
 import com.pplip.domain.auth.persistence.entity.Account;
+import com.pplip.domain.trip.attraction.api.request.AttractionRequest;
 import com.pplip.domain.trip.attraction.api.request.SearchHistoryRequest;
 import com.pplip.domain.trip.attraction.api.response.SearchHistoryResponse;
 import com.pplip.domain.trip.attraction.persistence.dao.SearchHistoryDao;
@@ -42,7 +43,7 @@ public class SearchHistoryServiceImpl implements SearchHistoryService {
     }
 
     @Override
-    public void post(SearchHistoryRequest.Post post, UserDetails userDetails) {
+    public void post(AttractionRequest.Search post, UserDetails userDetails) {
         Long userId = ((Account) userDetails).getUserId();
         SearchHistory entity = new SearchHistoryModel(post, userId).toEntity();
 

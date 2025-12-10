@@ -5,7 +5,7 @@ import com.pplip.domain.user.api.response.UserResponse;
 import com.pplip.domain.user.cache.EmailValidationInfo;
 import com.pplip.domain.user.cache.EmailValidator;
 import com.pplip.domain.user.persistence.service.EmailService;
-import com.pplip.domain.user.util.EmailSender;
+import com.pplip.domain.user.utils.EmailSender;
 import com.pplip.global.api.code.ErrorCode;
 import com.pplip.global.exception.UnvalidEmailCodeException;
 import jakarta.mail.MessagingException;

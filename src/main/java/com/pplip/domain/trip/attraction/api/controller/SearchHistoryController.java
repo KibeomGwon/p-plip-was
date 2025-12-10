@@ -33,14 +33,6 @@ public class SearchHistoryController implements SearchHistoryDocsController {
         return CommonResponse.success(SuccessCode.SUCCESS, historyService.findAll(pageRequest, userDetails));
     }
 
-    @PostMapping
-    @Override
-    public CommonResponse<?> postSearchHistory(@RequestBody SearchHistoryRequest.Post post,
-                                               @AuthenticationPrincipal UserDetails userDetails) {
-        historyService.post(post, userDetails);
-        return CommonResponse.success(SuccessCode.CREATED, null);
-    }
-
     @DeleteMapping("/{id}")
     @Override
     public CommonResponse<Long> removeSearchHistory(@PathVariable Long id,

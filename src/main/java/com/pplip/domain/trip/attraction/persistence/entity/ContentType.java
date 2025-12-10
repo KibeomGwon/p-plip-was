@@ -19,10 +19,6 @@ public enum ContentType {
         this.id = id;
     }
 
-    public int getId() {
-        return id;
-    }
-
     public static ContentType getContentType(int id) {
         for (ContentType type : ContentType.values()) {
             if (type.getId() == id) {

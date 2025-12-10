@@ -9,6 +9,7 @@ import com.pplip.global.docs.AttractionDocsController;
 import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +22,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/trip/attraction")
 @RequiredArgsConstructor
+@Slf4j
 public class AttractionController implements AttractionDocsController {
 
     private final AttractionService attractionService;
@@ -74,7 +76,7 @@ public class AttractionController implements AttractionDocsController {
      */
     @Override
     @GetMapping("/{no}")
-    public CommonResponse<AttractionResponse.Details> getAttractionDetail(Long no) {
+    public CommonResponse<AttractionResponse.Details> getAttractionDetail(@PathVariable Long no) {
         return CommonResponse.success(SuccessCode.SUCCESS, attractionService.findByNo(no));
     }
 }

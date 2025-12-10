@@ -4,7 +4,7 @@
     <select id="findByNo" resultType="com.pplip.domain.trip.attraction.api.response.AttractionResponse$Details">
         select *,
                (select count(*) from review r where r.attraction_id = #{no}) as reviewCnt
-        from attractions a
+        from attractions
         where no = #{no};
     </select>
 
@@ -12,27 +12,35 @@
         select *,
         ST_Distance_Sphere(
                     POINT(longitude, latitude),             -- 저장된 컬럼 (순서 주의: 경도, 위도)
-                    POINT(#{lng}, #{lat})      -- 기준 위치 (순서 주의: 경도, 위도)
+                    POINT(#{search.lng}, #{search.lat})      -- 기준 위치 (순서 주의: 경도, 위도)
                 ) AS distance_in_meters
         FROM attractions
         <where>
             ST_Distance_Sphere(
             POINT(longitude, latitude),
-            POINT(#{lng}, #{lat})
-            ) &lt;= #{m}
-
-            <if test="contentType != null">
-                AND content_type_id = #{contentType.id}
+            POINT(#{search.lng}, #{search.lat})
+            )
+            <if test=" search.m != null ">
+                &lt;= #{search.m}
             </if>
-            <if test="query != null">
+
+            <if test="search.contentTypes != null">
+                AND content_type_id in
+                <foreach collection="search.contentTypes" item="contentType" open="(" close=")" separator=",">
+                    #{contentType.id}
+                </foreach>
+            </if>
+            <if test="search.query != null">
                 AND (
-                title LIKE CONCAT('%', #{query}, '%')
+                title LIKE CONCAT('%', #{search.query}, '%')
                 OR
-                overview LIKE CONCAT('%', #{query}, '%')
+                overview LIKE CONCAT('%', #{search.query}, '%')
                 )
             </if>
         </where>
-        ORDER BY distance_in_meters;
+        ORDER BY distance_in_meters
+        LIMIT #{pageRequest.pageSize}
+        OFFSET #{pageRequest.offset};
     </select>
 
 
@@ -43,10 +51,16 @@
             ST_Distance_Sphere(
             POINT(longitude, latitude),
             POINT(#{lng}, #{lat})
-            ) &lt;= #{m}
+            )
+            <if test=" m != null" >
+                &lt;= #{m}
+            </if>
 
-            <if test="contentType != null">
-                AND content_type_id = #{contentType.id}
+            <if test="contentTypes != null">
+                AND content_type_id in
+                <foreach collection="contentTypes" item="contentType" open="(" close=")" separator=",">
+                    #{contentType.id}
+                </foreach>
             </if>
             <if test="query != null">
                 AND (
