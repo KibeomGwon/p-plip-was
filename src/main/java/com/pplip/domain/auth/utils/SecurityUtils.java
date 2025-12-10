@@ -1,6 +1,8 @@
 package com.pplip.domain.auth.utils;
 
 import com.pplip.domain.auth.persistence.entity.Account;
+import com.pplip.global.api.code.ErrorCode;
+import com.pplip.global.exception.BusinessLogicException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -17,8 +19,8 @@ public class SecurityUtils {
 
 	public static Account getCurrentUser() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (isAnonymous()) {
-			return null;
+		if (authentication == null || authentication.getPrincipal() instanceof String) {
+			throw new BusinessLogicException(ErrorCode.INVALIDATED_USER_ERROR, "인증된 사용자만 이용할 수 있습니다.");
 		}
 		return (Account) authentication.getPrincipal();
 	}

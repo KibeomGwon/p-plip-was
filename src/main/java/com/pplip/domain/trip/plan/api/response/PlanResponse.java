@@ -1,5 +1,6 @@
 package com.pplip.domain.trip.plan.api.response;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,7 +31,8 @@ public class PlanResponse {
     public static class Detail {
         private Long id;
         private String title;
-
+        @JsonIgnore
+        private Long userId;
         private LocalDate startDate;
         private LocalDate endDate;
 
@@ -48,6 +50,14 @@ public class PlanResponse {
         private LocalDate startDate;
         private LocalDate endDate;
 
-        private LocalDateTime createdAt;
+        private LocalDateTime updatedAt;
+    }
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Remove{
+        private Long id;
+        private String title;
     }
 }

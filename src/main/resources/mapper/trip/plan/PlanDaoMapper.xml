@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pplip.domain.trip.plan.persistence.dao.PlanDao">
-
+    <resultMap id="planMap" type="com.pplip.domain.trip.plan.persistence.entity.Plan" autoMapping="true">
+        <id property="id" column="id"/>
+    </resultMap>
     <select id="findAll" resultType="com.pplip.domain.trip.plan.api.response.PlanResponse$Summary">
         select
             id,
@@ -10,16 +12,26 @@
             end_date as endDate,
             created_at as createdAt
         from plan
-        where user_id = #{userId};
+        where user_id = #{userId}
+        order by start_date
+        limit #{page.pageSize}
+        offset #{page.pageNum};
     </select>
 
-    <select id="findById" resultType="com.pplip.domain.trip.plan.api.response.PlanResponse$Detail">
+    <select id="findByIdToDto" resultType="com.pplip.domain.trip.plan.api.response.PlanResponse$Detail">
         select
             id,
             title,
+            user_id,
             start_date as startDate,
             end_date as endDate,
             created_at as createdAt
+        from plan
+        where id = #{id};
+    </select>
+
+    <select id="findById" resultMap="planMap">
+        select *
         from plan
         where id = #{id};
     </select>
@@ -41,6 +53,7 @@
             <if test="endDate != null">
                 end_date = #{endDate},
             </if>
+            updated_at = #{updatedAt}
         </set>
         where id = #{id};
     </update>

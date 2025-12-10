@@ -25,6 +25,6 @@ public class JwtUtil {
     }
 
     public Account resolveRefreshToken(String refreshToken){
-        return resolver.parse(refreshToken);
+        return resolver.parse(refreshToken, JwtProperties.REFRESH_TOKEN_TYPE);
     }
 }

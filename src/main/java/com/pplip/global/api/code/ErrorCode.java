@@ -30,7 +30,9 @@ public enum ErrorCode {
     ATTRACTION_NOT_FOUND(DomainCode.ATTRACTION, ExceptionCode.NOT_FOUND, "장소를 찾지 못하였습니다."),
     FAIL_TO_CREATE_SEARCH_HISTORY(DomainCode.ATTRACTION, ExceptionCode.FAILURE, "검색 기록 작성에 실패했습니다."),
     FAIL_TO_DELETE_SEARCH_HISTORY(DomainCode.ATTRACTION, ExceptionCode.FAILURE, "검색 기록 삭제에 실패했습니다."),
-    INVALID_INPUT(DomainCode.USER, ExceptionCode.INVALID, "입력값이 유효하지 않습니다.");
+    INVALID_INPUT(DomainCode.USER, ExceptionCode.INVALID, "입력값이 유효하지 않습니다."),
+    PLAN_NOT_FOUND(DomainCode.PLAN, ExceptionCode.NOT_FOUND,"계획 정보를 찾지 못했습니다." ),
+    PLAN_PROCESS_FAIL(DomainCode.PLAN,  ExceptionCode.FAILURE,"계획 작업 중 오류가 발생하였습니다.");
 
 
     private DomainCode domainCode;
