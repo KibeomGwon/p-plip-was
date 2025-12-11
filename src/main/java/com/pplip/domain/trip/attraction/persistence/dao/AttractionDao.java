@@ -32,7 +32,7 @@ public interface AttractionDao {
      * ORDER BY distance_in_meters;
      */
 
-    List<AttractionResponse.Summary> findAllBySearch(AttractionRequest.Search search);
+    List<AttractionResponse.Summary> findAllBySearch(AttractionRequest.Search search, PageRequest pageRequest);
 
     Optional<AttractionResponse.Details> findByNo(Long no);
 

@@ -14,6 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -32,7 +33,7 @@ class AttractionServiceImplTest {
                 .lat(new BigDecimal(37.5663))
                 .lng(new BigDecimal(126.9779))
                 .m(2000)
-                .contentType(ContentType.ATTRACTION)
+                .contentTypes(List.of(ContentType.ATTRACTION))
                 .query("유심")
                 .build();
 

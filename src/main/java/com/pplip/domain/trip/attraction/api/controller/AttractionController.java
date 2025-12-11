@@ -10,6 +10,7 @@ import com.pplip.global.docs.AttractionDocsController;
 import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -22,6 +23,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/trip/attraction")
 @RequiredArgsConstructor
+@Slf4j
 public class AttractionController implements AttractionDocsController {
 
 	private final AttractionService attractionService;
@@ -67,15 +69,15 @@ public class AttractionController implements AttractionDocsController {
 	}
 
 
-	/**
-	 * 사용자의 여행 계획을 기반으로 AI를 사용하여 관광지를 추천합니다.
-	 *
-	 * @param no 관광지 번호
-	 * @return 추천된 관광지 목록
-	 */
-	@Override
-	@GetMapping("/{no}")
-	public CommonResponse<AttractionResponse.Details> getAttractionDetail(Long no) {
-		return CommonResponse.success(SuccessCode.SUCCESS, attractionService.findByNo(no));
-	}
+    /**
+     * 사용자의 여행 계획을 기반으로 AI를 사용하여 관광지를 추천합니다.
+     *
+     * @param no 관광지 번호
+     * @return 추천된 관광지 목록
+     */
+    @Override
+    @GetMapping("/{no}")
+    public CommonResponse<AttractionResponse.Details> getAttractionDetail(@PathVariable Long no) {
+        return CommonResponse.success(SuccessCode.SUCCESS, attractionService.findByNo(no));
+    }
 }

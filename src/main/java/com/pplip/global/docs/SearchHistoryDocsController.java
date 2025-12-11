@@ -32,20 +32,6 @@ public interface SearchHistoryDocsController {
     @GetMapping
     CommonResponse<Page<SearchHistoryResponse.History>> getSearchHistory(@RequestParam PageRequest pageRequest,
                                                                          @AuthenticationPrincipal UserDetails userDetails);
-
-    /**
-     * 검색 기록을 추가합니다.
-     *
-     * @param post 추가할 검색 기록 정보
-     * @param userDetails 현재 로그인한 사용자 정보
-     * @return 성공 응답
-     */
-    @Operation(summary = "검색 기록 추가")
-    @ApiResponse(responseCode = "201", description = "성공")
-    @PostMapping
-    CommonResponse<?> postSearchHistory(@RequestBody SearchHistoryRequest.Post post,
-                                        @AuthenticationPrincipal UserDetails userDetails);
-
     /**
      * 검색 기록을 삭제합니다.
      *

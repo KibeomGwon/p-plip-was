@@ -55,12 +55,13 @@ public class AttractionResponse {
         private String firstImage1;
         private String firstImage2;
         private String homepage;
-        private String address;
+
+        private String addr1;
+        private String addr2;
 
         private BigDecimal latitude;
         private BigDecimal longitude;
-
-    }
+	}
 
 
     @Data
@@ -83,6 +84,10 @@ public class AttractionResponse {
         private BigDecimal latitude;
         private BigDecimal longitude;
 
+        private String addr1;
+        private String addr2;
+
+        private int mapLevel;
         private String overview;
         private String tel;
 

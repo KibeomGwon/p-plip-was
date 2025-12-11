@@ -37,7 +37,4 @@ public enum ContentType {
 		return Stream.of(ContentType.values()).filter(v -> v.description.equals(desc)).findFirst().get();
 	}
 
-	public int getId() {
-		return id;
-	}
 }
