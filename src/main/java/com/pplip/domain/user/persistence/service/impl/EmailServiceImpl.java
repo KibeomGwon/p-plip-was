@@ -37,15 +37,19 @@ public class EmailServiceImpl implements EmailService {
 		if (!validator.valid(emailCheck.getEmail())) {
 			throw new UnvalidEmailCodeException(ErrorCode.EXPIRED_EMAIL_VALID_CODE);
 		}
+
 		log.info("validated in time");
+
 		if (!validator.isMatching(emailCheck.getEmail(), emailCheck.getCode())) {
 			throw new UnvalidEmailCodeException(ErrorCode.INVALID_EMAIL_VALID_CODE);
 		}
+
 		log.info("validated in matching code");
 		validator.deleteInfo(emailCheck.getEmail());
 		String validationToken = UUID.randomUUID().toString();
 		validator.putValidVerificationTokenInfo(validationToken, emailCheck.getEmail());
 		validator.deleteValidationTokenInfo(validationToken);
+
 		return UserResponse.EmailCheck.builder().isSuccess(true).verificationToken(validationToken).build();
 	}
 
