@@ -1,5 +1,6 @@
 package com.pplip.global.docs;
 
+import com.pplip.domain.trip.ai.dto.response.AiResponse;
 import com.pplip.domain.trip.attraction.api.request.AttractionRequest;
 import com.pplip.domain.trip.attraction.api.response.AttractionResponse;
 import com.pplip.global.api.response.CommonResponse;
@@ -48,7 +49,7 @@ public interface AttractionDocsController {
      */
     @Operation(summary = "AI 기반 관광지 추천")
     @ApiResponse(responseCode = "200", description = "성공")
-    CommonResponse<Page<AttractionResponse.Summary>> suggestAttractions(@RequestBody AttractionRequest.Suggest suggest, UserDetails userDetails);
+    CommonResponse<List<AiResponse.SuggestAttraction>> suggestAttractions(@RequestBody AttractionRequest.Suggest suggest, UserDetails userDetails);
 
 
     /**

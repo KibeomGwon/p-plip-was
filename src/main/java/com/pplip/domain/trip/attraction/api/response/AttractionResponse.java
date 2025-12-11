@@ -61,9 +61,7 @@ public class AttractionResponse {
 
         private BigDecimal latitude;
         private BigDecimal longitude;
-
-        private int mapLevel;
-    }
+	}
 
 
     @Data
