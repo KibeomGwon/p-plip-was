@@ -9,6 +9,7 @@ import com.pplip.global.api.response.CommonResponse;
 import com.pplip.global.docs.UserDocsController;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/user")
 @RequiredArgsConstructor
+@Slf4j
 public class UserController implements UserDocsController {
 
 	private final EmailService emailService;
@@ -43,6 +45,7 @@ public class UserController implements UserDocsController {
 	@Override
 	@PostMapping("/join")
 	public CommonResponse<Void> join(@RequestBody UserRequest.Join join) {
+		log.info("request={}", join);
 		return CommonResponse.success(SuccessCode.CREATED, userService.join(join));
 	}
 

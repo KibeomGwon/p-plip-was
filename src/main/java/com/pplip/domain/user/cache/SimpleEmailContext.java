@@ -1,5 +1,7 @@
 package com.pplip.domain.user.cache;
 
+import com.pplip.global.api.code.ErrorCode;
+import com.pplip.global.exception.BusinessLogicException;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -17,6 +19,11 @@ public class SimpleEmailContext implements EmailValidator {
     @Override
     public boolean valid(String email) {
         EmailValidationInfo emailValidationInfo = context.get(email);
+
+        if (emailValidationInfo == null) {
+            throw new BusinessLogicException(ErrorCode.INVALID_EMAIL_VALID_CODE, "유효하지 않은 인증코드입니다.");
+        }
+
         LocalDateTime current = LocalDateTime.now();
         LocalDateTime expiredAt = emailValidationInfo.getPublishedAt().plusMinutes(EXPIRATION_PERIOD);
 
