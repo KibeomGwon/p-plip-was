@@ -1,4 +1,4 @@
-package com.pplip.domain.user.util;
+package com.pplip.domain.user.utils;
 
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;

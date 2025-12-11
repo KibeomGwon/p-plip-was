@@ -1,11 +1,13 @@
 package com.pplip.domain.trip.attraction.usecase.impl;
 
+import com.pplip.domain.auth.utils.SecurityUtils;
 import com.pplip.domain.trip.attraction.api.request.AttractionRequest;
 import com.pplip.domain.trip.attraction.api.response.AttractionResponse;
 import com.pplip.domain.trip.attraction.persistence.dao.AttractionDao;
 import com.pplip.domain.trip.attraction.persistence.dao.TagDao;
 import com.pplip.domain.trip.attraction.persistence.entity.ContentType;
 import com.pplip.domain.trip.attraction.usecase.AttractionService;
+import com.pplip.domain.trip.attraction.usecase.SearchHistoryService;
 import com.pplip.global.api.code.ErrorCode;
 import com.pplip.global.exception.BusinessLogicException;
 import com.pplip.global.page.Page;
@@ -25,13 +27,16 @@ public class AttractionServiceImpl implements AttractionService {
 
     private final AttractionDao attractionDao;
     private final TagDao tagDao;
+    private final SearchHistoryService historyService;
 
     @Override
     public Page<AttractionResponse.Summary> findAllBySearch(AttractionRequest.Search search, PageRequest pageRequest) {
-        List<AttractionResponse.Summary> resData = attractionDao.findAllBySearch(search).stream().map(data -> {
-            data.setContentType(ContentType.getContentType(data.getContentTypeId().intValue()));
-            return data;
-        }).toList();
+        List<AttractionResponse.Summary> resData = attractionDao.findAllBySearch(search, pageRequest);
+        resData.forEach(data -> data.setContentType(ContentType.getContentType(data.getContentTypeId().intValue())));
+
+        if (!SecurityUtils.isAnonymous()) {
+            historyService.post(search, SecurityUtils.getCurrentUser());
+        }
 
         return new Page<>(resData, pageRequest.getPageNum(), pageRequest.getPageSize(), attractionDao.countAllBySearch(search));
     }

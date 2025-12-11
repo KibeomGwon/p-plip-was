@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class AttractionRequest {
     @Data
@@ -18,7 +19,7 @@ public class AttractionRequest {
         private BigDecimal lat;
         private BigDecimal lng;
         // 관광지, 문화시설, 축제공연행사, 여행코스, 레포츠, 숙박, 쇼핑, 식당
-        private ContentType contentType;
+        private List<ContentType> contentTypes;
         // default = 1000m
         private Integer m = 1000;
     }
@@ -30,7 +31,7 @@ public class AttractionRequest {
     public static class Search {
         private String query;
         // 관광지, 문화시설, 축제공연행사, 여행코스, 레포츠, 숙박, 쇼핑, 식당
-        private ContentType contentType;
+        private List<ContentType> contentTypes;
         private BigDecimal lat;
         private BigDecimal lng;
 

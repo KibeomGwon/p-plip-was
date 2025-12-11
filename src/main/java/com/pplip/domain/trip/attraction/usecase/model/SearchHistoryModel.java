@@ -1,5 +1,6 @@
 package com.pplip.domain.trip.attraction.usecase.model;
 
+import com.pplip.domain.trip.attraction.api.request.AttractionRequest;
 import com.pplip.domain.trip.attraction.api.request.SearchHistoryRequest;
 import com.pplip.domain.trip.attraction.persistence.entity.SearchHistory;
 
@@ -12,9 +13,9 @@ public class SearchHistoryModel {
     private String keyword;
     private LocalDate searchedAt;
 
-    public SearchHistoryModel(SearchHistoryRequest.Post post, Long userId) {
+    public SearchHistoryModel(AttractionRequest.Search post, Long userId) {
         this.userId = userId;
-        this.keyword = post.getKeyword();
+        this.keyword = post.getQuery();
         this.searchedAt = LocalDate.now();
     }
 

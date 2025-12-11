@@ -2,7 +2,7 @@ package com.pplip.domain.user.persistence.service.impl;
 
 import com.pplip.domain.user.api.request.UserRequest;
 import com.pplip.domain.user.cache.EmailValidator;
-import com.pplip.domain.user.util.EmailSender;
+import com.pplip.domain.user.utils.EmailSender;
 import com.pplip.global.exception.UnvalidEmailCodeException;
 import jakarta.mail.MessagingException;
 import org.junit.jupiter.api.DisplayName;

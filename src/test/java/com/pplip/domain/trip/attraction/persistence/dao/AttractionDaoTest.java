@@ -3,11 +3,13 @@ package com.pplip.domain.trip.attraction.persistence.dao;
 import com.pplip.domain.trip.attraction.api.request.AttractionRequest;
 import com.pplip.domain.trip.attraction.api.response.AttractionResponse;
 import com.pplip.domain.trip.attraction.persistence.entity.ContentType;
+import com.pplip.global.page.PageRequest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mybatis.spring.boot.test.autoconfigure.MybatisTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.security.core.parameters.P;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -58,9 +60,9 @@ class AttractionDaoTest {
                 .lat(new BigDecimal(37.5663))
                 .lng(new BigDecimal(126.9779))
                 .m(2000)
-                .contentType(ContentType.ATTRACTION)
+                .contentTypes(List.of(ContentType.ATTRACTION))
                 .build();
-        dao.findAllBySearch(search)
+        dao.findAllBySearch(search, new PageRequest(1, 20))
                 .stream()
                 .forEach(System.out::println);
         // when
