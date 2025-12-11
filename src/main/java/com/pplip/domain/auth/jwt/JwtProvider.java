@@ -3,6 +3,7 @@ package com.pplip.domain.auth.jwt;
 import com.pplip.domain.auth.persistence.entity.Account;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -16,6 +17,7 @@ import static com.pplip.domain.auth.jwt.JwtProperties.*;
 
 @Component
 @Slf4j
+@RequiredArgsConstructor
 public class JwtProvider {
 
     @Value("${JWT_SECRET}")
