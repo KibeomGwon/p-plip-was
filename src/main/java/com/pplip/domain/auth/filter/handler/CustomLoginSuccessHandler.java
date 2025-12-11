@@ -3,8 +3,10 @@ package com.pplip.domain.auth.filter.handler;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pplip.domain.auth.jwt.Jwt;
 import com.pplip.domain.auth.jwt.JwtUtil;
+import com.pplip.domain.auth.persistence.entity.Account;
 import com.pplip.global.api.code.SuccessCode;
 import com.pplip.global.api.response.CommonResponse;
+import com.pplip.global.cache.usecase.RefreshTokenCacheService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -19,10 +21,14 @@ import java.io.PrintWriter;
 public class CustomLoginSuccessHandler implements AuthenticationSuccessHandler {
     private final JwtUtil jwtUtil;
     private final ObjectMapper om;
+    private final RefreshTokenCacheService cacheService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         Jwt generate = jwtUtil.generate(authentication);
+
+        cacheService.saveRefreshToken(generate.getRefreshToken(), ((Account) authentication.getPrincipal()).getUserId());
+
         response.setContentType("application/json;charset=UTF-8");
         response.setCharacterEncoding("UTF-8");
         PrintWriter writer = response.getWriter();

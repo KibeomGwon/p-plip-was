@@ -25,4 +25,6 @@ public class AuthController implements AuthDocsController {
 	@PostMapping("/login")
 	public void fakeLoginEndpoint(@RequestBody LoginRequest loginRequest){
 	}
+
+
 }

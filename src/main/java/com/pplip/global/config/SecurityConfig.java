@@ -8,6 +8,7 @@ import com.pplip.domain.auth.filter.handler.CustomLoginFailureHandler;
 import com.pplip.domain.auth.filter.handler.CustomLoginSuccessHandler;
 import com.pplip.domain.auth.jwt.JwtUtil;
 import com.pplip.domain.auth.provider.JwtAuthenticationProvider;
+import com.pplip.global.cache.usecase.RefreshTokenCacheService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +41,7 @@ public class SecurityConfig {
 	private final JwtAuthenticationProvider provider;
 	private final ObjectMapper om;
 	private final AuthenticationConfiguration authenticationConfiguration;
+	private final RefreshTokenCacheService refreshTokenCacheService;
 
 	@Bean
 	public JwtAuthenticationFilter jwtAuthenticationFilter(JwtAuthenticationProvider provider) {
@@ -74,7 +76,7 @@ public class SecurityConfig {
 		CustomLoginFilter clf = new CustomLoginFilter(om);
 		clf.setFilterProcessesUrl("/auth/login");
 		clf.setAuthenticationManager(authenticationManager(authenticationConfiguration));
-		clf.setAuthenticationSuccessHandler(new CustomLoginSuccessHandler(jwtUtil,om));
+		clf.setAuthenticationSuccessHandler(new CustomLoginSuccessHandler(jwtUtil,om, refreshTokenCacheService));
 		clf.setAuthenticationFailureHandler(new CustomLoginFailureHandler(om));
 		return clf;
 	}
