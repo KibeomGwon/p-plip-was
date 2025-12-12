@@ -83,7 +83,7 @@ class FreeBoardServiceImplTest {
             assertThat(response.getId()).isEqualTo(freeBoard.getId());
             assertThat(response.getTitle()).isEqualTo(freeBoard.getTitle());
             assertThat(freeBoard.isRemoved()).isTrue();
-            verify(freeBoardDao).update(freeBoard);
+            verify(freeBoardDao).delete(freeBoard.getId());
         }
 
         @Test

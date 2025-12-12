@@ -1,5 +1,6 @@
 package com.pplip.domain.user.persistence.service.impl;
 
+import com.pplip.domain.auth.persistence.dao.AccountDao;
 import com.pplip.domain.user.api.request.UserRequest;
 import com.pplip.domain.user.cache.EmailValidator;
 import com.pplip.domain.user.utils.EmailSender;
@@ -29,6 +30,9 @@ class EmailServiceImplTest {
 
     @Mock
     private EmailSender emailSender;
+
+    @Mock
+    private AccountDao accountDao;
 
     @Test
     @DisplayName("성공: 인증 이메일 발송")

@@ -41,8 +41,7 @@
                                ORDER BY sub_img.id ASC
             LIMIT 1
             )
-        WHERE fb.is_removed = false and
-            fb.author_id = #{userId}
+        WHERE fb.is_removed = false
         <if test="sort != null">
             <if test="sort.name() == 'POPULAR'">
                 ORDER BY likeCnt DESC
@@ -81,7 +80,8 @@
         ORDER BY sub_img.id ASC
         LIMIT 1
         )
-        WHERE fb.is_removed = false
+        WHERE fb.is_removed = false and
+        fb.author_id = #{userId}
         <if test="sort != null">
             ORDER BY fb.created_at
             <if test="sort.name() == 'LATEST'">

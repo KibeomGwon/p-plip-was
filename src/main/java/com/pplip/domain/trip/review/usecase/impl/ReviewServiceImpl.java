@@ -75,7 +75,6 @@ public class ReviewServiceImpl implements ReviewService {
 
         ReviewResponse.Detail resData = reviewDao.findById(entity.getId())
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.REVIEW_NOT_FOUND, "리뷰 조회에 실패했습니다."));
-
         resData.getReviewImages().forEach(img -> img.setImageType(ImageType.REVIEW));
         resData.getUserProfileImage().setImageType(ImageType.PROFILE);
         resData.setAuthor(resData.getAuthorId() == userId);
