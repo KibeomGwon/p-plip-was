@@ -2,6 +2,7 @@ package com.pplip.domain.board.freeboard.usecase;
 
 import com.pplip.domain.board.freeboard.api.request.FreeBoardRequest;
 import com.pplip.domain.board.freeboard.api.response.FreeBoardResponse;
+import com.pplip.domain.board.freeboard.persistence.entity.FreeBoardSort;
 import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -56,5 +57,14 @@ public interface FreeBoardService {
 	 * @param pageRequest 페이징 요청 정보
 	 * @return 페이징된 자유게시판 목록
 	 */
-	Page<FreeBoardResponse.BoardList> retrieve(PageRequest pageRequest);
+	Page<FreeBoardResponse.BoardList> retrieve(PageRequest pageRequest, FreeBoardSort sort);
+
+	/**
+	 * 로그된 사용자가 작성한 자유게시판 목록을 페이징하여 조회합니다.
+	 *
+	 * @param pageRequest 페이징 요청 정보
+	 * @param userDetails 인증된 사용자 정보
+	 * @return 페이징된 자유게시판 목록
+	 */
+	Page<FreeBoardResponse.BoardList> retrieveMyPosts(UserDetails userDetails, PageRequest pageRequest, FreeBoardSort sort);
 }

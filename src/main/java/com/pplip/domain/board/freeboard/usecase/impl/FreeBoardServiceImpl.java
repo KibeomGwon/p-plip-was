@@ -8,6 +8,7 @@ import com.pplip.domain.board.freeboard.api.request.FreeBoardRequest;
 import com.pplip.domain.board.freeboard.api.response.FreeBoardResponse;
 import com.pplip.domain.board.freeboard.persistence.dao.FreeBoardDao;
 import com.pplip.domain.board.freeboard.persistence.entity.FreeBoard;
+import com.pplip.domain.board.freeboard.persistence.entity.FreeBoardSort;
 import com.pplip.domain.board.freeboard.usecase.FreeBoardService;
 import com.pplip.domain.file.api.request.FileRequest;
 import com.pplip.domain.file.persistence.dao.FreeBoardImagePropertyDao;
@@ -21,6 +22,7 @@ import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,7 +47,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 			throw new BusinessLogicException(ErrorCode.FORBIDDEN, "작성자만 삭제할 수 있습니다.");
 		}
 		freeBoard.setRemoved(true);
-		freeBoardDao.update(freeBoard);
+		freeBoardDao.delete(freeBoard.getId());
 		return FreeBoardResponse.Remove.builder().title(freeBoard.getTitle()).id(freeBoard.getId()).build();
 	}
 
@@ -91,22 +93,39 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
+//	@Transactional(readOnly = true)
 	@CountView(BoardType.FREE_BOARD)
 	public FreeBoardResponse.Detail retrieveDetail(Long id) {
 
 		FreeBoardResponse.Detail detail = freeBoardDao.findByIdToDto(id).orElseThrow(() -> new BusinessLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR, "게시글을 찾을 수 없습니다."));
 		if(!SecurityUtils.isAnonymous()){
 			Account currentUser = SecurityUtils.getCurrentUser();
+			log.info("detail user id={}, user id = {}", detail.getUserId(), currentUser.getUserId());
+
 			detail.setAuthor(detail.getUserId() == currentUser.getUserId());
 		}
 		return detail;
 	}
 
 	@Override
-	public Page<FreeBoardResponse.BoardList> retrieve(PageRequest pageRequest) {
-		List<FreeBoardResponse.BoardList> all = freeBoardDao.findAll(pageRequest);
+	public Page<FreeBoardResponse.BoardList> retrieve(PageRequest pageRequest, FreeBoardSort sort) {
+		List<FreeBoardResponse.BoardList> all = freeBoardDao.findAll(pageRequest, sort);
 		int allCount = freeBoardDao.countAll();
+		if(!SecurityUtils.isAnonymous()){
+			Account currentUser = SecurityUtils.getCurrentUser();
+
+			all.forEach(data -> data.setAuthor(data.getUserId() == currentUser.getUserId()));
+		}
 		return new Page<>(all, pageRequest.getPageNum(), pageRequest.getPageSize(), allCount);
+	}
+
+	@Override
+	public Page<FreeBoardResponse.BoardList> retrieveMyPosts(UserDetails userDetails, PageRequest pageRequest, FreeBoardSort sort) {
+		Long userId = ((Account) userDetails).getUserId();
+		List<FreeBoardResponse.BoardList> resData = freeBoardDao.findAllByUserId(pageRequest, userId, sort);
+		resData.forEach(data -> data.setAuthor(data.getUserId() == userId));
+		int count = freeBoardDao.countAllByUserId(userId);
+
+		return new Page<>(resData, pageRequest.getPageNum(), pageRequest.getPageSize(), count);
 	}
 }

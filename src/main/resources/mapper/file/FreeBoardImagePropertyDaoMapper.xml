@@ -6,7 +6,7 @@
     <insert id="insert" useGeneratedKeys="true" keyProperty="id">
         insert into free_board_image_property (board_id, origin_file_name, path, saved_file_name, size, created_at, content_type
                                               ,updated_at, uploader_id)
-        values (#{boardId}, #{originFileName}, #{path}, #{savedFileName}, #{size}, #{createdAt}, #{content_type}, #{updatedAt}, #{uploaderId});
+        values (#{boardId}, #{originFileName}, #{path}, #{savedFileName}, #{size}, #{createdAt}, #{contentType}, #{updatedAt}, #{uploaderId});
     </insert>
 
 
@@ -16,7 +16,7 @@
         ,updated_at, uploader_id)
         values
         <foreach collection="list" index="index" item="image" separator=",">
-            (#{image.boardId}, #{image.originFileName}, #{image.path}, #{image.savedFileName}, #{image.size}, #{image.createdAt}, #{image.content_type},
+            (#{image.boardId}, #{image.originFileName}, #{image.path}, #{image.savedFileName}, #{image.size}, #{image.createdAt}, #{image.contentType},
             #{image.updatedAt}, #{image.uploaderId})
         </foreach>
     </insert>
@@ -45,7 +45,7 @@
     <select id="findByBoardId" resultMap="freeBoardImagePropertyMap">
         select *
         from free_board_image_property
-        where board_id = #{board_id}
+        where board_id = #{boardId}
     </select>
 
     <update id="bulkUpdateBoardId">

@@ -2,6 +2,7 @@ package com.pplip.global.docs;
 
 import com.pplip.domain.board.freeboard.api.request.FreeBoardRequest;
 import com.pplip.domain.board.freeboard.api.response.FreeBoardResponse;
+import com.pplip.domain.board.freeboard.persistence.entity.FreeBoardSort;
 import com.pplip.global.api.response.CommonResponse;
 import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
@@ -23,11 +24,24 @@ public interface FreeBoardDocsController {
      * 자유게시판 목록을 페이징하여 조회합니다.
      *
      * @param pageRequest 페이징 요청 정보
+     * @param sort 정렬 정보
      * @return 페이징된 자유게시판 목록
      */
     @Operation(summary = "자유게시판 페이징 조회")
     @ApiResponse(responseCode = "200", description = "성공")
-    public CommonResponse<Page<FreeBoardResponse.BoardList>> retrieveFreeBoard(@ModelAttribute PageRequest pageRequest);
+    public CommonResponse<Page<FreeBoardResponse.BoardList>> retrieveFreeBoard(@ModelAttribute PageRequest pageRequest, FreeBoardSort sort);
+
+    /**
+     * 로그된 사용자가 작성한 자유게시판 목록을 페이징하여 조회합니다.
+     *
+     * @param pageRequest 페이징 요청 정보
+     * @param sort 정렬 정보
+     * @param userDetails 인증된 유저 정보
+     * @return 페이징된 자유게시판 목록
+     */
+    @Operation(summary = "특정 사용자가 작성한 자유게시판 페이징 조회")
+    @ApiResponse(responseCode = "200", description = "성공")
+    public CommonResponse<Page<FreeBoardResponse.BoardList>> retrieveMyFreeBoard(PageRequest pageRequest, FreeBoardSort sort, UserDetails userDetails);
 
 
     /**

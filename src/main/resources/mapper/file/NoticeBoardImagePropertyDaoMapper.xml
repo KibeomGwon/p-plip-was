@@ -15,7 +15,7 @@
         values
         <foreach collection="list" index="index" item="image" separator=",">
             (#{image.boardId}, #{image.originFileName}, #{image.path}, #{image.savedFileName}, #{image.size}, #{image.createdAt},
-            #{image.content_type},#{image.updatedAt}, #{image.uploaderId})
+            #{image.contentType},#{image.updatedAt}, #{image.uploaderId})
         </foreach>
     </insert>
 

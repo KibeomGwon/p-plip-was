@@ -5,6 +5,7 @@ import com.pplip.domain.board.freeboard.api.request.FreeBoardRequest;
 import com.pplip.domain.board.freeboard.api.response.FreeBoardResponse;
 import com.pplip.domain.board.freeboard.persistence.dao.FreeBoardDao;
 import com.pplip.domain.board.freeboard.persistence.entity.FreeBoard;
+import com.pplip.domain.board.freeboard.persistence.entity.FreeBoardSort;
 import com.pplip.domain.file.persistence.dao.FreeBoardImagePropertyDao;
 import com.pplip.domain.file.usecase.FileService;
 import com.pplip.global.api.code.ErrorCode;
@@ -233,16 +234,16 @@ class FreeBoardServiceImplTest {
             // given
             PageRequest pageRequest = new PageRequest(1, 10);
             List<FreeBoardResponse.BoardList> boardList = Collections.singletonList(new FreeBoardResponse.BoardList());
-            given(freeBoardDao.findAll(pageRequest)).willReturn(boardList);
+            given(freeBoardDao.findAll(pageRequest, FreeBoardSort.LATEST)).willReturn(boardList);
             given(freeBoardDao.countAll()).willReturn(1);
 
             // when
-            Page<FreeBoardResponse.BoardList> result = freeBoardService.retrieve(pageRequest);
+            Page<FreeBoardResponse.BoardList> result = freeBoardService.retrieve(pageRequest, FreeBoardSort.LATEST);
 
             // then
             assertThat(result.getList()).hasSize(1);
             assertThat(result.getTotalCount()).isEqualTo(1);
-            verify(freeBoardDao).findAll(pageRequest);
+            verify(freeBoardDao).findAll(pageRequest, FreeBoardSort.LATEST);
             verify(freeBoardDao).countAll();
         }
     }
