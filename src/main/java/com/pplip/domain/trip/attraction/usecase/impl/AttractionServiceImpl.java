@@ -7,11 +7,14 @@ import com.pplip.domain.auth.utils.SecurityUtils;
 import com.pplip.domain.trip.attraction.api.request.AttractionRequest;
 import com.pplip.domain.trip.attraction.api.response.AttractionResponse;
 import com.pplip.domain.trip.attraction.persistence.dao.AttractionDao;
+import com.pplip.domain.trip.attraction.persistence.dao.SidoGugunsDao;
 import com.pplip.domain.trip.attraction.persistence.dao.TagDao;
 import com.pplip.domain.trip.attraction.persistence.entity.ContentType;
 import com.pplip.domain.trip.attraction.usecase.AttractionService;
 import com.pplip.domain.trip.attraction.usecase.SearchHistoryService;
+import com.pplip.domain.trip.attraction.usecase.SidoGugunsService;
 import com.pplip.global.api.code.ErrorCode;
+import com.pplip.global.exception.BoardLogicException;
 import com.pplip.global.exception.BusinessLogicException;
 import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
@@ -28,8 +31,10 @@ public class AttractionServiceImpl implements AttractionService {
 
 	private final AttractionDao attractionDao;
 	private final TagDao tagDao;
+
 	private final InferenceService inferenceService;
     private final SearchHistoryService historyService;
+	private final SidoGugunsService sidoGugunsService;
 
 
     public Page<AttractionResponse.Summary> findAllBySearch(AttractionRequest.Search search, PageRequest pageRequest) {
@@ -63,5 +68,14 @@ public class AttractionServiceImpl implements AttractionService {
 		resData.setContentType(ContentType.getContentType(resData.getContentTypeId().intValue()));
 
 		return resData;
+	}
+
+	@Override
+	public List<AiResponse.SuggestAttraction> suggestAttractionsBySidoGuguns(AttractionRequest.SuggestBySidoGuguns suggest) {
+		sidoGugunsService.validSidoGuguns(suggest.getSidoCode(), suggest.getGugunCode());
+
+		AttractionResponse.Details data = attractionDao.findRandomFirstBySidoGuguns(suggest)
+				.orElseThrow(() -> new BusinessLogicException(ErrorCode.ATTRACTION_NOT_FOUND, "해당 지역의 ATTRACTION을 찾을 수 없습니다."));
+		return null;
 	}
 }

@@ -15,5 +15,5 @@ public interface AttractionService {
 
     AttractionResponse.Details findByNo(Long no);
 
-
+    List<AiResponse.SuggestAttraction> suggestAttractionsBySidoGuguns(AttractionRequest.SuggestBySidoGuguns suggest);
 }

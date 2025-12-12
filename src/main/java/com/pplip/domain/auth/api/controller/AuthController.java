@@ -35,5 +35,4 @@ public class AuthController implements AuthDocsController {
 	public void fakeLoginEndpoint(@RequestBody LoginRequest loginRequest) {
 	}
 
-
 }
