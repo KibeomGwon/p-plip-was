@@ -1,6 +1,7 @@
 package com.pplip.domain.trip.attraction.api.request;
 
 import com.pplip.domain.trip.attraction.persistence.entity.ContentType;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -41,5 +42,15 @@ public class AttractionRequest {
 
         private int pageNum;
         private int pageSize;
+    }
+
+    @Data
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SuggestBySidoGuguns {
+        @NotNull
+        private Integer sidoCode;
+        private Integer gugunCode;
     }
 }

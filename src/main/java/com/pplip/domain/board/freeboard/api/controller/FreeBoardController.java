@@ -2,6 +2,7 @@ package com.pplip.domain.board.freeboard.api.controller;
 
 import com.pplip.domain.board.freeboard.api.request.FreeBoardRequest;
 import com.pplip.domain.board.freeboard.api.response.FreeBoardResponse;
+import com.pplip.domain.board.freeboard.persistence.entity.FreeBoardSort;
 import com.pplip.domain.board.freeboard.usecase.FreeBoardService;
 import com.pplip.global.api.code.SuccessCode;
 import com.pplip.global.api.response.CommonResponse;
@@ -9,7 +10,9 @@ import com.pplip.global.docs.FreeBoardDocsController;
 import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/freeboard")
 @RequiredArgsConstructor
+@Slf4j
 public class FreeBoardController implements FreeBoardDocsController {
 
     private final FreeBoardService freeBoardService;
@@ -31,8 +35,24 @@ public class FreeBoardController implements FreeBoardDocsController {
      */
     @Override
     @GetMapping
-    public CommonResponse<Page<FreeBoardResponse.BoardList>> retrieveFreeBoard(@ModelAttribute PageRequest pageRequest) {
-        return CommonResponse.success(SuccessCode.SUCCESS, freeBoardService.retrieve(pageRequest));
+    public CommonResponse<Page<FreeBoardResponse.BoardList>> retrieveFreeBoard(@ModelAttribute PageRequest pageRequest,
+                                                                               @RequestParam("sort") FreeBoardSort sort) {
+        return CommonResponse.success(SuccessCode.SUCCESS, freeBoardService.retrieve(pageRequest, sort));
+    }
+
+    /**
+     * 로그인된 사용자가 작성한 자유게시판 목록을 페이징하여 조회합니다.
+     *
+     * @param pageRequest 페이징 요청 정보
+     * @param sort 정렬 정보
+     * @return 페이징된 자유게시판 목록
+     */
+    @Override
+    @GetMapping("/my-post")
+    public CommonResponse<Page<FreeBoardResponse.BoardList>> retrieveMyFreeBoard(@ModelAttribute PageRequest pageRequest,
+                                                                                 @RequestParam("sort") FreeBoardSort sort,
+                                                                                 @AuthenticationPrincipal UserDetails userDetails) {
+        return CommonResponse.success(SuccessCode.SUCCESS, freeBoardService.retrieveMyPosts(userDetails, pageRequest, sort));
     }
 
     /**
@@ -61,6 +81,7 @@ public class FreeBoardController implements FreeBoardDocsController {
             FreeBoardRequest.BoardPost request,
             @AuthenticationPrincipal
             UserDetails principal) {
+        log.info("call request");
         return CommonResponse.success(SuccessCode.SUCCESS, freeBoardService.post(request, principal));
     }
 
@@ -98,6 +119,7 @@ public class FreeBoardController implements FreeBoardDocsController {
             Long id,
             @AuthenticationPrincipal
             UserDetails principal) {
+        log.info("id={}", id);
         return CommonResponse.success(SuccessCode.SUCCESS, freeBoardService.remove(id, principal));
     }
 }

@@ -18,6 +18,7 @@
             <result property="name" column="file_name"/>
             <result property="path" column="file_path"/>
             <result property="size" column="file_size"/>
+            <result property="contentType" column="file_contentType"/>
         </association>
     </resultMap>
 
@@ -28,6 +29,7 @@
             <result property="name" column="file_name"/>
             <result property="path" column="file_path"/>
             <result property="size" column="file_size"/>
+            <result property="contentType" column="file_contentType"/>
         </association>
     </resultMap>
 
@@ -42,7 +44,8 @@
             pip.id              AS file_id,
             pip.saved_file_name AS file_name,
             pip.path            AS file_path,
-            pip.size            AS file_size
+            pip.size            AS file_size,
+            pip.content_type    AS file_contentType
 
         FROM free_comment fc
                  JOIN user u ON fc.author_id = u.id
@@ -68,7 +71,8 @@
         select id,
                saved_file_name as name,
                path,
-               size
+               size,
+               content_type as contentType
         from profile_image_property where profile_id = #{profileId}
     </select>
 
@@ -104,7 +108,8 @@
                pip.id              AS file_id,
                pip.saved_file_name AS file_name,
                pip.path            AS file_path,
-               pip.size            AS file_size
+               pip.size            AS file_size,
+               pip.content_type    AS file_contentType
 
         FROM free_comment fc
                  JOIN user u ON fc.author_id = u.id

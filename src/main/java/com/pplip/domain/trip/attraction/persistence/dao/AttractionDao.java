@@ -41,4 +41,6 @@ public interface AttractionDao {
     int insert(Attraction attraction);
 
     int countAllBySearch(AttractionRequest.Search search);
+
+    Optional<AttractionResponse.Details> findRandomFirstBySidoGuguns(AttractionRequest.SuggestBySidoGuguns search);
 }

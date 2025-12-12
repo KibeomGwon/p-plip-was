@@ -68,4 +68,25 @@ class AttractionDaoTest {
         // when
         // then
     }
+
+    @Test
+    public void searchBySidoGuguns() throws Exception {
+        // given
+        AttractionRequest.SuggestBySidoGuguns search = AttractionRequest.SuggestBySidoGuguns.builder()
+                .sidoCode(1).build();
+        AttractionRequest.SuggestBySidoGuguns search2 = AttractionRequest.SuggestBySidoGuguns.builder()
+                .sidoCode(4).build();
+        AttractionRequest.SuggestBySidoGuguns search3 = AttractionRequest.SuggestBySidoGuguns.builder()
+                .sidoCode(35)
+                .gugunCode(23)
+                .build();
+        // when
+        dao.findRandomFirstBySidoGuguns(search)
+                .ifPresent(data -> System.out.println(data));
+        dao.findRandomFirstBySidoGuguns(search2)
+                .ifPresent(data -> System.out.println(data));
+        dao.findRandomFirstBySidoGuguns(search3)
+                .ifPresent(data -> System.out.println(data));
+        // then
+    }
 }

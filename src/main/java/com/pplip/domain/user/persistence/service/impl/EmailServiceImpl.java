@@ -1,5 +1,6 @@
 package com.pplip.domain.user.persistence.service.impl;
 
+import com.pplip.domain.auth.persistence.dao.AccountDao;
 import com.pplip.domain.user.api.request.UserRequest;
 import com.pplip.domain.user.api.response.UserResponse;
 import com.pplip.domain.user.cache.EmailValidationInfo;
@@ -7,6 +8,7 @@ import com.pplip.domain.user.cache.EmailValidator;
 import com.pplip.domain.user.persistence.service.EmailService;
 import com.pplip.domain.user.utils.EmailSender;
 import com.pplip.global.api.code.ErrorCode;
+import com.pplip.global.exception.BusinessLogicException;
 import com.pplip.global.exception.UnvalidEmailCodeException;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -23,10 +25,14 @@ public class EmailServiceImpl implements EmailService {
 
 	private final EmailValidator validator;
 	private final EmailSender emailSender;
+	private final AccountDao accountDao;
 
 	@Override
 	public void sendEmail(UserRequest.Email to) throws MessagingException {
 		String code = createNumber();
+		if (accountDao.findByEmail(to.getEmail()).isPresent()){
+			throw new BusinessLogicException(ErrorCode.ALREADY_EXISTS_EMAIL, "이미 가입된 이메일입니다.");
+		}
 
 		emailSender.sendMail(to.getEmail(), code);
 		validator.putValidInfo(to.getEmail(), new EmailValidationInfo(code, LocalDateTime.now()));

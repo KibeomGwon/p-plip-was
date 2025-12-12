@@ -17,5 +17,5 @@ public interface SidoGugunsDao {
 
     List<AttractionResponse.Gugun> findAllGugun();
 
-    List<AttractionResponse.Gugun> findAllGugunInSido(Long sidoCode);
+    List<AttractionResponse.Gugun> findAllGugunInSido(Integer sidoCode);
 }

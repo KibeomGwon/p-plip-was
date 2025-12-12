@@ -8,6 +8,18 @@
         where no = #{no};
     </select>
 
+    <select id="findRandomFirstBySidoGuguns" resultType="com.pplip.domain.trip.attraction.api.response.AttractionResponse$Details">
+        select *
+        from attractions
+        <where>
+            area_code = #{sidoCode}
+        <if test="gugunCode != null">
+            AND si_gun_gu_code = #{gugunCode}
+        </if>
+        </where>
+        order by rand() limit 1;
+    </select>
+
     <select id="findAllBySearch" resultMap="findAllMap">
         select *,
         ST_Distance_Sphere(

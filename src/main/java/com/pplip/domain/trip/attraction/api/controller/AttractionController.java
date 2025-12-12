@@ -4,6 +4,7 @@ import com.pplip.domain.trip.ai.dto.response.AiResponse;
 import com.pplip.domain.trip.attraction.api.request.AttractionRequest;
 import com.pplip.domain.trip.attraction.api.response.AttractionResponse;
 import com.pplip.domain.trip.attraction.usecase.AttractionService;
+import com.pplip.domain.trip.attraction.usecase.SidoGugunsService;
 import com.pplip.global.api.code.SuccessCode;
 import com.pplip.global.api.response.CommonResponse;
 import com.pplip.global.docs.AttractionDocsController;
@@ -27,6 +28,7 @@ import java.util.List;
 public class AttractionController implements AttractionDocsController {
 
 	private final AttractionService attractionService;
+	private final SidoGugunsService sidoGugunsService;
 
 	/**
 	 * 행정구역 정보를 조회합니다.
@@ -36,7 +38,7 @@ public class AttractionController implements AttractionDocsController {
 	@GetMapping("/region")
 	@Override
 	public CommonResponse<List<AttractionResponse.Region>> getAdministrativeDistrict() {
-		return CommonResponse.success(SuccessCode.SUCCESS, null);
+		return CommonResponse.success(SuccessCode.SUCCESS, sidoGugunsService.findAllRegion());
 	}
 
 	/**
@@ -66,6 +68,20 @@ public class AttractionController implements AttractionDocsController {
 	public CommonResponse<List<AiResponse.SuggestAttraction>> suggestAttractions(@RequestBody AttractionRequest.Suggest suggest,
 	                                                                             @AuthenticationPrincipal UserDetails userDetails) {
 		return CommonResponse.success(SuccessCode.SUCCESS, attractionService.suggestAttractions(suggest));
+	}
+
+	/**
+	 * 시도 구군 코드를 기반으로 AI를 사용하여 관광지를 추천합니다.
+	 *
+	 * @param suggest 시도 구군 코드
+	 * @param userDetails 현재 로그인한 사용자 정보
+	 * @return 추천된 관광지 목록
+	 */
+	@GetMapping("/suggest/sido-guguns")
+	public CommonResponse<List<AiResponse.SuggestAttraction>> suggestAttractionsBySidoGuguns(@ModelAttribute AttractionRequest.SuggestBySidoGuguns suggest,
+																							 @AuthenticationPrincipal UserDetails userDetails) {
+		log.info("suggest={}", suggest);
+		return CommonResponse.success(SuccessCode.SUCCESS, null);
 	}
 
 

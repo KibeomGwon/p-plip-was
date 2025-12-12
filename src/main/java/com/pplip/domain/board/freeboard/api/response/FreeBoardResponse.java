@@ -25,6 +25,12 @@ public class FreeBoardResponse {
         private LocalDateTime updatedAt;
         private boolean isAuthor;
         private int likeCnt;
+        private int viewCnt;
+        private int commentCnt;
+        private FileResponse freeBoardImage;
+
+        @JsonIgnore
+        private long userId;
     }
 
     @Data
@@ -56,6 +62,7 @@ public class FreeBoardResponse {
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
         private int likeCnt;
+        private int viewCnt;
     }
 
 

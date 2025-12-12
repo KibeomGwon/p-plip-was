@@ -2,6 +2,7 @@ package com.pplip.domain.board.freeboard.persistence.dao;
 
 import com.pplip.domain.board.freeboard.api.response.FreeBoardResponse;
 import com.pplip.domain.board.freeboard.persistence.entity.FreeBoard;
+import com.pplip.domain.board.freeboard.persistence.entity.FreeBoardSort;
 import com.pplip.global.page.PageRequest;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -17,9 +18,20 @@ public interface FreeBoardDao {
      * 모든 자유게시판 게시글을 페이징하여 조회합니다.
      *
      * @param pageRequest 페이징 정보
+     * @param sort 정렬 정보
      * @return 페이징된 게시글 목록
      */
-    List<FreeBoardResponse.BoardList> findAll(PageRequest pageRequest);
+    List<FreeBoardResponse.BoardList> findAll(PageRequest pageRequest, FreeBoardSort sort);
+
+    /**
+     * 사용자의 자유게시판 게시글을 페이징하여 조회합니다.
+     *
+     * @param pageRequest 페이징 정보
+     * @param userId 유저 아이디
+     * @param sort 정렬 정보
+     * @return 페이징된 게시글 목록
+     */
+    List<FreeBoardResponse.BoardList> findAllByUserId(PageRequest pageRequest, Long userId, FreeBoardSort sort);
 
     /**
      * 모든 자유게시판 게시글의 총 개수를 조회합니다.
@@ -27,6 +39,15 @@ public interface FreeBoardDao {
      * @return 게시글 총 개수
      */
     int countAll();
+
+    /**
+     * 사용자의 자유게시판 게시글의 총 개수를 조회합니다.
+     *
+     * @param userId 유저 아이디
+     * @return 게시글 총 개수
+     */
+    int countAllByUserId(Long userId);
+
 
     /**
      * ID를 이용하여 게시글 상세 정보를 조회합니다.

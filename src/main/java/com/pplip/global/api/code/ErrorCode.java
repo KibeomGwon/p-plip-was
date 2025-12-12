@@ -10,6 +10,7 @@ public enum ErrorCode {
     INVALIDATED_USER_ERROR(DomainCode.USER, ExceptionCode.INVALID, "USER_INVALIDATED"),
     FAIL_TO_SEND_EMAIL_ERROR(DomainCode.USER, ExceptionCode.FAILURE, "FAIL_TO_SEND_EMAIL_ERROR"),
   	FORBIDDEN(DomainCode.USER, ExceptionCode.FORBIDDEN, "USER_FORBIDDEN"),
+    ALREADY_EXISTS_EMAIL(DomainCode.USER, ExceptionCode.CONFLICT, "EMAIL_ALREADY_EXISTS"),
     FILE_TYPE_NOT_SUPPORT(DomainCode.FILE, ExceptionCode.NOT_SUPPORT, "FILE_TYPE_NOT_SUPPORT"),
     FILE_PROCESS_FAILURE(DomainCode.FILE, ExceptionCode.FAILURE, "FILE_PROCESS_FAILURE"),
     FILE_NOT_FOUND(DomainCode.FILE, ExceptionCode.NOT_FOUND,"FILE_NOT_FOUND"),
@@ -35,6 +36,8 @@ public enum ErrorCode {
     REVIEW_CREATE_FAILURE(DomainCode.ATTRACTION, ExceptionCode.FAILURE, "리뷰 작성에 실패했습니다."),
     REVIEW_NOT_FOUND(DomainCode.ATTRACTION, ExceptionCode.NOT_FOUND, "리뷰 조회에 실패했습니다."),
     REVIEW_FAIL_DELETE(DomainCode.ATTRACTION, ExceptionCode.FAILURE, "리뷰 삭제에 실패했습니다."),
+    SIDO_GUGUN_NOT_FOUND_ERROR(DomainCode.ATTRACTION, ExceptionCode.NOT_FOUND, "존재하지 않는 시도 구군 코드입니다."),
+    SIDO_GUGUN_INVALID_VALUE(DomainCode.ATTRACTION, ExceptionCode.INVALID, "유효하지 않는 시도 구군 코드입니다."),
     INVALID_INPUT(DomainCode.USER, ExceptionCode.INVALID, "입력값이 유효하지 않습니다."),
     PLAN_NOT_FOUND(DomainCode.PLAN, ExceptionCode.NOT_FOUND,"계획 정보를 찾지 못했습니다."),
     PLAN_PROCESS_FAIL(DomainCode.PLAN,  ExceptionCode.FAILURE,"계획 작업 중 오류가 발생하였습니다.");

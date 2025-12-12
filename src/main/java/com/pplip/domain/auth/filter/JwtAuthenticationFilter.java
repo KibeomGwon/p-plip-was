@@ -50,6 +50,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
         // 인증된 Authentication 객체 context holder에 적재.
         SecurityContextHolder.getContext().setAuthentication(authenticated);
+        filterChain.doFilter(request, response);
     }
 
     private Authentication makeUnAuthToken(String data) {

@@ -2,6 +2,7 @@ package com.pplip.domain.board.freeboard.persistence.dao;
 
 import com.pplip.domain.board.freeboard.api.response.FreeBoardResponse;
 import com.pplip.domain.board.freeboard.persistence.entity.FreeBoard;
+import com.pplip.domain.board.freeboard.persistence.entity.FreeBoardSort;
 import com.pplip.domain.user.persistence.dao.ProfileDao;
 import com.pplip.domain.user.persistence.dao.UserDao;
 import com.pplip.domain.user.persistence.entity.Profile;
@@ -89,7 +90,7 @@ class FreeBoardDaoTest {
         dao.insert(FreeBoard.builder().authorId(authorId).title("t2").content("c2").build());
 
         // when
-        List<FreeBoardResponse.BoardList> all = dao.findAll(new PageRequest(1, 10));
+        List<FreeBoardResponse.BoardList> all = dao.findAll(new PageRequest(1, 10), FreeBoardSort.LATEST);
 
         // then
         assertThat(all).isNotNull();
