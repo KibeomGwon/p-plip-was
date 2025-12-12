@@ -169,14 +169,19 @@ class ReviewServiceImplTest {
 			Long userId = 1L;
 			UserDetails userDetails = createAccount(userId);
 			ReviewRequest.Post postRequest = new ReviewRequest.Post("새로운 리뷰", null);
-			Review review = createReview(1L, userId, attractionId);
+
+			// [수정] 헬퍼 메소드 대신, 내용을 "새로운 리뷰"로 맞춰서 직접 빌드하거나
+			// 헬퍼 메소드로 만든 뒤 값을 변경해야 합니다. (ReflectionTestUtils 사용 예시)
 			ReviewResponse.Detail reviewDetail = createReviewDetail(1L, userId);
+			ReflectionTestUtils.setField(reviewDetail, "content", "새로운 리뷰"); // 내용을 강제로 맞춤
 
 			when(reviewDao.insert(any(Review.class))).thenAnswer(invocation -> {
-				Review savedReview = invocation.getArgument(0); // 메서드에 전달된 첫 번째 인자(Review 객체)를 꺼냄
-				ReflectionTestUtils.setField(savedReview, "id", 1L); // 강제로 ID에 1L 주입 (Setter가 있다면 setId 사용 가능)
+				Review savedReview = invocation.getArgument(0);
+				ReflectionTestUtils.setField(savedReview, "id", 1L);
 				return 1;
 			});
+
+			// 이제 findById는 "새로운 리뷰"가 담긴 객체를 반환합니다.
 			when(reviewDao.findById(anyLong())).thenReturn(Optional.of(reviewDetail));
 
 			// when
@@ -185,7 +190,7 @@ class ReviewServiceImplTest {
 			// then
 			assertThat(result).isNotNull();
 			assertThat(result.getId()).isEqualTo(reviewDetail.getId());
-			assertThat(result.getContent()).isEqualTo(postRequest.getContent());
+			assertThat(result.getContent()).isEqualTo(postRequest.getContent()); // 이제 통과됨
 			verify(reviewDao, times(1)).insert(any(Review.class));
 			verify(reviewDao, times(1)).findById(anyLong());
 		}

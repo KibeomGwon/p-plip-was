@@ -49,10 +49,11 @@ public class FileServiceImpl implements FileService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public FileResponse saveFile(MultipartFile file, ImageType imageType, UserDetails userDetails) {
+		log.info("map:{}, {}",batchSupportFilePropertyMap, filePropertyMap);
+
 		long userId = ((Account) userDetails).getUserId();
 		FileProperty fileProperty = provider.create(file.getOriginalFilename(), file.getContentType(), file.getSize(), userId, imageType);
 		fileStorage.store(file, fileProperty.getPath());
-
 		FilePropertyDao<FileProperty> fdao = (FilePropertyDao<FileProperty>) Optional.ofNullable(filePropertyMap.get(imageType)).orElseThrow(() -> new BusinessLogicException(ErrorCode.FILE_TYPE_NOT_SUPPORT));
 		fdao.insert(fileProperty);
 		return FileResponse.builder()
