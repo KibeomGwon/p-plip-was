@@ -56,10 +56,11 @@
 
     <resultMap id="summaryMap" type="com.pplip.domain.board.notice.api.response.NoticeCommentResponse$Summary">
         <id property="id" column="id"/>
-        <result property="authorName" column="authorName"/>
+        <result property="authorNickName" column="authorName"/>
         <result property="content" column="content"/>
         <result property="createdAt" column="createdAt"/>
         <result property="updatedAt" column="updatedAt"/>
+        <result property="authorId" column="authorId" />
 
         <association property="profileImage" javaType="com.pplip.domain.file.api.response.FileResponse">
             <id property="id" column="file_id"/>
@@ -71,10 +72,11 @@
 
     <resultMap id="detailMap" type="com.pplip.domain.board.notice.api.response.NoticeCommentResponse$Detail">
         <id property="id" column="id"/>
-        <result property="authorName" column="authorName"/>
+        <result property="authorNickName" column="authorName"/>
         <result property="content" column="content"/>
         <result property="createdAt" column="createdAt"/>
         <result property="updatedAt" column="updatedAt"/>
+        <result property="authorId" column="authorId" />
 
         <association property="profileImage" javaType="com.pplip.domain.file.api.response.FileResponse">
             <id property="id" column="file_id"/>
@@ -116,7 +118,7 @@
             <if test="content != null">
                 content = #{content},
             </if>
-            updated_at = NOW()
+            updated_at = #{updatedAt}
         </set>
         WHERE id = #{id};
     </update>

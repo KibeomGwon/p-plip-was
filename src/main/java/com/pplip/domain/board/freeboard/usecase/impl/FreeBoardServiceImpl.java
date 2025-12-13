@@ -69,7 +69,10 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		List<FreeBoardImageProperty> boardImages = freeBoardImagePropertyDao.findByBoardId(freeBoard.getId());
 		List<FreeBoardImageProperty> removeList = boardImages.stream().filter(img -> removeImages.contains(img.getId())).toList();
 
-		freeBoardImagePropertyDao.bulkUpdate(updateImageIds, freeBoard.getId());
+		if (!updateImageIds.isEmpty()) {
+			freeBoardImagePropertyDao.bulkUpdate(updateImageIds, freeBoard.getId());
+		}
+		freeBoard.setUpdatedAt(LocalDateTime.now());
 		freeBoardDao.update(freeBoard);
 
 		fileService.deleteSavedFiles(removeList.stream().map(FreeBoardImageProperty::getId).toList(), ImageType.FREE_BOARD);//엑박 방지하려면 프로퍼티 먼저 삭제
@@ -103,7 +106,6 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		FreeBoardResponse.Detail detail = freeBoardDao.findByIdToDto(id).orElseThrow(() -> new BusinessLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR, "게시글을 찾을 수 없습니다."));
 		if (!SecurityUtils.isAnonymous()) {
 			Account currentUser = SecurityUtils.getCurrentUser();
-			log.info("detail user id={}, user id = {}", detail.getUserId(), currentUser.getUserId());
 
 			detail.setAuthor(detail.getUserId() == currentUser.getUserId());
 		}

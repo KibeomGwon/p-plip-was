@@ -44,7 +44,7 @@ public class NoticeCommentController implements NoticeCommentDocsController {
     @Override
     @PostMapping("/{id}/comment")
     public CommonResponse<NoticeCommentResponse.Detail> postNoticeBoardComment(
-            NoticeCommentRequest.Post request,
+            @RequestBody NoticeCommentRequest.Post request,
             @PathVariable Long id,
             @AuthenticationPrincipal UserDetails userDetails) {
 
@@ -61,7 +61,7 @@ public class NoticeCommentController implements NoticeCommentDocsController {
      */
     @Override
     @PutMapping("/comment/{id}")
-    public CommonResponse<NoticeCommentResponse.Update> updateNoticeBoardComment(NoticeCommentRequest.Update update,
+    public CommonResponse<NoticeCommentResponse.Update> updateNoticeBoardComment(@RequestBody NoticeCommentRequest.Update update,
                                                                                  @PathVariable Long id,
                                                                                  @AuthenticationPrincipal UserDetails userDetails) {
         return CommonResponse.success(SuccessCode.UPDATED, service.update(update, id, userDetails));

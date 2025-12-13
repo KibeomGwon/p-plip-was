@@ -1,6 +1,7 @@
 package com.pplip.domain.board.freeboard.usecase.impl;
 
 import com.pplip.domain.auth.persistence.entity.Account;
+import com.pplip.domain.auth.utils.SecurityUtils;
 import com.pplip.domain.board.freeboard.api.request.FreeBoardCommentRequest;
 import com.pplip.domain.board.freeboard.api.response.FreeBoardCommentResponse;
 import com.pplip.domain.board.freeboard.persistence.dao.FreeBoardCommentDao;
@@ -32,6 +33,12 @@ public class FreeBoardCommentServiceImpl implements FreeBoardCommentService {
 	@Transactional(readOnly = true)
 	public Page<FreeBoardCommentResponse.Retrieve> getComment(Long boardId, PageRequest pageRequest) {
 		List<FreeBoardCommentResponse.Retrieve> comments = freeBoardCommentDao.findAllByBoardId(boardId, pageRequest);
+		if (!SecurityUtils.isAnonymous()) {
+			Long userId = SecurityUtils.getCurrentUser().getUserId();
+			comments.forEach(data -> {
+				data.setAuthor(data.getUserId() == userId);
+			});
+		}
 		int allCnt = freeBoardCommentDao.countAllByBoardId(boardId);
 		return new Page<>(comments, pageRequest.getPageNum(), pageRequest.getPageSize(), allCnt);
 	}
@@ -74,6 +81,9 @@ public class FreeBoardCommentServiceImpl implements FreeBoardCommentService {
 		comment.setContent(updateInfo.getContent());
 		comment.setUpdatedAt(LocalDateTime.now());
 		freeBoardCommentDao.update(comment);
-		return freeBoardCommentDao.findByIdToDto(commentId).get();
+		FreeBoardCommentResponse.Detail resData = freeBoardCommentDao.findByIdToDto(commentId).get();
+		resData.setAuthor(resData.getUserId() == loginUserId);
+
+		return resData;
 	}
 }

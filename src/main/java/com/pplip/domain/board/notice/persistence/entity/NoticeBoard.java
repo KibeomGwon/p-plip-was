@@ -25,5 +25,6 @@ public class NoticeBoard {
     public void update(NoticeRequest.Update update) {
         this.title = update.getTitle();
         this.content = update.getContent();
+        this.updatedAt = LocalDateTime.now();
     }
 }

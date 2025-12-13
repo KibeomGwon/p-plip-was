@@ -147,7 +147,8 @@
             <if test="title != null"> title = #{title}, </if>
             <if test="content != null"> content = #{content}, </if>
             <if test="viewCnt != 0"> view_cnt = #{viewCnt}, </if>
-            updated_at = NOW() </set>
+            updated_at = #{updatedAt}
+        </set>
         WHERE id = #{id};
     </update>
 

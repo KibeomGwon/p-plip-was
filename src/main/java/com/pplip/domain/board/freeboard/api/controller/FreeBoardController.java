@@ -104,6 +104,7 @@ public class FreeBoardController implements FreeBoardDocsController {
             Long id,
             @AuthenticationPrincipal
             UserDetails principal) {
+        log.info("update={}", update);
         return CommonResponse.success(SuccessCode.SUCCESS, freeBoardService.modifyFreeBoard(update,id, principal));
     }
 

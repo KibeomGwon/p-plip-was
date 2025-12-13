@@ -9,7 +9,7 @@ public class NoticeCommentParser {
 
     public NoticeCommentResponse.Update detailResToUpdateRes(NoticeCommentResponse.Detail detail) {
         return NoticeCommentResponse.Update.builder()
-                .authorName(detail.getAuthorName())
+                .authorNickName(detail.getAuthorNickName())
                 .profileImage(detail.getProfileImage())
                 .createdAt(detail.getCreatedAt())
                 .updatedAt(detail.getUpdatedAt())

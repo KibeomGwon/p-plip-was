@@ -16,13 +16,14 @@ public class NoticeCommentResponse {
     @Builder
     public static class Summary {
         private Long id;
-        private String authorName;
+        private String authorNickName;
         private FileResponse profileImage;
         private String content;
 
         @JsonIgnore
         private long authorId;
         private boolean isAuthor;
+
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
     }
@@ -33,7 +34,7 @@ public class NoticeCommentResponse {
     @Builder
     public static class Detail {
         private Long id;
-        private String authorName;
+        private String authorNickName;
         private FileResponse profileImage;
         private String content;
 
@@ -50,7 +51,7 @@ public class NoticeCommentResponse {
     @AllArgsConstructor
     @Builder
     public static class Update {
-        private String authorName;
+        private String authorNickName;
         private FileResponse profileImage;
         private String content;
 

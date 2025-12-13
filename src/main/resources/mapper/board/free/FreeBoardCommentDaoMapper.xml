@@ -12,6 +12,7 @@
         <result property="authorNickName" column="authorNickName"/>
         <result property="createdAt" column="createdAt"/>
         <result property="updatedAt" column="updatedAt"/>
+        <result property="userId" column="userId" />
 
         <association property="profileImage" javaType="com.pplip.domain.file.api.response.FileResponse">
             <id property="id" column="file_id"/>
@@ -40,6 +41,7 @@
             fc.created_at   AS createdAt,
             fc.updated_at   AS updatedAt,
             p.nickname      AS authorNickName,
+            fc.author_id    AS userId,
 
             pip.id              AS file_id,
             pip.saved_file_name AS file_name,
@@ -87,7 +89,7 @@
             <if test="content != null">
                 content = #{content},
             </if>
-            updated_at = NOW()
+            updated_at = #{updatedAt}
         </set>
         where id = #{id};
     </update>
@@ -122,8 +124,8 @@
 
     <select id="findById" resultMap="entityMap">
         select *
-        from free_board_comment
-        where is_removed = false
+        from free_comment
+        where is_removed = false and id = #{id}
     </select>
 
 </mapper>
