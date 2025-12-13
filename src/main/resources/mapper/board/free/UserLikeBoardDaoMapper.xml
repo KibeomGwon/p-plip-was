@@ -1,38 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.pplip.domain.board.freeboard.persistence.dao.UserLikeBoardDao">
-    <resultMap id="likeMap" type="com.pplip.domain.board.freeboard.persistence.entity.UserLikeBoard">
-        <id property="userId" column="user_id"/>
-        <id property="boardId" column="board_id"/>
-    </resultMap>
-    <select id="findById" resultMap="likeMap">
-        select *
+    <select id="findByBoardIdUserId" resultType="boolean">
+        select if (count(*) = 1, 1, 0)
         from user_like_board
-        where user_id = #{userId}
-          and board_id = #{boardId}
+        where board_id = #{boardId} and user_id = #{userId}
     </select>
+
     <insert id="insert">
-        insert into user_like_board
-            (user_id, board_id)
-        values (#userId, #boardId)
+        insert into user_like_board (board_id, user_id)
+        values (#{boardId}
+             , #{userId});
     </insert>
+
     <delete id="delete">
         delete
         from user_like_board
-        where user_id = #{userId}
-          and board_id = #{boardId}
-    </delete>
-    <select id="count">
-        select count(*)
-        from user_like_board
         where board_id = #{boardId}
-    </select>
-    <select id="isLike">
-        SELECT EXISTS (
-            SELECT 1
-            FROM user_like_board
-            WHERE board_id = #{boardId}
-              AND user_id = #{userId}
-        )
-    </select>
+          and user_id = #{userId};
+    </delete>
 </mapper>

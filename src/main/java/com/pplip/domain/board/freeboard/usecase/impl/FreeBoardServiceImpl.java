@@ -50,6 +50,7 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		}
 		freeBoard.setRemoved(true);
 		freeBoardDao.delete(freeBoard.getId());
+
 		return FreeBoardResponse.Remove.builder().title(freeBoard.getTitle()).id(freeBoard.getId()).build();
 	}
 

@@ -55,7 +55,6 @@ public class FreeBoardResponse {
         @JsonIgnore
         private long userId;
         private boolean isAuthor;
-        private boolean isLike;
 
         @Builder.Default
         private List<FileResponse> freeBoardImages = new ArrayList<>();
@@ -80,8 +79,8 @@ public class FreeBoardResponse {
     @NoArgsConstructor
     @AllArgsConstructor
     @Builder
-	public static class Like {
-        private int cnt;
-        private String action;
+    public static class BoardLike {
+        private boolean isLike;
     }
 }
+

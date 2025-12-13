@@ -49,7 +49,7 @@
 
         FROM free_comment fc
                  JOIN user u ON fc.author_id = u.id
-                 JOIN profile p ON u.id = p.user_id
+                 LEFT JOIN profile p ON u.id = p.user_id
                  LEFT JOIN profile_image_property pip ON p.id = pip.profile_id
 
         WHERE fc.board_id = #{boardId}
@@ -57,7 +57,7 @@
 
         ORDER BY fc.created_at DESC
         limit #{page.pageSize}
-        offset #{page.pageNum}
+        offset #{page.offset}
     </select>
 
     <select id="countAllByBoardId">
