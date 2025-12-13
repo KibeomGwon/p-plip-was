@@ -19,6 +19,9 @@ public class FreeBoardCommentResponse {
         private Long id;
         private String content;
         private String authorNickName;
+
+        @JsonIgnore
+        private long userId;
         private boolean isAuthor;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
@@ -34,7 +37,7 @@ public class FreeBoardCommentResponse {
         private String content;
         private String authorNickName;
         @JsonIgnore
-        private Long userId;
+        private long userId;
 
         private boolean isAuthor;
         private LocalDateTime createdAt;
@@ -51,7 +54,7 @@ public class FreeBoardCommentResponse {
         private String content;
         private String authorNickName;
         @JsonIgnore
-        private Long userId;
+        private long userId;
         private boolean isAuthor;
 
         private LocalDateTime createdAt;

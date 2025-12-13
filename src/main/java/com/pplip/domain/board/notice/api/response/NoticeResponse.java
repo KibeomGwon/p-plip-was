@@ -24,7 +24,7 @@ public class NoticeResponse {
         private int viewCnt;
 
         @JsonIgnore
-        private Long authorId;
+        private long authorId;
         private boolean isAuthor;
         private LocalDateTime createdAt;
         private LocalDateTime updatedAt;
@@ -44,7 +44,7 @@ public class NoticeResponse {
         private List<FileResponse> noticeImages;
 
         @JsonIgnore
-        private Long authorId;
+        private long authorId;
         private boolean isAuthor;
 
         private LocalDateTime createdAt;
@@ -64,7 +64,7 @@ public class NoticeResponse {
         private int viewCnt;
 
         @JsonIgnore
-        private Long authorId;
+        private long authorId;
         private boolean isAuthor;
 
         private List<FileResponse> noticeImages;

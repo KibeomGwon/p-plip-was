@@ -15,10 +15,12 @@ import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cglib.core.Local;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
@@ -69,10 +71,11 @@ public class NoticeCommentServiceImpl implements NoticeCommentService {
         NoticeComment entity = dao.findByIdToEntity(id)
                 .orElseThrow(() -> new BoardLogicException(ErrorCode.COMMENT_NOT_FOUND, "댓글을 찾을 수 없습니다."));
 
-        if (entity.getAuthorId() != userId) {
+        if (!entity.getAuthorId().equals(userId)) {
             throw new BoardLogicException(ErrorCode.FORBIDDEN, "작성자만 수정 가능합니다.");
         }
 
+        entity.setUpdatedAt(LocalDateTime.now());
         entity.updateContent(update.getContent());
         dao.update(entity);
 
@@ -90,7 +93,7 @@ public class NoticeCommentServiceImpl implements NoticeCommentService {
         NoticeComment entity = dao.findByIdToEntity(id)
                 .orElseThrow(() -> new BoardLogicException(ErrorCode.COMMENT_NOT_FOUND, "댓글을 찾지 못하였습니다."));
 
-        if (entity.getAuthorId() != userId) {
+        if (!entity.getAuthorId().equals(userId)) {
             throw new BoardLogicException(ErrorCode.FORBIDDEN, "작성자만 삭제할 수 있습니다.");
         }
 

@@ -82,7 +82,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     @CountView(BoardType.NOTICE)
-    @Transactional(readOnly = true)
+//    @Transactional(readOnly = true)
     public NoticeResponse.Detail findById(Long id) {
         NoticeResponse.Detail resData = dao.findById(id)
                 .orElseThrow(() -> new BoardLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR));
@@ -102,7 +102,7 @@ public class NoticeServiceImpl implements NoticeService {
         NoticeBoard entity = dao.findByIdToEntity(id)
                 .orElseThrow(() -> new BoardLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR));
 
-        if (entity.getAuthorId() != userId) {
+        if (!entity.getAuthorId().equals(userId)) {
             throw new BoardLogicException(ErrorCode.FORBIDDEN, "작성자만 수정할 수 있습니다.");
         }
 
@@ -138,7 +138,7 @@ public class NoticeServiceImpl implements NoticeService {
         NoticeBoard entity = dao.findByIdToEntity(id)
                 .orElseThrow(() -> new BoardLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR));
 
-        if (entity.getAuthorId() != userId) {
+        if (!entity.getAuthorId().equals(userId)) {
             throw new BoardLogicException(ErrorCode.FORBIDDEN, "작성자만 삭제할 수 있습니다.");
         }
 

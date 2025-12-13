@@ -9,6 +9,7 @@ import com.pplip.global.docs.NoticeDocsController;
 import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/notice")
+@Slf4j
 public class NoticeController implements NoticeDocsController {
 
     private final NoticeService noticeService;
@@ -39,8 +41,9 @@ public class NoticeController implements NoticeDocsController {
      * @return 작성된 공지게시글 상세 정보.
      */
     @PostMapping
-    public CommonResponse<NoticeResponse.Detail> postNoticeBoard(NoticeRequest.Post request,
+    public CommonResponse<NoticeResponse.Detail> postNoticeBoard(@RequestBody NoticeRequest.Post request,
                                                                  @AuthenticationPrincipal UserDetails userDetails) {
+        log.info("request={}", request);
         return CommonResponse.success(SuccessCode.CREATED, noticeService.post(request, userDetails));
     }
 
@@ -63,7 +66,7 @@ public class NoticeController implements NoticeDocsController {
      * @return 수정된 공지게시글 상세 정보.
      */
     @PutMapping("/{id}")
-    public CommonResponse<NoticeResponse.Update> updateNoticeBoard(NoticeRequest.Update update,
+    public CommonResponse<NoticeResponse.Update> updateNoticeBoard(@RequestBody NoticeRequest.Update update,
                                                                    @PathVariable Long id,
                                                                    @AuthenticationPrincipal UserDetails userDetails) {
         return CommonResponse.success(SuccessCode.UPDATED, noticeService.update(update, id, userDetails));
