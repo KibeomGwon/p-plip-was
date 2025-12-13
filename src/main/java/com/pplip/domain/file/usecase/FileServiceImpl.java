@@ -1,6 +1,7 @@
 package com.pplip.domain.file.usecase;
 
 import com.pplip.domain.auth.persistence.entity.Account;
+import com.pplip.domain.auth.utils.SecurityUtils;
 import com.pplip.domain.file.api.response.FileResponse;
 import com.pplip.domain.file.persistence.dao.BatchSupportFilePropertyDao;
 import com.pplip.domain.file.persistence.dao.FilePropertyDao;
@@ -51,7 +52,7 @@ public class FileServiceImpl implements FileService {
 	public FileResponse saveFile(MultipartFile file, ImageType imageType, UserDetails userDetails) {
 		log.info("map:{}, {}",batchSupportFilePropertyMap, filePropertyMap);
 
-		long userId = ((Account) userDetails).getUserId();
+		long userId = SecurityUtils.resolveUserId(userDetails);
 		FileProperty fileProperty = provider.create(file.getOriginalFilename(), file.getContentType(), file.getSize(), userId, imageType);
 		fileStorage.store(file, fileProperty.getPath());
 		FilePropertyDao<FileProperty> fdao = (FilePropertyDao<FileProperty>) Optional.ofNullable(filePropertyMap.get(imageType)).orElseThrow(() -> new BusinessLogicException(ErrorCode.FILE_TYPE_NOT_SUPPORT));
@@ -90,7 +91,7 @@ public class FileServiceImpl implements FileService {
 
 	@Override
 	public FileResponse remove(Long id, ImageType imageType, UserDetails userDetails) {
-		long userId = ((Account) userDetails).getUserId();
+		long userId = SecurityUtils.resolveUserId(userDetails);
 		FilePropertyDao<? extends FileProperty> fdao = Optional.ofNullable(filePropertyMap.get(imageType)).orElseThrow(() -> new BusinessLogicException(ErrorCode.FILE_NOT_FOUND));
 		FileProperty fileProperty = fdao.findById(id).orElseThrow(() -> new BusinessLogicException(ErrorCode.FILE_TYPE_NOT_SUPPORT, "파일을 찾을 수 없습니다."));
 		if (!fileProperty.getUploaderId().equals(userId)) {
@@ -113,7 +114,7 @@ public class FileServiceImpl implements FileService {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<FileResponse> saveFiles(List<? extends MultipartFile> files, ImageType imageType, UserDetails userDetails) {
-		long userId = ((Account) userDetails).getUserId();
+		long userId = SecurityUtils.resolveUserId(userDetails);
 
 		List<FileProperty> fileProperties = new ArrayList<>();
 		for (MultipartFile file : files) {

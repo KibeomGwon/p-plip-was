@@ -14,6 +14,20 @@
         </association>
     </resultMap>
 
+    <resultMap id="detailMap" type="com.pplip.domain.board.freeboard.api.response.FreeBoardResponse$Detail" autoMapping="true">
+        <id property="id" column="id"/>
+        <result property="authorName" column="authorName"/>
+        <result property="likeCnt" column="likeCnt"/>
+
+        <collection property="freeBoardImages" ofType="com.pplip.domain.file.api.response.FileResponse">
+            <id property="id" column="img_id"/>
+            <result property="name" column="img_name"/>
+            <result property="path" column="img_path"/>
+            <result property="size" column="img_size"/>
+            <result property="contentType" column="img_contentType"/>
+        </collection>
+    </resultMap>
+
     <select id="findAll" resultMap="boardListMap">
         SELECT fb.id AS id,
                fb.title AS title,
@@ -93,20 +107,6 @@
         </if>
         LIMIT #{pageRequest.pageSize} OFFSET #{pageRequest.offset}
     </select>
-
-    <resultMap id="detailMap" type="com.pplip.domain.board.freeboard.api.response.FreeBoardResponse$Detail" autoMapping="true">
-        <id property="id" column="id"/>
-        <result property="authorName" column="authorName"/>
-        <result property="likeCnt" column="likeCnt"/>
-
-        <collection property="freeBoardImages" ofType="com.pplip.domain.file.api.response.FileResponse">
-            <id property="id" column="img_id"/>
-            <result property="name" column="img_name"/>
-            <result property="path" column="img_path"/>
-            <result property="size" column="img_size"/>
-            <result property="contentType" column="img_contentType"/>
-        </collection>
-    </resultMap>
 
 
 

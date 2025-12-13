@@ -28,7 +28,7 @@ public class PlanServiceImpl implements PlanService {
 
 	@Override
 	public Page<PlanResponse.Summary> getPlans(PageRequest pageRequest, UserDetails userDetails) {
-		Long userId = ((Account) userDetails).getUserId();
+		Long userId = SecurityUtils.resolveUserId(userDetails);
 		List<PlanResponse.Summary> all = planDao.findAll(pageRequest, userId);
 		int count = planDao.count(userId);
 		return new Page<>(all, pageRequest.getPageNum(), pageRequest.getPageSize(), count);
@@ -46,7 +46,7 @@ public class PlanServiceImpl implements PlanService {
 
 	@Override
 	public PlanResponse.Detail createPlan(PlanRequest.Post request, UserDetails userDetails) {
-		Long userId = ((Account) userDetails).getUserId();
+		Long userId = SecurityUtils.resolveUserId(userDetails);
 		Plan plan = Plan.builder()
 				.title(request.getTitle())
 				.userId(userId)
