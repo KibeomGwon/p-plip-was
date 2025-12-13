@@ -1,8 +1,10 @@
 package com.pplip.domain.trip.ai.dto.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class AiRequest {
 
@@ -10,13 +12,16 @@ public class AiRequest {
 	@AllArgsConstructor
 	@NoArgsConstructor
 	@Builder
+	@ToString
 	public static class SuggestAttractions{
 		private String query;
-		@Builder.Default
-		private int range = 1000;
+		@JsonProperty("content_types")
+		private List<String> contentTypes;
 		private BigDecimal lat;
 		private BigDecimal lng;
 		@Builder.Default
 		private int k = 5;
+		@Builder.Default
+		private int m = 1000;
 	}
 }

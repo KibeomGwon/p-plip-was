@@ -9,7 +9,6 @@ import java.math.BigDecimal;
 import java.util.List;
 
 //임시 데이터 반환 추후 ai 서비스와 연결시 새로운 서비스로 구현
-@Service
 public class MockInferenceService implements InferenceService {
 
 
@@ -19,7 +18,6 @@ public class MockInferenceService implements InferenceService {
 				builder()
 				.no(56644L)
 				.title("가회동 성당")
-				.overview("가회동 성당이 위치한 북촌 일대는...")
 				.latitude(new BigDecimal(37.582085))
 				.longitude(new BigDecimal(126.984))
 				.contentType(ContentType.ATTRACTION)

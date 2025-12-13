@@ -64,7 +64,7 @@ public class AttractionController implements AttractionDocsController {
 	 * @param userDetails 현재 로그인한 사용자 정보
 	 * @return 추천된 관광지 목록
 	 */
-	@GetMapping("/suggest")
+	@PostMapping("/suggest")
 	public CommonResponse<List<AiResponse.SuggestAttraction>> suggestAttractions(@RequestBody AttractionRequest.Suggest suggest,
 	                                                                             @AuthenticationPrincipal UserDetails userDetails) {
 		return CommonResponse.success(SuccessCode.SUCCESS, attractionService.suggestAttractions(suggest));

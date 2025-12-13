@@ -68,5 +68,4 @@ public interface FreeBoardService {
 	 */
 	Page<FreeBoardResponse.BoardList> retrieveMyPosts(UserDetails userDetails, PageRequest pageRequest, FreeBoardSort sort);
 
-	FreeBoardResponse.Like like(Long id, UserDetails principal);
 }

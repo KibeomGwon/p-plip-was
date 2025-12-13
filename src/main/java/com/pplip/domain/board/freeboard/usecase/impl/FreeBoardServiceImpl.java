@@ -131,28 +131,28 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 
 		return new Page<>(resData, pageRequest.getPageNum(), pageRequest.getPageSize(), count);
 	}
-
-	@Override
-	public FreeBoardResponse.Like like(Long boardId, UserDetails principal) {
-		Long userId = SecurityUtils.resolveUserId(principal);
-		FreeBoardResponse.Like res = new FreeBoardResponse.Like();
-		userLikeBoardDao.findById(userId, boardId).ifPresentOrElse(
-				(like) -> {
-					int delete = userLikeBoardDao.delete(like);
-					if (delete < 1) {
-						throw new BusinessLogicException(ErrorCode.BOARD_LIKE_PROCESS_FAILURE, "좋아요 취소에 실패했습니다.");
-					}
-					res.setAction("CANCEL");
-				},
-				() -> {
-					int insert = userLikeBoardDao.insert(new UserLikeBoard(boardId, userId));
-					if (insert < 1) {
-						throw new BusinessLogicException(ErrorCode.BOARD_LIKE_PROCESS_FAILURE, "좋아요 생성에 실패했습니다.");
-					}
-					res.setAction("NEW");
-				}
-		);
-		res.setCnt(userLikeBoardDao.count(boardId));
-		return res;
-	}
+//
+//	@Override
+//	public FreeBoardResponse.Like like(Long boardId, UserDetails principal) {
+//		Long userId = SecurityUtils.resolveUserId(principal);
+//		FreeBoardResponse.Like res = new FreeBoardResponse.Like();
+//		userLikeBoardDao.findById(userId, boardId).ifPresentOrElse(
+//				(like) -> {
+//					int delete = userLikeBoardDao.delete(like);
+//					if (delete < 1) {
+//						throw new BusinessLogicException(ErrorCode.BOARD_LIKE_PROCESS_FAILURE, "좋아요 취소에 실패했습니다.");
+//					}
+//					res.setAction("CANCEL");
+//				},
+//				() -> {
+//					int insert = userLikeBoardDao.insert(new UserLikeBoard(boardId, userId));
+//					if (insert < 1) {
+//						throw new BusinessLogicException(ErrorCode.BOARD_LIKE_PROCESS_FAILURE, "좋아요 생성에 실패했습니다.");
+//					}
+//					res.setAction("NEW");
+//				}
+//		);
+//		res.setCnt(userLikeBoardDao.count(boardId));
+//		return res;
+//	}
 }
