@@ -12,6 +12,7 @@ import com.pplip.global.exception.BusinessLogicException;
 import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class FreeBoardCommentServiceImpl implements FreeBoardCommentService {
 	private final FreeBoardCommentDao freeBoardCommentDao;
 

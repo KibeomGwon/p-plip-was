@@ -74,4 +74,13 @@ public class FreeBoardResponse {
         private long id;
         private String title;
     }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class BoardLike {
+        private boolean isLike;
+    }
 }
+
