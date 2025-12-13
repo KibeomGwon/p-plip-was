@@ -90,4 +90,36 @@ public interface FreeBoardDocsController {
     @ApiResponse(responseCode = "203", description = "삭제")
     CommonResponse<FreeBoardResponse.Remove> removeFreeBoard(Long id, @AuthenticationPrincipal UserDetails principal);
 
+    /**
+     * 자유 게시판을 좋아요 했는지 확인.
+     *
+     * @param id 게시글 ID
+     * @param userDetails 게시글을 보고있는 인증된 유저.
+     * @return 유저의 게시글 좋아요 정보
+     */
+    @Operation(summary = "자유게시판 좋아요 조회")
+    @ApiResponse(responseCode = "200", description = "조회")
+    CommonResponse<FreeBoardResponse.BoardLike> getLikeFreeBoard(Long id, UserDetails userDetails);
+
+    /**
+     * 자유 게시판을 좋아요 생성.
+     *
+     * @param id 게시글 ID
+     * @param userDetails 게시글을 보고있는 인증된 유저.
+     * @return 유저의 게시글 좋아요 정보
+     */
+    @Operation(summary = "자유게시판 좋아요 생성")
+    @ApiResponse(responseCode = "201", description = "생성")
+    CommonResponse<FreeBoardResponse.BoardLike> likeFreeBoard(Long id, UserDetails userDetails);
+
+    /**
+     * 자유 게시판을 좋아요 생성.
+     *
+     * @param id 게시글 ID
+     * @param userDetails 게시글을 보고있는 인증된 유저.
+     * @return 유저의 게시글 좋아요 정보
+     */
+    @Operation(summary = "자유게시판 좋아요 삭제")
+    @ApiResponse(responseCode = "203", description = "삭제")
+    CommonResponse<FreeBoardResponse.BoardLike> unlikeFreeBoard(Long id, UserDetails userDetails);
 }

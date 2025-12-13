@@ -15,7 +15,7 @@
         where user_id = #{userId}
         order by start_date
         limit #{page.pageSize}
-        offset #{page.pageNum};
+        offset #{page.offset};
     </select>
 
     <select id="findByIdToDto" resultType="com.pplip.domain.trip.plan.api.response.PlanResponse$Detail">

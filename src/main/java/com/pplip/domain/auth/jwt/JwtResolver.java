@@ -43,10 +43,11 @@ public class JwtResolver {
 		if (!payload.get(TOKEN_TYPE).equals(tokenType)) {
             throw new MalformedJwtException("토큰 타입이 위조되었습니다.");
 		}
-		return Account.builder()
+		Account account = Account.builder()
 				.userId(payload.get(USERID, Long.class))
 				.role(Role.getRole(payload.get(ROLE, String.class)))
 				.build();
+		return account;
 
 	}
 

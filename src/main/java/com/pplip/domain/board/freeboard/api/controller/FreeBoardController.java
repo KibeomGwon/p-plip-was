@@ -4,6 +4,7 @@ import com.pplip.domain.board.freeboard.api.request.FreeBoardRequest;
 import com.pplip.domain.board.freeboard.api.response.FreeBoardResponse;
 import com.pplip.domain.board.freeboard.persistence.entity.FreeBoardSort;
 import com.pplip.domain.board.freeboard.usecase.FreeBoardService;
+import com.pplip.domain.board.freeboard.usecase.UserLikeBoardService;
 import com.pplip.global.api.code.SuccessCode;
 import com.pplip.global.api.response.CommonResponse;
 import com.pplip.global.docs.FreeBoardDocsController;
@@ -26,6 +27,7 @@ import org.springframework.web.bind.annotation.*;
 public class FreeBoardController implements FreeBoardDocsController {
 
     private final FreeBoardService freeBoardService;
+    private final UserLikeBoardService userLikeBoardService;
 
     /**
      * 자유게시판 목록을 조회합니다.
@@ -121,5 +123,27 @@ public class FreeBoardController implements FreeBoardDocsController {
             UserDetails principal) {
         log.info("id={}", id);
         return CommonResponse.success(SuccessCode.SUCCESS, freeBoardService.remove(id, principal));
+    }
+
+    @Override
+    @GetMapping("/{id}/like")
+    public CommonResponse<FreeBoardResponse.BoardLike> getLikeFreeBoard(@PathVariable Long id,
+                                                                       @AuthenticationPrincipal UserDetails userDetails) {
+
+        return CommonResponse.success(SuccessCode.SUCCESS, userLikeBoardService.getLikeFreeBoard(id, userDetails));
+    }
+
+    @Override
+    @PostMapping("/{id}/like")
+    public CommonResponse<FreeBoardResponse.BoardLike> likeFreeBoard(@PathVariable Long id,
+                                                                     @AuthenticationPrincipal UserDetails userDetails) {
+        return CommonResponse.success(SuccessCode.CREATED, userLikeBoardService.likeFreeBoard(id, userDetails));
+    }
+
+    @Override
+    @DeleteMapping("/{id}/like")
+    public CommonResponse<FreeBoardResponse.BoardLike> unlikeFreeBoard(@PathVariable Long id,
+                                                                       @AuthenticationPrincipal UserDetails userDetails) {
+        return CommonResponse.success(SuccessCode.REMOVED, userLikeBoardService.unlikeFreeBoard(id, userDetails));
     }
 }

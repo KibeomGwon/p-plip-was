@@ -1,5 +1,6 @@
 package com.pplip.domain.board.freeboard.api.controller;
 
+import com.pplip.domain.auth.persistence.entity.Account;
 import com.pplip.domain.board.freeboard.api.request.FreeBoardCommentRequest;
 import com.pplip.domain.board.freeboard.api.response.FreeBoardCommentResponse;
 import com.pplip.domain.board.freeboard.usecase.FreeBoardCommentService;
@@ -9,6 +10,7 @@ import com.pplip.global.docs.FreeBoardCommentDocsController;
 import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/freeboard")
 @RequiredArgsConstructor
+@Slf4j
 public class FreeBoardCommentController implements FreeBoardCommentDocsController {
 
     private final FreeBoardCommentService commentService;
@@ -46,6 +49,7 @@ public class FreeBoardCommentController implements FreeBoardCommentDocsControlle
     public CommonResponse<FreeBoardCommentResponse.Detail> postComment(@PathVariable(name = "id") Long boardId,
                                                                        @RequestBody FreeBoardCommentRequest.Create comment,
                                                                        @AuthenticationPrincipal UserDetails loginUser) {
+        log.info("board id ={}, comment={}, loginUser={}", boardId, comment, ((Account) loginUser).getUserId());
         return CommonResponse.success(SuccessCode.CREATED, commentService.postComment(boardId,comment,loginUser));
     }
 
