@@ -24,6 +24,8 @@ public class AttractionRequest {
         // default = 1000m
         @Builder.Default
         private Integer m = 1000;
+        @Builder.Default
+        private Integer k = 10;
     }
 
     @Data

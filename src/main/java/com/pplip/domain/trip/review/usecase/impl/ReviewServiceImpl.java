@@ -60,7 +60,7 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public ReviewResponse.Detail post(ReviewRequest.Post post, Long attractionId, UserDetails userDetails) {
-        Long userId = ((Account) userDetails).getUserId();
+        Long userId = SecurityUtils.resolveUserId(userDetails);
 
         ReviewModel model = new ReviewModel(post, userId, attractionId);
         Review entity = model.toEntity();
@@ -87,7 +87,7 @@ public class ReviewServiceImpl implements ReviewService {
         Review entity = reviewDao.findByIdToEntity(id)
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.REVIEW_NOT_FOUND, "리뷰 조회에 실패했습니다."));
 
-        Long userId = ((Account) userDetails).getUserId();
+        Long userId = SecurityUtils.resolveUserId(userDetails);
 
         if (entity.getAuthorId() != userId) {
             throw new BusinessLogicException(ErrorCode.FORBIDDEN, "작성자만 수정할 수 있습니다.");
@@ -124,7 +124,7 @@ public class ReviewServiceImpl implements ReviewService {
     public long delete(Long id, UserDetails userDetails) {
         Review entity = reviewDao.findByIdToEntity(id).orElseThrow(() -> new BoardLogicException(ErrorCode.REVIEW_NOT_FOUND, "리뷰 조회에 실패했습니다."));
 
-        Long userId = ((Account) userDetails).getUserId();
+        Long userId = SecurityUtils.resolveUserId(userDetails);
 
         if (entity.getAuthorId() != userId) {
             throw new BusinessLogicException(ErrorCode.FORBIDDEN, "작성자만 삭제할 수 있습니다.");

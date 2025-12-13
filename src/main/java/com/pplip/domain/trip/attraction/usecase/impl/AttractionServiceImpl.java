@@ -1,20 +1,18 @@
 package com.pplip.domain.trip.attraction.usecase.impl;
 
+import com.pplip.domain.auth.utils.SecurityUtils;
 import com.pplip.domain.trip.ai.dto.request.AiRequest;
 import com.pplip.domain.trip.ai.dto.response.AiResponse;
 import com.pplip.domain.trip.ai.service.InferenceService;
-import com.pplip.domain.auth.utils.SecurityUtils;
 import com.pplip.domain.trip.attraction.api.request.AttractionRequest;
 import com.pplip.domain.trip.attraction.api.response.AttractionResponse;
 import com.pplip.domain.trip.attraction.persistence.dao.AttractionDao;
-import com.pplip.domain.trip.attraction.persistence.dao.SidoGugunsDao;
 import com.pplip.domain.trip.attraction.persistence.dao.TagDao;
 import com.pplip.domain.trip.attraction.persistence.entity.ContentType;
 import com.pplip.domain.trip.attraction.usecase.AttractionService;
 import com.pplip.domain.trip.attraction.usecase.SearchHistoryService;
 import com.pplip.domain.trip.attraction.usecase.SidoGugunsService;
 import com.pplip.global.api.code.ErrorCode;
-import com.pplip.global.exception.BoardLogicException;
 import com.pplip.global.exception.BusinessLogicException;
 import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
@@ -33,17 +31,17 @@ public class AttractionServiceImpl implements AttractionService {
 	private final TagDao tagDao;
 
 	private final InferenceService inferenceService;
-    private final SearchHistoryService historyService;
+	private final SearchHistoryService historyService;
 	private final SidoGugunsService sidoGugunsService;
 
 
-    public Page<AttractionResponse.Summary> findAllBySearch(AttractionRequest.Search search, PageRequest pageRequest) {
-        List<AttractionResponse.Summary> resData = attractionDao.findAllBySearch(search, pageRequest);
-        resData.forEach(data -> data.setContentType(ContentType.getContentType(data.getContentTypeId().intValue())));
+	public Page<AttractionResponse.Summary> findAllBySearch(AttractionRequest.Search search, PageRequest pageRequest) {
+		List<AttractionResponse.Summary> resData = attractionDao.findAllBySearch(search, pageRequest);
+		resData.forEach(data -> data.setContentType(ContentType.getContentType(data.getContentTypeId().intValue())));
 
-        if (!SecurityUtils.isAnonymous()) {
-            historyService.post(search, SecurityUtils.getCurrentUser());
-        }
+		if (!SecurityUtils.isAnonymous()) {
+			historyService.post(search, SecurityUtils.getCurrentUser());
+		}
 
 		return new Page<>(resData, pageRequest.getPageNum(), pageRequest.getPageSize(), attractionDao.countAllBySearch(search));
 	}
@@ -54,8 +52,9 @@ public class AttractionServiceImpl implements AttractionService {
 				.lat(suggest.getLat())
 				.lng(suggest.getLng())
 				.query(suggest.getQuery())
-				.range(suggest.getM())
-				.k(5)
+				.m(suggest.getM())
+				.k(suggest.getK())
+				.contentTypes(suggest.getContentTypes() == null ? null : suggest.getContentTypes().stream().map(ContentType::getDescription).toList())
 				.build());
 	}
 

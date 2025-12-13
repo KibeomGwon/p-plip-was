@@ -46,7 +46,7 @@ public class NoticeCommentServiceImpl implements NoticeCommentService {
 
     @Override
     public NoticeCommentResponse.Detail post(NoticeCommentRequest.Post post, Long boardId, UserDetails userDetails) {
-        Long userId = ((Account) userDetails).getUserId();
+        Long userId = SecurityUtils.resolveUserId(userDetails);
         NoticeCommentModel model = new NoticeCommentModel(post, boardId, userId);
         NoticeComment entity = model.toEntity();
 
@@ -64,7 +64,7 @@ public class NoticeCommentServiceImpl implements NoticeCommentService {
     public NoticeCommentResponse.Update update(NoticeCommentRequest.Update update,
                                                Long id,
                                                UserDetails userDetails) {
-        Long userId = ((Account) userDetails).getUserId();
+        Long userId = SecurityUtils.resolveUserId(userDetails);
 
         NoticeComment entity = dao.findByIdToEntity(id)
                 .orElseThrow(() -> new BoardLogicException(ErrorCode.COMMENT_NOT_FOUND, "댓글을 찾을 수 없습니다."));
@@ -86,7 +86,7 @@ public class NoticeCommentServiceImpl implements NoticeCommentService {
 
     @Override
     public void delete(Long id, UserDetails userDetails) {
-        Long userId = ((Account) userDetails).getUserId();
+        Long userId = SecurityUtils.resolveUserId(userDetails);
         NoticeComment entity = dao.findByIdToEntity(id)
                 .orElseThrow(() -> new BoardLogicException(ErrorCode.COMMENT_NOT_FOUND, "댓글을 찾지 못하였습니다."));
 

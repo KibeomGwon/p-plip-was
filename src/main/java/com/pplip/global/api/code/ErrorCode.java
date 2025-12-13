@@ -43,7 +43,10 @@ public enum ErrorCode {
     SIDO_GUGUN_INVALID_VALUE(DomainCode.ATTRACTION, ExceptionCode.INVALID, "유효하지 않는 시도 구군 코드입니다."),
     INVALID_INPUT(DomainCode.USER, ExceptionCode.INVALID, "입력값이 유효하지 않습니다."),
     PLAN_NOT_FOUND(DomainCode.PLAN, ExceptionCode.NOT_FOUND,"계획 정보를 찾지 못했습니다."),
-    PLAN_PROCESS_FAIL(DomainCode.PLAN,  ExceptionCode.FAILURE,"계획 작업 중 오류가 발생하였습니다.");
+    PLAN_PROCESS_FAIL(DomainCode.PLAN,  ExceptionCode.FAILURE,"계획 작업 중 오류가 발생하였습니다."),
+    BOARD_LIKE_PROCESS_FAILURE(DomainCode.BOARD_LIKE, ExceptionCode.FAILURE , "게시판 좋아요 작업 중 오류가 발생하였습니다."),
+    AI_SERVER_PROCESS_ERROR(DomainCode.ATTRACTION, ExceptionCode.INTERNAL_SERVER_ERROR,"추론 서버에서 오류가 발생하였습니다.")
+    ;
 
 
     private DomainCode domainCode;

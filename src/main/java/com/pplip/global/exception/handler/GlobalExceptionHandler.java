@@ -32,4 +32,9 @@ public class GlobalExceptionHandler {
         return CommonResponse.fail(e.getErrorCode(), e.getMessage());
     }
 
+    @ExceptionHandler(AIServerErrorException.class)
+    public CommonResponse<Void> aiServerHandle(AIServerErrorException e){
+        return CommonResponse.fail(e.getErrorCode(), e.getMessage());
+    }
+
 }

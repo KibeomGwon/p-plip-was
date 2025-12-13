@@ -12,7 +12,8 @@ public enum ExceptionCode {
     UN_EXPECTED(5),
     EXPIRED(6),
     MALFORMED(7),
-    INVALID(8), FAILURE(4), CONFLICT(9), FORBIDDEN(3);
+    INVALID(8), FAILURE(4), CONFLICT(9), FORBIDDEN(3),
+    INTERNAL_SERVER_ERROR(55);
     private int value;
 
 }

@@ -59,7 +59,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public NoticeResponse.Detail post(NoticeRequest.Post post, UserDetails userDetails) {
-        Long userId = ((Account) userDetails).getUserId();
+        Long userId = SecurityUtils.resolveUserId(userDetails);
 
         NoticeBoardModel boardModel = new NoticeBoardModel(post, userId);
         NoticeBoard entity = boardModel.toEntity();
@@ -97,7 +97,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public NoticeResponse.Update update(NoticeRequest.Update update, Long id, UserDetails userDetails) {
-        Long userId = ((Account) userDetails).getUserId();
+        Long userId = SecurityUtils.resolveUserId(userDetails);
 
         NoticeBoard entity = dao.findByIdToEntity(id)
                 .orElseThrow(() -> new BoardLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR));
@@ -134,7 +134,7 @@ public class NoticeServiceImpl implements NoticeService {
 
     @Override
     public void remove(Long id, UserDetails userDetails) {
-        Long userId = ((Account) userDetails).getUserId();
+        Long userId = SecurityUtils.resolveUserId(userDetails);
         NoticeBoard entity = dao.findByIdToEntity(id)
                 .orElseThrow(() -> new BoardLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR));
 

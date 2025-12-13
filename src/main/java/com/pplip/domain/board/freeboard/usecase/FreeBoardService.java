@@ -67,4 +67,5 @@ public interface FreeBoardService {
 	 * @return 페이징된 자유게시판 목록
 	 */
 	Page<FreeBoardResponse.BoardList> retrieveMyPosts(UserDetails userDetails, PageRequest pageRequest, FreeBoardSort sort);
+
 }

@@ -1,6 +1,7 @@
 package com.pplip.domain.trip.attraction.usecase.impl;
 
 import com.pplip.domain.auth.persistence.entity.Account;
+import com.pplip.domain.auth.utils.SecurityUtils;
 import com.pplip.domain.trip.attraction.api.request.AttractionRequest;
 import com.pplip.domain.trip.attraction.api.request.SearchHistoryRequest;
 import com.pplip.domain.trip.attraction.api.response.SearchHistoryResponse;
@@ -29,7 +30,7 @@ public class SearchHistoryServiceImpl implements SearchHistoryService {
 
     @Override
     public Page<SearchHistoryResponse.History> findAll(PageRequest pageRequest, UserDetails userDetails) {
-        Long userId = ((Account) userDetails).getUserId();
+        Long userId = SecurityUtils.resolveUserId(userDetails);
 
         List<SearchHistoryResponse.History> resData = dao.findAll(userId, pageRequest).stream()
                 .map(data -> SearchHistoryResponse.History.builder()
@@ -44,7 +45,7 @@ public class SearchHistoryServiceImpl implements SearchHistoryService {
 
     @Override
     public void post(AttractionRequest.Search post, UserDetails userDetails) {
-        Long userId = ((Account) userDetails).getUserId();
+        Long userId = SecurityUtils.resolveUserId(userDetails);
         SearchHistory entity = new SearchHistoryModel(post, userId).toEntity();
 
         if (dao.insert(entity) == 0) {
@@ -54,7 +55,7 @@ public class SearchHistoryServiceImpl implements SearchHistoryService {
 
     @Override
     public long delete(Long id, UserDetails userDetails) {
-        Long userId = ((Account) userDetails).getUserId();
+        Long userId = SecurityUtils.resolveUserId(userDetails);
         SearchHistory entity = dao.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new BoardLogicException(ErrorCode.ATTRACTION_NOT_FOUND, "검색 기록이 존재하지 않습니다"));
 
