@@ -2,6 +2,7 @@ package com.pplip.global.docs;
 
 import com.pplip.domain.trip.review.api.request.ReviewRequest;
 import com.pplip.domain.trip.review.api.response.ReviewResponse;
+import com.pplip.domain.trip.review.persistence.entity.ReviewSort;
 import com.pplip.global.api.response.CommonResponse;
 import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
@@ -21,12 +22,24 @@ public interface ReviewDocsController {
      *
      * @param attractionId 관광지 ID
      * @param pageRequest 페이징 정보
+     * @param reviewSort 정렬 정보
      * @return 리뷰 상세 정보 페이지를 담은 CommonResponse
      */
     @Operation(summary = "관광지 리뷰 목록 조회", description = "특정 관광지의 리뷰 목록을 조회합니다.")
     @ApiResponse(responseCode = "200", description = "리뷰 목록 조회 성공")
-    CommonResponse<Page<ReviewResponse.Detail>> listReview(Long attractionId, PageRequest pageRequest);
+    CommonResponse<Page<ReviewResponse.Detail>> listReview(Long attractionId, PageRequest pageRequest, ReviewSort reviewSort);
 
+    /**
+     * 유저의 리뷰 목록을 가져옵니다.
+     *
+     * @param userDetails 인증된 유저
+     * @param pageRequest 페이징 정보
+     * @param reviewSort 정렬 정보
+     * @return 리뷰 상세 정보 페이지를 담은 CommonResponse
+     */
+    @Operation(summary = "관광지 리뷰 목록 조회", description = "유저의 리뷰 목록을 조회합니다.")
+    @ApiResponse(responseCode = "200", description = "리뷰 목록 조회 성공")
+    CommonResponse<Page<ReviewResponse.DetailWithAttractionName>> myListReview(UserDetails userDetails, PageRequest pageRequest, ReviewSort reviewSort);
     /**
      * 특정 관광지에 대한 새 리뷰를 작성합니다.
      *

@@ -9,6 +9,7 @@ import com.pplip.domain.trip.review.api.request.ReviewRequest;
 import com.pplip.domain.trip.review.api.response.ReviewResponse;
 import com.pplip.domain.trip.review.persistence.dao.ReviewDao;
 import com.pplip.domain.trip.review.persistence.entity.Review;
+import com.pplip.domain.trip.review.persistence.entity.ReviewSort;
 import com.pplip.domain.trip.review.utils.ReviewParser;
 import com.pplip.global.api.code.ErrorCode;
 import com.pplip.global.exception.BoardLogicException;
@@ -104,13 +105,13 @@ class ReviewServiceImplTest {
 			Long attractionId = 1L;
 			PageRequest pageRequest = new PageRequest(1, 10);
 			List<ReviewResponse.Detail> reviews = List.of(createReviewDetail(1L, 1L));
-			when(reviewDao.findAllByAttractionNo(attractionId)).thenReturn(reviews);
+			when(reviewDao.findAllByAttractionNo(attractionId, new PageRequest(1, 20), ReviewSort.ASC)).thenReturn(reviews);
 			when(reviewDao.countAllByAttractionNo(attractionId)).thenReturn(1);
 			securityUtilsMock.when(SecurityUtils::isAnonymous).thenReturn(false);
 			securityUtilsMock.when(SecurityUtils::getCurrentUser).thenReturn(createAccount(1L));
 
 			// when
-			Page<ReviewResponse.Detail> result = reviewService.findAll(attractionId, pageRequest);
+			Page<ReviewResponse.Detail> result = reviewService.findAll(attractionId, pageRequest, ReviewSort.ASC);
 
 			// then
 			assertThat(result).isNotNull();
@@ -125,12 +126,12 @@ class ReviewServiceImplTest {
 			Long attractionId = 1L;
 			PageRequest pageRequest = new PageRequest(1, 10);
 			List<ReviewResponse.Detail> reviews = List.of(createReviewDetail(1L, 1L));
-			when(reviewDao.findAllByAttractionNo(attractionId)).thenReturn(reviews);
+			when(reviewDao.findAllByAttractionNo(attractionId, pageRequest, ReviewSort.ASC)).thenReturn(reviews);
 			when(reviewDao.countAllByAttractionNo(attractionId)).thenReturn(1);
 			securityUtilsMock.when(SecurityUtils::isAnonymous).thenReturn(true);
 
 			// when
-			Page<ReviewResponse.Detail> result = reviewService.findAll(attractionId, pageRequest);
+			Page<ReviewResponse.Detail> result = reviewService.findAll(attractionId, pageRequest,ReviewSort.ASC);
 
 			// then
 			assertThat(result).isNotNull();
@@ -144,12 +145,12 @@ class ReviewServiceImplTest {
 			// given
 			Long attractionId = 1L;
 			PageRequest pageRequest = new PageRequest(1, 10);
-			when(reviewDao.findAllByAttractionNo(attractionId)).thenReturn(Collections.emptyList());
+			when(reviewDao.findAllByAttractionNo(attractionId, pageRequest, ReviewSort.ASC)).thenReturn(Collections.emptyList());
 			when(reviewDao.countAllByAttractionNo(attractionId)).thenReturn(0);
 			securityUtilsMock.when(SecurityUtils::isAnonymous).thenReturn(true);
 
 			// when
-			Page<ReviewResponse.Detail> result = reviewService.findAll(attractionId, pageRequest);
+			Page<ReviewResponse.Detail> result = reviewService.findAll(attractionId, pageRequest, ReviewSort.ASC);
 
 			// then
 			assertThat(result).isNotNull();

@@ -34,6 +34,20 @@ public class NoticeController implements NoticeDocsController {
     }
 
     /**
+     * 특정 사용자가 작성한 공지게시판의 게시글들을 불러옵니다.
+     *
+     * @param userDetails 인증된 사용자
+     * @param pageRequest 공지 게시글 페이징 정보.
+     * @return 페이징된 공지게시글 요약 정보.
+     */
+    @Override
+    @GetMapping("/my-post")
+    public CommonResponse<Page<NoticeResponse.Summary>> listMyNoticeBoard(@AuthenticationPrincipal UserDetails userDetails,
+                                                                          @ModelAttribute PageRequest pageRequest) {
+        return CommonResponse.success(SuccessCode.SUCCESS, noticeService.findAllByUserId(userDetails, pageRequest));
+    }
+
+    /**
      * 공지게시판의 게시글을 작성합니다.
      *
      * @param request 작성될 공지게시글 정보.

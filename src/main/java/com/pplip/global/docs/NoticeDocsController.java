@@ -26,6 +26,17 @@ public interface NoticeDocsController {
     @ApiResponse(responseCode = "200", description = "성공")
     CommonResponse<Page<NoticeResponse.Summary>> listNoticeBoard(PageRequest pageRequest);
 
+    /**
+     * 특정 사용자가 작성한 공지게시판의 게시글들을 불러옵니다.
+     *
+     * @param userDetails 인증된 사용자
+     * @param pageRequest 공지 게시글 페이징 정보.
+     * @return 페이징된 공지게시글 요약 정보.
+     */
+    @Operation(summary = "특정 사용자가 작성한 공지게시판 페이징 조회")
+    @ApiResponse(responseCode = "200", description = "성공")
+    CommonResponse<Page<NoticeResponse.Summary>> listMyNoticeBoard(UserDetails userDetails, PageRequest pageRequest);
+
 
     /**
      * 공지게시판의 게시글을 작성합니다.

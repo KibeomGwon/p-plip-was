@@ -11,6 +11,7 @@ import com.pplip.domain.trip.review.api.request.ReviewRequest;
 import com.pplip.domain.trip.review.api.response.ReviewResponse;
 import com.pplip.domain.trip.review.persistence.dao.ReviewDao;
 import com.pplip.domain.trip.review.persistence.entity.Review;
+import com.pplip.domain.trip.review.persistence.entity.ReviewSort;
 import com.pplip.domain.trip.review.usecase.ReviewService;
 import com.pplip.domain.trip.review.usecase.model.ReviewModel;
 import com.pplip.domain.trip.review.utils.ReviewParser;
@@ -20,10 +21,12 @@ import com.pplip.global.exception.BusinessLogicException;
 import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -37,23 +40,32 @@ public class ReviewServiceImpl implements ReviewService {
     private final ReviewParser parser;
 
     @Override
-    public Page<ReviewResponse.Detail> findAll(Long attractionId, PageRequest pageRequest) {
-        List<ReviewResponse.Detail> resData = reviewDao.findAllByAttractionNo(attractionId);
+    public Page<ReviewResponse.Detail> findAll(Long attractionId, PageRequest pageRequest, ReviewSort sort) {
+        List<ReviewResponse.Detail> resData = reviewDao.findAllByAttractionNo(attractionId, pageRequest, sort);
         int count = reviewDao.countAllByAttractionNo(attractionId);
 
         resData.forEach(data -> {
-            data.getReviewImages().forEach(img -> img.setImageType(ImageType.REVIEW));
-            data.getUserProfileImage().setImageType(ImageType.PROFILE);
             if (!SecurityUtils.isAnonymous()) {
                 Long userId = SecurityUtils.getCurrentUser().getUserId();
-                data.setAuthor(data.getAuthorId() == userId);
+                data.setAuthor(data.getAuthorId().equals(userId));
             }
         });
 
         if (!SecurityUtils.isAnonymous()) {
             Long userId = SecurityUtils.getCurrentUser().getUserId();
-            resData.forEach(data -> data.setAuthor(data.getAuthorId() == userId));
+            resData.forEach(data -> data.setAuthor(data.getAuthorId().equals(userId)));
         }
+
+        return new Page<>(resData, pageRequest.getPageNum(), pageRequest.getPageSize(), count);
+    }
+
+    @Override
+    public Page<ReviewResponse.DetailWithAttractionName> findAllByUserId(UserDetails userDetails, PageRequest pageRequest, ReviewSort sort) {
+        Long userId = ((Account) userDetails).getUserId();
+        List<ReviewResponse.DetailWithAttractionName> resData = reviewDao.findAllByUserId(userId, pageRequest, sort);
+
+        resData.forEach(data -> data.setAuthor(data.getAuthorId().equals(userId)));
+        int count = reviewDao.countAllByUserId(userId);
 
         return new Page<>(resData, pageRequest.getPageNum(), pageRequest.getPageSize(), count);
     }
@@ -75,9 +87,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         ReviewResponse.Detail resData = reviewDao.findById(entity.getId())
                 .orElseThrow(() -> new BusinessLogicException(ErrorCode.REVIEW_NOT_FOUND, "리뷰 조회에 실패했습니다."));
-        resData.getReviewImages().forEach(img -> img.setImageType(ImageType.REVIEW));
-        resData.getUserProfileImage().setImageType(ImageType.PROFILE);
-        resData.setAuthor(resData.getAuthorId() == userId);
+        resData.setAuthor(resData.getAuthorId().equals(userId));
 
         return resData;
     }
@@ -89,10 +99,11 @@ public class ReviewServiceImpl implements ReviewService {
 
         Long userId = SecurityUtils.resolveUserId(userDetails);
 
-        if (entity.getAuthorId() != userId) {
+        if (!entity.getAuthorId().equals(userId)) {
             throw new BusinessLogicException(ErrorCode.FORBIDDEN, "작성자만 수정할 수 있습니다.");
         }
 
+        entity.setUpdatedAt(LocalDateTime.now());
         entity.setContent(update.getContent());
 
         if (update.getFiles() != null) {
@@ -113,9 +124,7 @@ public class ReviewServiceImpl implements ReviewService {
         reviewDao.update(entity);
         ReviewResponse.Detail resData = reviewDao.findById(entity.getId()).orElseThrow(() -> new BoardLogicException(ErrorCode.REVIEW_NOT_FOUND, "수정 후, 리뷰 조회에 실패했습니다."));
 
-        resData.getReviewImages().forEach(img -> img.setImageType(ImageType.REVIEW));
-        resData.getUserProfileImage().setImageType(ImageType.PROFILE);
-        resData.setAuthor(resData.getAuthorId() == userId);
+        resData.setAuthor(resData.getAuthorId().equals(userId));
 
         return parser.detailResToUpdateRes(resData);
     }
@@ -126,7 +135,7 @@ public class ReviewServiceImpl implements ReviewService {
 
         Long userId = SecurityUtils.resolveUserId(userDetails);
 
-        if (entity.getAuthorId() != userId) {
+        if (!entity.getAuthorId().equals(userId)) {
             throw new BusinessLogicException(ErrorCode.FORBIDDEN, "작성자만 삭제할 수 있습니다.");
         }
         if (reviewDao.delete(id) == 0) {
