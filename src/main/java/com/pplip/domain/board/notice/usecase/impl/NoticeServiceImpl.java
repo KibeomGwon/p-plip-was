@@ -58,6 +58,17 @@ public class NoticeServiceImpl implements NoticeService {
     }
 
     @Override
+    public Page<NoticeResponse.Summary> findAllByUserId(UserDetails userDetails, PageRequest pageRequest) {
+        Long userId = ((Account) userDetails).getUserId();
+        List<NoticeResponse.Summary> resData = dao.findAllByUserId(userId, pageRequest);
+        int count = dao.noticeBoardAllCountByUserId(userId);
+
+        resData.forEach(data -> data.setAuthor(data.getAuthorId() == userId));
+
+        return new Page<>(resData, pageRequest.getPageNum(), pageRequest.getPageSize(), count);
+    }
+
+    @Override
     public NoticeResponse.Detail post(NoticeRequest.Post post, UserDetails userDetails) {
         Long userId = SecurityUtils.resolveUserId(userDetails);
 

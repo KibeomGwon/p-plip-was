@@ -18,6 +18,22 @@
             LIMIT #{pageSize} OFFSET #{offset}
     </select>
 
+    <select id="findAllByUserId" resultMap="summaryMap">
+        SELECT nb.id as id,
+               nb.title as title,
+               pf.nickname as authorName,
+               nb.view_cnt as viewCnt,
+               nb.author_id as authorId,
+               nb.created_at as createdAt,
+               nb.updated_at as updatedAt
+        FROM notice_board nb
+                 JOIN user u ON nb.author_id = u.id
+                 JOIN profile pf ON pf.user_id = u.id
+        WHERE nb.is_removed = false and nb.author_id = #{userId}
+        ORDER BY nb.created_at DESC
+            LIMIT #{pageRequest.pageSize} OFFSET #{pageRequest.offset}
+    </select>
+
     <resultMap id="summaryMap" type="com.pplip.domain.board.notice.api.response.NoticeResponse$Summary" autoMapping="true"></resultMap>
 
     <select id="findById" resultMap="detailMap">
@@ -61,6 +77,12 @@
     <select id="noticeBoardAllCount" resultType="int">
         select count(*)
         from notice_board;
+    </select>
+
+    <select id="noticeBoardAllCountByUserId" resultType="int">
+        select count(*)
+        from notice_board
+        where author_id = #{userId};
     </select>
 
     <resultMap id="detailMap" type="com.pplip.domain.board.notice.api.response.NoticeResponse$Detail" autoMapping="true">

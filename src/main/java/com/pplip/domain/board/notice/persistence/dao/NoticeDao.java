@@ -15,7 +15,11 @@ import java.util.Optional;
 public interface NoticeDao {
     List<NoticeResponse.Summary> findAll(PageRequest pageRequest);
 
+    List<NoticeResponse.Summary> findAllByUserId(Long userId, PageRequest pageRequest);
+
     int noticeBoardAllCount();
+
+    int noticeBoardAllCountByUserId(Long userId);
 
     Optional<NoticeResponse.Detail> findById(Long id);
 

@@ -9,6 +9,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 public interface NoticeService {
     Page<NoticeResponse.Summary> findAll(PageRequest pageRequest);
 
+    Page<NoticeResponse.Summary> findAllByUserId(UserDetails userDetails, PageRequest pageRequest);
+
     NoticeResponse.Detail post(NoticeRequest.Post post, UserDetails userDetails);
 
     NoticeResponse.Detail findById(Long id);
