@@ -54,14 +54,14 @@ public class FileServiceImpl implements FileService {
 
 		long userId = SecurityUtils.resolveUserId(userDetails);
 		FileProperty fileProperty = provider.create(file.getOriginalFilename(), file.getContentType(), file.getSize(), userId, imageType);
-		fileStorage.store(file, fileProperty.getSavedFileName());
+		fileStorage.store(file, fileProperty.getPath());
 		FilePropertyDao<FileProperty> fdao = (FilePropertyDao<FileProperty>) Optional.ofNullable(filePropertyMap.get(imageType)).orElseThrow(() -> new BusinessLogicException(ErrorCode.FILE_TYPE_NOT_SUPPORT));
 		fdao.insert(fileProperty);
 		return FileResponse.builder()
 				.id(fileProperty.getId())
 				.path(fileProperty.getPath())
 				.contentType(fileProperty.getContentType())
-				.name(fileProperty.getSavedFileName())
+				.name(fileProperty.getOriginFileName())
 				.imageType(imageType)
 				.size(fileProperty.getSize())
 				.build();

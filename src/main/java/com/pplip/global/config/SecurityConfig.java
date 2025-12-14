@@ -47,14 +47,13 @@ public class SecurityConfig {
 	public JwtAuthenticationFilter jwtAuthenticationFilter(JwtAuthenticationProvider provider) {
 		return new JwtAuthenticationFilter(provider);
 	}
-
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.httpBasic(HttpBasicConfigurer::disable);
 		http.formLogin(FormLoginConfigurer::disable);
 		http.csrf(CsrfConfigurer::disable);
 
-		http.cors((cors) -> cors.configurationSource(apiConfigurationSource()));
+		http.cors((cors) -> cors.configurationSource(corsConfigurationSource()));
 
 		http.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 		// api 설계 필요.
@@ -92,19 +91,26 @@ public class SecurityConfig {
 
 
 	@Bean
-	public UrlBasedCorsConfigurationSource apiConfigurationSource() {
+	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration configuration = new CorsConfiguration();
 
-		configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:5174", "http://localhost:8080"));
-		configuration.setAllowedMethods(List.of("GET", "POST", "HEAD", "OPTIONS", "PUT", "DELETE"));
+		// 1. 프론트엔드 주소 (정확히 일치해야 함)
+		configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:3000"));
+
+		// 2. ★ 핵심: PATCH 메서드가 반드시 포함되어야 함 ★
+		configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
+
+		// 3. 모든 헤더 허용
 		configuration.setAllowedHeaders(List.of("*"));
+
+		// 4. 쿠키/인증정보 포함 허용 (프론트에서 withCredentials: true를 쓰고 있으므로 필수)
 		configuration.setAllowCredentials(true);
 
-		configuration.setExposedHeaders(Arrays.asList("Authorization", "Set-Cookie"));
+		// 5. 브라우저가 Authorization 헤더를 읽을 수 있게 허용 (JWT 쓸 때 중요)
+		configuration.setExposedHeaders(List.of("Authorization"));
 
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		source.registerCorsConfiguration("/**", configuration);
-
 		return source;
 	}
 }

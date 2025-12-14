@@ -2,8 +2,8 @@ package com.pplip.domain.user.api.controller;
 
 import com.pplip.domain.user.api.request.UserRequest;
 import com.pplip.domain.user.api.response.UserResponse;
-import com.pplip.domain.user.persistence.service.EmailService;
-import com.pplip.domain.user.persistence.service.UserService;
+import com.pplip.domain.user.usecase.EmailService;
+import com.pplip.domain.user.usecase.UserService;
 import com.pplip.global.api.code.SuccessCode;
 import com.pplip.global.api.response.CommonResponse;
 import com.pplip.global.docs.UserDocsController;

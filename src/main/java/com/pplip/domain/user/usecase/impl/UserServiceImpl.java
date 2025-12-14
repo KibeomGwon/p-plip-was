@@ -1,4 +1,4 @@
-package com.pplip.domain.user.persistence.service.impl;
+package com.pplip.domain.user.usecase.impl;
 
 import com.pplip.domain.auth.persistence.dao.AccountDao;
 import com.pplip.domain.auth.persistence.entity.Account;
@@ -10,7 +10,7 @@ import com.pplip.domain.user.persistence.dao.ProfileDao;
 import com.pplip.domain.user.persistence.dao.UserDao;
 import com.pplip.domain.user.persistence.entity.Profile;
 import com.pplip.domain.user.persistence.entity.User;
-import com.pplip.domain.user.persistence.service.UserService;
+import com.pplip.domain.user.usecase.UserService;
 import com.pplip.global.api.code.ErrorCode;
 import com.pplip.global.exception.BusinessLogicException;
 import lombok.RequiredArgsConstructor;
