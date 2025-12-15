@@ -59,7 +59,7 @@ public class SearchHistoryServiceImpl implements SearchHistoryService {
         SearchHistory entity = dao.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new BoardLogicException(ErrorCode.ATTRACTION_NOT_FOUND, "검색 기록이 존재하지 않습니다"));
 
-        if (entity.getUserId() != userId) {
+        if (!entity.getUserId().equals(userId)) {
             throw new BusinessLogicException(ErrorCode.FORBIDDEN, "기록자만 삭제할 수 있습니다.");
         }
 

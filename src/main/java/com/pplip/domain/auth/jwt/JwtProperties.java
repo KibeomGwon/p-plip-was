@@ -3,8 +3,8 @@ package com.pplip.domain.auth.jwt;
 public class JwtProperties {
 //    public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 5;
 
-    public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 60;
-    public static final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 60 * 24 * 7;
+    public static final long ACCESS_TOKEN_EXPIRE_TIME = 1000L * 60 * 5;
+    public static final long REFRESH_TOKEN_EXPIRE_TIME = 1000L * 60 * 24 * 7;
 
     public static final String AUTH_HEADER = "Authorization";
     public static final String TOKEN_PREFIX = "Bearer ";

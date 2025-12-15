@@ -30,7 +30,7 @@ public interface SearchHistoryDocsController {
     @Operation(summary = "검색 기록 조회")
     @ApiResponse(responseCode = "200", description = "성공")
     @GetMapping
-    CommonResponse<Page<SearchHistoryResponse.History>> getSearchHistory(@RequestParam PageRequest pageRequest,
+    CommonResponse<Page<SearchHistoryResponse.History>> getSearchHistory(@ModelAttribute PageRequest pageRequest,
                                                                          @AuthenticationPrincipal UserDetails userDetails);
     /**
      * 검색 기록을 삭제합니다.

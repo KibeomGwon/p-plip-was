@@ -19,7 +19,7 @@ import java.util.List;
 /**
  * 검색기록 관련 API 요청을 처리하는 컨트롤러
  */
-@RequestMapping("/attraction/search-history")
+@RequestMapping("/trip/attraction/search-history")
 @RestController
 @RequiredArgsConstructor
 public class SearchHistoryController implements SearchHistoryDocsController {
@@ -28,7 +28,7 @@ public class SearchHistoryController implements SearchHistoryDocsController {
 
     @GetMapping
     @Override
-    public CommonResponse<Page<SearchHistoryResponse.History>> getSearchHistory(@RequestParam PageRequest pageRequest,
+    public CommonResponse<Page<SearchHistoryResponse.History>> getSearchHistory(@ModelAttribute PageRequest pageRequest,
                                                                                 @AuthenticationPrincipal UserDetails userDetails) {
         return CommonResponse.success(SuccessCode.SUCCESS, historyService.findAll(pageRequest, userDetails));
     }
