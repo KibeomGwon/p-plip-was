@@ -1,11 +1,11 @@
-package com.pplip.domain.user.persistence.service.impl;
+package com.pplip.domain.user.usecase.impl;
 
 import com.pplip.domain.auth.persistence.dao.AccountDao;
 import com.pplip.domain.user.api.request.UserRequest;
 import com.pplip.domain.user.api.response.UserResponse;
 import com.pplip.domain.user.cache.EmailValidationInfo;
 import com.pplip.domain.user.cache.EmailValidator;
-import com.pplip.domain.user.persistence.service.EmailService;
+import com.pplip.domain.user.usecase.EmailService;
 import com.pplip.domain.user.utils.EmailSender;
 import com.pplip.global.api.code.ErrorCode;
 import com.pplip.global.exception.BusinessLogicException;

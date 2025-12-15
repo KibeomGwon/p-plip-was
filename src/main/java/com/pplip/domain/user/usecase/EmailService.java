@@ -1,4 +1,4 @@
-package com.pplip.domain.user.persistence.service;
+package com.pplip.domain.user.usecase;
 
 import com.pplip.domain.user.api.request.UserRequest;
 import com.pplip.domain.user.api.response.UserResponse;

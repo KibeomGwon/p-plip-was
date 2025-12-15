@@ -1,4 +1,4 @@
-package com.pplip.domain.user.persistence.service.impl;
+package com.pplip.domain.user.usecase.impl;
 
 import com.pplip.domain.auth.persistence.dao.AccountDao;
 import com.pplip.domain.user.api.request.UserRequest;

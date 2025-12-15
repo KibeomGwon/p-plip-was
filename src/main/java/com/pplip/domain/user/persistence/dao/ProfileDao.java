@@ -1,5 +1,7 @@
 package com.pplip.domain.user.persistence.dao;
 
+import com.pplip.domain.file.api.response.FileResponse;
+import com.pplip.domain.user.api.response.ProfileResponse;
 import com.pplip.domain.user.persistence.entity.Profile;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -21,4 +23,6 @@ public interface ProfileDao {
     int update(Profile profile);
 
     int delete(Long id);
+
+    ProfileResponse.Info findByIdToDto(Long userId);
 }
