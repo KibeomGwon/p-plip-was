@@ -39,7 +39,7 @@ public class AttractionServiceImpl implements AttractionService {
 		List<AttractionResponse.Summary> resData = attractionDao.findAllBySearch(search, pageRequest);
 		resData.forEach(data -> data.setContentType(ContentType.getContentType(data.getContentTypeId().intValue())));
 
-		if (!SecurityUtils.isAnonymous()) {
+		if (!SecurityUtils.isAnonymous() && !search.getQuery().isEmpty()) {
 			historyService.post(search, SecurityUtils.getCurrentUser());
 		}
 
