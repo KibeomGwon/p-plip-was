@@ -2,16 +2,23 @@ package com.pplip.domain.trip.plan.usecase.impl;
 
 import com.pplip.domain.auth.persistence.entity.Account;
 import com.pplip.domain.auth.utils.SecurityUtils;
+import com.pplip.domain.trip.ai.dto.response.AiResponse;
+import com.pplip.domain.trip.ai.service.InferenceService;
+import com.pplip.domain.trip.attraction.api.response.AttractionResponse;
+import com.pplip.domain.trip.attraction.persistence.dao.AttractionDao;
 import com.pplip.domain.trip.plan.api.request.PlanRequest;
 import com.pplip.domain.trip.plan.api.response.PlanResponse;
 import com.pplip.domain.trip.plan.persistence.dao.PlanDao;
+import com.pplip.domain.trip.plan.persistence.dao.TodoDao;
 import com.pplip.domain.trip.plan.persistence.entity.Plan;
+import com.pplip.domain.trip.plan.persistence.entity.ToDo;
 import com.pplip.domain.trip.plan.usecase.PlanService;
 import com.pplip.global.api.code.ErrorCode;
 import com.pplip.global.exception.BusinessLogicException;
 import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +29,13 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Slf4j
 public class PlanServiceImpl implements PlanService {
 
 	private final PlanDao planDao;
+	private final InferenceService inferenceService;
+	private final TodoDao todoDao;
+	private final AttractionDao attractionDao;
 
 	@Override
 	public Page<PlanResponse.Summary> getPlans(PageRequest pageRequest, UserDetails userDetails) {
@@ -35,17 +46,17 @@ public class PlanServiceImpl implements PlanService {
 	}
 
 	@Override
-	public PlanResponse.Detail getPlanDetail(Long id) {
+	public PlanResponse.PlanDetail getPlanDetail(Long id) {
 		Account loginUser = SecurityUtils.getCurrentUser();
-		PlanResponse.Detail detail = planDao.findByIdToDto(id).orElseThrow(() -> new BusinessLogicException(ErrorCode.PLAN_NOT_FOUND));
-		if (!detail.getUserId().equals(loginUser.getUserId())) {
+		PlanResponse.PlanDetail planDetail = planDao.findByIdToDto(id).orElseThrow(() -> new BusinessLogicException(ErrorCode.PLAN_NOT_FOUND));
+		if (!planDetail.getUserId().equals(loginUser.getUserId())) {
 			throw new BusinessLogicException(ErrorCode.FORBIDDEN, "작성자만 조회 할 수 있습니다.");
 		}
-		return detail;
+		return planDetail;
 	}
 
 	@Override
-	public PlanResponse.Detail createPlan(PlanRequest.Post request, UserDetails userDetails) {
+	public PlanResponse.PlanDetail createPlan(PlanRequest.Post request, UserDetails userDetails) {
 		Long userId = SecurityUtils.resolveUserId(userDetails);
 		Plan plan = Plan.builder()
 				.title(request.getTitle())
@@ -88,5 +99,50 @@ public class PlanServiceImpl implements PlanService {
 			throw new BusinessLogicException(ErrorCode.PLAN_PROCESS_FAIL, "삭제에 실패했습니다.");
 		}
 		return PlanResponse.Remove.builder().id(plan.getId()).title(plan.getTitle()).build();
+	}
+
+	@Override
+	public PlanResponse.PlanDetail suggestPlan(PlanRequest.SuggestPlan suggest) {
+		Account currentUser = SecurityUtils.getCurrentUser();
+		AiResponse.SuggestPlan suggestPlan = inferenceService.suggestPlan(suggest);
+		AttractionResponse.Details details = attractionDao.findByNo(Long.valueOf(suggest.getAttractionId())).orElseThrow(() -> new BusinessLogicException(ErrorCode.ATTRACTION_NOT_FOUND, "요청한 관광지를 찾을 수 없습니다."));
+		String thumbnail = details.getFirstImage1();
+
+		log.info("suggestPlan: {}", suggestPlan);
+
+		Plan plan = Plan.builder().title(suggestPlan.getTitle())
+				.startDate(suggestPlan.getStartDate())
+				.endDate(suggestPlan.getEndDate())
+				.createdAt(LocalDateTime.now())
+				.userId(currentUser.getUserId()).build();
+		if (thumbnail == null || thumbnail.isBlank()) {
+			thumbnail = suggestPlan.getToDos().stream().map(toDoItem -> toDoItem.getAttraction().getFirstImage1())
+					.filter(img -> img != null && !img.isBlank())
+					.findFirst()
+					.orElse(null);
+		}
+		plan.setThumbnail(thumbnail);
+		planDao.insert(plan);
+		List<ToDo> toDoList = suggestPlan.getToDos().stream().map(toDoItem -> {
+			return ToDo.builder().planId(plan.getId())
+					.attractionId(toDoItem.getAttraction().getId())
+					.title(toDoItem.getName())
+					.description(toDoItem.getDetailPlanDesc())
+					.willStartAt(toDoItem.getStartAt())
+					.willEndAt(toDoItem.getEndAt())
+					.createdAt(LocalDateTime.now())
+					.build();
+		}).toList();
+		todoDao.insertAll(toDoList);
+
+		return PlanResponse.PlanDetail.builder()
+				.id(plan.getId())
+				.title(plan.getTitle())
+				.createdAt(plan.getCreatedAt())
+				.startDate(plan.getStartDate())
+				.endDate(plan.getEndDate())
+				.userId(currentUser.getUserId())
+				.thumbnail(thumbnail)
+				.build();
 	}
 }

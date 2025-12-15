@@ -24,4 +24,17 @@ public class AiRequest {
 		@Builder.Default
 		private int m = 1000;
 	}
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+
+	@ToString
+	public static class SuggestPlan{
+		@JsonProperty("user_theme")
+		private String query;
+		@JsonProperty("attraction_id")
+		private Long attractionId;
+	}
+
 }

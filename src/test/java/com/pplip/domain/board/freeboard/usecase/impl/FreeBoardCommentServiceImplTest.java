@@ -99,7 +99,7 @@ class FreeBoardCommentServiceImplTest {
 
     @Nested
     @DisplayName("postComment: 댓글 작성")
-    class PostComment {
+    class PostTodoComment {
         @Test
         @DisplayName("성공: 새로운 댓글을 작성하고 작성된 댓글 정보를 반환한다")
         void postComment_Success() {
@@ -196,7 +196,7 @@ class FreeBoardCommentServiceImplTest {
 
     @Nested
     @DisplayName("updateComment: 댓글 수정")
-    class UpdateComment {
+    class ToDoUpdatedComment {
 
         @Test
         @DisplayName("성공: 작성자가 자신의 댓글을 수정한다")

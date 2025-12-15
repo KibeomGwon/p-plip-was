@@ -13,8 +13,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 /**
  * 여행 계획 관련 API를 처리하는 컨트롤러
  */
@@ -43,7 +41,7 @@ public class PlanController implements PlanDocsController {
      */
     @Override
     @GetMapping("/{id}")
-    public CommonResponse<PlanResponse.Detail> getPlanDetail(@PathVariable("id") Long id) {
+    public CommonResponse<PlanResponse.PlanDetail> getPlanDetail(@PathVariable("id") Long id) {
         return CommonResponse.success(SuccessCode.SUCCESS, planService.getPlanDetail(id));
     }
 
@@ -55,7 +53,7 @@ public class PlanController implements PlanDocsController {
      */
     @Override
     @PostMapping
-    public CommonResponse<PlanResponse.Detail> postPlan(PlanRequest.Post request, @AuthenticationPrincipal UserDetails userDetails) {
+    public CommonResponse<PlanResponse.PlanDetail> postPlan(@RequestBody PlanRequest.Post request, @AuthenticationPrincipal UserDetails userDetails) {
         return CommonResponse.success(SuccessCode.CREATED, planService.createPlan(request, userDetails));
     }
 
@@ -67,7 +65,7 @@ public class PlanController implements PlanDocsController {
      */
     @Override
     @PutMapping("/{id}")
-    public CommonResponse<PlanResponse.Update> updatePlan(PlanRequest.Update update, @PathVariable Long id) {
+    public CommonResponse<PlanResponse.Update> updatePlan(@RequestBody PlanRequest.Update update, @PathVariable Long id) {
         return CommonResponse.success(SuccessCode.UPDATED, planService.updatePlan(update, id));
     }
 
@@ -80,5 +78,10 @@ public class PlanController implements PlanDocsController {
     @DeleteMapping("/{id}")
     public CommonResponse<?> deletePlan(@PathVariable Long id) {
         return CommonResponse.success(SuccessCode.REMOVED, planService.removePlan(id));
+    }
+
+    @PostMapping("/suggest")
+    public CommonResponse<PlanResponse.PlanDetail> suggestPlan(@RequestBody PlanRequest.SuggestPlan suggest){
+        return CommonResponse.success(SuccessCode.CREATED, planService.suggestPlan(suggest));
     }
 }

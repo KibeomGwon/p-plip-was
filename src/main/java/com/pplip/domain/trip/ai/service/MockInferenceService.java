@@ -3,12 +3,14 @@ package com.pplip.domain.trip.ai.service;
 import com.pplip.domain.trip.ai.dto.request.AiRequest;
 import com.pplip.domain.trip.ai.dto.response.AiResponse;
 import com.pplip.domain.trip.attraction.persistence.entity.ContentType;
+import com.pplip.domain.trip.plan.api.request.PlanRequest;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
 
 //임시 데이터 반환 추후 ai 서비스와 연결시 새로운 서비스로 구현
+
 public class MockInferenceService implements InferenceService {
 
 
@@ -28,6 +30,11 @@ public class MockInferenceService implements InferenceService {
 				.homepage("<a href=\"https://gahoe.or.kr\" target=\"_blank\" title=\"새창 : 가회동성당 사이트로 이동\">https://gahoe.or.kr</a>")
 				.build();
 		return List.of(mock);
+	}
+
+	@Override
+	public AiResponse.SuggestPlan suggestPlan(PlanRequest.SuggestPlan request) {
+		return null;
 	}
 }
 

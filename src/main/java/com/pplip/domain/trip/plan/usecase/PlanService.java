@@ -22,7 +22,7 @@ public interface PlanService {
 	 * @param id 조회할 여행 계획 ID
 	 * @return 여행 계획 상세 정보
 	 */
-	PlanResponse.Detail getPlanDetail(Long id);
+	PlanResponse.PlanDetail getPlanDetail(Long id);
 
 	/**
 	 * 새로운 여행 계획을 생성합니다.
@@ -31,7 +31,7 @@ public interface PlanService {
 	 * @param userDetails 사용자 정보
 	 * @return 생성된 여행 계획 상세 정보
 	 */
-	PlanResponse.Detail createPlan(PlanRequest.Post request, UserDetails userDetails);
+	PlanResponse.PlanDetail createPlan(PlanRequest.Post request, UserDetails userDetails);
 
 	/**
 	 * 여행 계획을 수정합니다.
@@ -49,4 +49,6 @@ public interface PlanService {
 	 * @return 삭제된 여행 계획 정보
 	 */
 	PlanResponse.Remove removePlan(Long id);
+
+	PlanResponse.PlanDetail suggestPlan(PlanRequest.SuggestPlan suggest);
 }

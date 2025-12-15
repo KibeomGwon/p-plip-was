@@ -14,13 +14,12 @@ import com.pplip.domain.board.notice.utils.NoticeBoardParser;
 import com.pplip.domain.file.api.request.FileRequest;
 import com.pplip.domain.file.persistence.dao.NoticeBoardImagePropertyDao;
 import com.pplip.domain.file.persistence.entity.FileProperty;
-import com.pplip.domain.file.persistence.entity.FileStatus;
+import com.pplip.domain.file.persistence.entity.ModifyStatus;
 import com.pplip.domain.file.persistence.entity.ImageType;
 import com.pplip.domain.file.persistence.entity.NoticeBoardImageProperty;
 import com.pplip.domain.file.usecase.FileService;
 import com.pplip.global.api.code.ErrorCode;
 import com.pplip.global.exception.BoardLogicException;
-import com.pplip.global.exception.BusinessLogicException;
 import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
 import lombok.RequiredArgsConstructor;
@@ -120,7 +119,7 @@ public class NoticeServiceImpl implements NoticeService {
         entity.update(update);
         dao.update(entity);
 
-        List<Long> removeImgIds = update.getImages().stream().filter(img -> img.getStatus().equals(FileStatus.REMOVE)).map(FileRequest::getId).toList();
+        List<Long> removeImgIds = update.getImages().stream().filter(img -> img.getStatus().equals(ModifyStatus.REMOVE)).map(FileRequest::getId).toList();
 
         if (!removeImgIds.isEmpty()) {
             List<NoticeBoardImageProperty> removeImgs = imagePropertyDao.findAllByIds(removeImgIds);
@@ -130,7 +129,7 @@ public class NoticeServiceImpl implements NoticeService {
         }
 
 
-        List<Long> updateImgIds = update.getImages().stream().filter(img -> img.getStatus().equals(FileStatus.NEW)).map(FileRequest::getId).toList();
+        List<Long> updateImgIds = update.getImages().stream().filter(img -> img.getStatus().equals(ModifyStatus.NEW)).map(FileRequest::getId).toList();
         if (!updateImgIds.isEmpty()) {
             imagePropertyDao.bulkUpdate(updateImgIds, id);
         }

@@ -22,7 +22,6 @@ import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -97,19 +96,19 @@ class PlanServiceImplTest {
 
     @Nested
     @DisplayName("getPlanDetail 메소드 테스트")
-    class GetPlanDetailTest {
+    class GetPlanPlanToDoDetailTest {
         @Test
         @DisplayName("성공: 특정 여행 계획의 상세 정보를 조회한다")
         void getPlanDetail_success() {
             try (MockedStatic<SecurityUtils> mockedSecurity = mockStatic(SecurityUtils.class)) {
                 // given
                 Long planId = 1L;
-                PlanResponse.Detail detail = PlanResponse.Detail.builder().id(planId).userId(testUser.getUserId()).title("테스트 계획").build();
+                PlanResponse.PlanDetail planDetail = PlanResponse.PlanDetail.builder().id(planId).userId(testUser.getUserId()).title("테스트 계획").build();
                 mockedSecurity.when(SecurityUtils::getCurrentUser).thenReturn(testUser);
-                when(planDao.findByIdToDto(planId)).thenReturn(Optional.of(detail));
+                when(planDao.findByIdToDto(planId)).thenReturn(Optional.of(planDetail));
 
                 // when
-                PlanResponse.Detail result = planService.getPlanDetail(planId);
+                PlanResponse.PlanDetail result = planService.getPlanDetail(planId);
 
                 // then
                 assertThat(result).isNotNull();
@@ -140,10 +139,10 @@ class PlanServiceImplTest {
                 // given
                 Long planId = 1L;
                 Long otherUserId = 2L;
-                PlanResponse.Detail detail = PlanResponse.Detail.builder().id(planId).userId(otherUserId).title("다른 사용자 계획").build();
+                PlanResponse.PlanDetail planDetail = PlanResponse.PlanDetail.builder().id(planId).userId(otherUserId).title("다른 사용자 계획").build();
 
                 mockedSecurity.when(SecurityUtils::getCurrentUser).thenReturn(testUser);
-                when(planDao.findByIdToDto(planId)).thenReturn(Optional.of(detail));
+                when(planDao.findByIdToDto(planId)).thenReturn(Optional.of(planDetail));
 
                 // when & then
                 BusinessLogicException exception = assertThrows(BusinessLogicException.class, () -> planService.getPlanDetail(planId));
@@ -162,17 +161,17 @@ class PlanServiceImplTest {
             // given
             PlanRequest.Post request = new PlanRequest.Post("새로운 여행", LocalDate.now(), LocalDate.now().plusDays(1));
             Plan plan = Plan.builder().id(1L).build();
-            PlanResponse.Detail detail = PlanResponse.Detail.builder().id(1L).title(request.getTitle()).build();
+            PlanResponse.PlanDetail planDetail = PlanResponse.PlanDetail.builder().id(1L).title(request.getTitle()).build();
 
             when(planDao.insert(any(Plan.class))).thenAnswer(invocation -> {
                 Plan p = invocation.getArgument(0);
                 p.setId(1L); // Simulate generated key
                 return 1;
             });
-            when(planDao.findByIdToDto(anyLong())).thenReturn(Optional.of(detail));
+            when(planDao.findByIdToDto(anyLong())).thenReturn(Optional.of(planDetail));
 
             // when
-            PlanResponse.Detail result = planService.createPlan(request, testUser);
+            PlanResponse.PlanDetail result = planService.createPlan(request, testUser);
 
             // then
             assertThat(result).isNotNull();
@@ -182,7 +181,7 @@ class PlanServiceImplTest {
 
     @Nested
     @DisplayName("updatePlan 메소드 테스트")
-    class UpdatePlanTest {
+    class ToDoUpdatedPlanTest {
         @Test
         @DisplayName("성공: 여행 계획을 수정한다")
         void updatePlan_success() {
