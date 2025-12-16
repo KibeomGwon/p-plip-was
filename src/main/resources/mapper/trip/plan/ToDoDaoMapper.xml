@@ -25,6 +25,10 @@
 
                t.attraction_id as attractionId,
                a.first_image1  as attractionImage,
+
+               a.latitude      as latitude,
+               a.longitude     as longitude,
+
                t.will_start_at as willStartAt,
                t.will_end_at   as willEndAt,
                t.created_at    as createdAt
@@ -42,6 +46,8 @@
                t.description as description,
                t.attraction_id as attractionId,
                a.first_image1  as attractionImage,
+               a.latitude      as latitude,
+               a.longitude     as longitude,
                t.will_start_at as willStartAt,
                t.will_end_at   as willEndAt,
                t.created_at    as createdAt
@@ -57,6 +63,8 @@
                t.title         as title,
                t.attraction_id as attractionId,
                a.title         as attractionTitle,
+               a.latitude      as latitude,
+               a.longitude     as longitude,
                t.description   as description,
                a.first_image1  as attractionImage,
                t.will_start_at as willStartAt,
@@ -77,7 +85,7 @@
         update to_do
         <set>
             <if test="title != null">
-                title = #{title}
+                title = #{title},
             </if>
             <if test="description != null">
                 description = #{description},

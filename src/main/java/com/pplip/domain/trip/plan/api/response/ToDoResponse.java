@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -22,6 +23,10 @@ public class ToDoResponse {
 		private String description;
 		private String title;
 		private String attractionImage;
+
+		private BigDecimal latitude;
+		private BigDecimal longitude;
+
 		private LocalDateTime willStartAt;
 		private LocalDateTime willEndAt;
 		private LocalDateTime createdAt;
@@ -39,6 +44,10 @@ public class ToDoResponse {
 		private String title;
 		private String attractionImage;
 		private String description;
+
+		private BigDecimal latitude;
+		private BigDecimal longitude;
+
 		private LocalDateTime willStartAt;
 		private LocalDateTime willEndAt;
 		private LocalDateTime createdAt;
