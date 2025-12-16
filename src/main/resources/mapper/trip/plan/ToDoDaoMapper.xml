@@ -25,6 +25,10 @@
 
                t.attraction_id as attractionId,
                a.first_image1  as attractionImage,
+
+               a.latitude      as latitude,
+               a.longitude     as longitude,
+
                t.will_start_at as willStartAt,
                t.will_end_at   as willEndAt,
                t.created_at    as createdAt
@@ -42,6 +46,8 @@
                t.description as description,
                t.attraction_id as attractionId,
                a.first_image1  as attractionImage,
+               a.latitude      as latitude,
+               a.longitude     as longitude,
                t.will_start_at as willStartAt,
                t.will_end_at   as willEndAt,
                t.created_at    as createdAt
@@ -57,6 +63,8 @@
                t.title         as title,
                t.attraction_id as attractionId,
                a.title         as attractionTitle,
+               a.latitude      as latitude,
+               a.longitude     as longitude,
                t.description   as description,
                a.first_image1  as attractionImage,
                t.will_start_at as willStartAt,
@@ -77,7 +85,7 @@
         update to_do
         <set>
             <if test="title != null">
-                title = #{title}
+                title = #{title},
             </if>
             <if test="description != null">
                 description = #{description},
@@ -95,10 +103,18 @@
         <foreach collection="toDoList" item="todo" index="index" separator=";">
             update to_do
             <set>
-                title = #{todo.title},
-                description = #{todo.description},
-                will_start_at = #{todo.willStartAt},
-                will_end_at = #{todo.willEndAt}
+                <if test="todo.title != null">
+                    title = #{todo.title},
+                </if>
+                <if test="todo.description != null">
+                    description = #{todo.description},
+                </if>
+                <if test="todo.willStartAt != null">
+                    will_start_at = #{todo.willStartAt},
+                </if>
+                <if test="todo.willEndAt != null">
+                    will_end_at = #{todo.willEndAt},
+                </if>
             </set>
             where id = #{todo.id}
         </foreach>
