@@ -6,6 +6,8 @@ import com.pplip.domain.trip.ai.dto.response.AiResponse;
 import com.pplip.domain.trip.ai.service.InferenceService;
 import com.pplip.domain.trip.attraction.api.response.AttractionResponse;
 import com.pplip.domain.trip.attraction.persistence.dao.AttractionDao;
+import com.pplip.domain.trip.attraction.persistence.dao.SidoGugunsDao;
+import com.pplip.domain.trip.attraction.persistence.entity.Attraction;
 import com.pplip.domain.trip.plan.api.request.PlanRequest;
 import com.pplip.domain.trip.plan.api.response.PlanResponse;
 import com.pplip.domain.trip.plan.persistence.dao.PlanDao;
@@ -36,6 +38,8 @@ public class PlanServiceImpl implements PlanService {
 	private final InferenceService inferenceService;
 	private final TodoDao todoDao;
 	private final AttractionDao attractionDao;
+	private final SidoGugunsDao sidoGugunsDao;
+
 
 	@Override
 	public Page<PlanResponse.Summary> getPlans(PageRequest pageRequest, UserDetails userDetails) {
@@ -103,9 +107,29 @@ public class PlanServiceImpl implements PlanService {
 
 	@Override
 	public PlanResponse.PlanDetail suggestPlan(PlanRequest.SuggestPlan suggest) {
-		Account currentUser = SecurityUtils.getCurrentUser();
 		AiResponse.SuggestPlan suggestPlan = inferenceService.suggestPlan(suggest);
-		AttractionResponse.Details details = attractionDao.findByNo(Long.valueOf(suggest.getAttractionId())).orElseThrow(() -> new BusinessLogicException(ErrorCode.ATTRACTION_NOT_FOUND, "요청한 관광지를 찾을 수 없습니다."));
+		return savePlans(suggestPlan, Long.parseLong(suggest.getAttractionId()));
+	}
+
+	@Override
+	public PlanResponse.PlanDetail randomPlan(PlanRequest.RandomPlan suggest) {
+		log.info("suggest : {}", suggest);
+		Attraction random = attractionDao.findRandom(suggest.getSidoCode(), suggest.getGugunCode());
+		log.info("random : {}", random);
+		AiResponse.SuggestPlan suggestPlan = inferenceService.suggestPlan(PlanRequest.SuggestPlan.builder()
+				.query(suggest.getRegionName()+"에서 즐기는 즉흥 여행")
+				.attractionId(String.valueOf(random.getNo()))
+				.startDate(suggest.getStartDate())
+				.endDate(suggest.getEndDate())
+				.build()
+		);
+		return savePlans(suggestPlan, random.getNo());
+	}
+
+	private PlanResponse.PlanDetail savePlans(AiResponse.SuggestPlan suggestPlan, Long mainAttractionId) {
+		Account currentUser = SecurityUtils.getCurrentUser();
+
+		AttractionResponse.Details details = attractionDao.findByNo(mainAttractionId).orElseThrow(() -> new BusinessLogicException(ErrorCode.ATTRACTION_NOT_FOUND, "요청한 관광지를 찾을 수 없습니다."));
 		String thumbnail = details.getFirstImage1();
 
 		log.info("suggestPlan: {}", suggestPlan);
@@ -134,6 +158,7 @@ public class PlanServiceImpl implements PlanService {
 					.build();
 		}).toList();
 		todoDao.insertAll(toDoList);
+
 
 		return PlanResponse.PlanDetail.builder()
 				.id(plan.getId())

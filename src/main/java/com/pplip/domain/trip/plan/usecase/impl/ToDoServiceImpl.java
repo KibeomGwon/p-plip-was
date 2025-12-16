@@ -8,10 +8,8 @@ import com.pplip.domain.trip.plan.persistence.entity.ToDo;
 import com.pplip.domain.trip.plan.usecase.ToDoService;
 import com.pplip.global.api.code.ErrorCode;
 import com.pplip.global.exception.BusinessLogicException;
-import com.pplip.global.page.Page;
-import com.pplip.global.page.PageRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,6 +23,7 @@ import java.util.stream.Collectors;
 @Service
 @Transactional
 @RequiredArgsConstructor
+@Log4j2
 public class ToDoServiceImpl implements ToDoService {
 
 	private final TodoDao todoDao;
@@ -49,7 +48,7 @@ public class ToDoServiceImpl implements ToDoService {
 	public ToDoResponse.ToDoUpdated updateToDoList(List<ToDoRequest.Update> update, Long planId) {
 		// 1. 기존 DB 데이터 조회
 		List<ToDoResponse.ToDoSummary> currentToDoList = todoDao.findAllByPlanId(planId);
-
+		log.info(update);
 		// [성능 최적화] 비교를 위해 요청 들어온 ID들을 Set으로 추출 (null 제외)
 		Set<Long> requestIds = update.stream()
 				.map(ToDoRequest.Update::getId)
@@ -66,10 +65,12 @@ public class ToDoServiceImpl implements ToDoService {
 		List<ToDo> insertList = update.stream()
 				.filter(req -> req.getId() == null)
 				.map(req -> ToDo.builder().title(req.getTitle())
+						.attractionId(req.getAttractionId())
+						.id(req.getId())
 						.description(req.getDescription())
 						.willStartAt(req.getWillStartAt())
 						.willEndAt(req.getWillEndAt())
-						.planId(planId)
+						.planId(req.getPlanId())
 						.createdAt(LocalDateTime.now())
 						.build()
 				) // DTO -> Entity 변환 메서드 활용
@@ -84,27 +85,32 @@ public class ToDoServiceImpl implements ToDoService {
 
 		List<ToDo> updateList = update.stream()
 				.filter(req -> req.getId() != null && currentIds.contains(req.getId()))
-				.map(req -> ToDo.builder().title(req.getTitle())
+				.map(req -> ToDo.builder()
+						.id(req.getId())
+						.attractionId(req.getAttractionId())
+						.title(req.getTitle())
 						.description(req.getDescription())
 						.willStartAt(req.getWillStartAt())
 						.willEndAt(req.getWillEndAt())
 						.planId(planId)
-						.createdAt(LocalDateTime.now())
+						.updatedAt(LocalDateTime.now())
 						.build())
 				.toList();
 
 		// 5. DB 반영
 		if (!deleteIds.isEmpty()) {
+			log.info("Deleting ToDo IDs: {}", deleteIds);
 			todoDao.deleteAll(deleteIds);
 		}
 		if (!insertList.isEmpty()) {
+			log.info("Inserting ToDo items: {}", insertList);
 			todoDao.insertAll(insertList);
 		}
 		if (!updateList.isEmpty()) {
-			todoDao.updateAll(updateList); // 아까 질문하신 updateAll 활용
+			log.info("Updating ToDo items: {}", updateList);
+			todoDao.updateAll(updateList);
 		}
 
-		// 6. 결과 반환 (최신 상태를 다시 조회해서 리턴하거나, 개수만 리턴하거나 정책에 따라 다름)
 		return ToDoResponse.ToDoUpdated.builder()
 				.toDoItems(todoDao.findAllByPlanId(planId))
 				.build();

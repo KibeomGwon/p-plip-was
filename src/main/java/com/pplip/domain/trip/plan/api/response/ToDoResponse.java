@@ -48,8 +48,8 @@ public class ToDoResponse {
 		private BigDecimal latitude;
 		private BigDecimal longitude;
 
-		private LocalDate willStartAt;
-		private LocalDate willEndAt;
+		private LocalDateTime willStartAt;
+		private LocalDateTime willEndAt;
 		private LocalDateTime createdAt;
 	}
 

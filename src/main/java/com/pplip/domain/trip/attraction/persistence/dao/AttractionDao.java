@@ -5,6 +5,7 @@ import com.pplip.domain.trip.attraction.api.response.AttractionResponse;
 import com.pplip.domain.trip.attraction.persistence.entity.Attraction;
 import com.pplip.global.page.PageRequest;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -43,4 +44,6 @@ public interface AttractionDao {
     int countAllBySearch(AttractionRequest.Search search);
 
     Optional<AttractionResponse.Details> findRandomFirstBySidoGuguns(AttractionRequest.SuggestBySidoGuguns search);
+
+    Attraction findRandom(@Param("sidoCode") int sidoCode, @Param("gugunCode") int gugunCode);
 }

@@ -103,18 +103,11 @@
         <foreach collection="toDoList" item="todo" index="index" separator=";">
             update to_do
             <set>
-                <if test="todo.title != null">
-                    title = #{todo.title},
-                </if>
-                <if test="todo.description != null">
-                    description = #{todo.description},
-                </if>
-                <if test="todo.willStartAt != null">
-                    will_start_at = #{todo.willStartAt},
-                </if>
-                <if test="todo.willEndAt != null">
-                    will_end_at = #{todo.willEndAt},
-                </if>
+                title = #{todo.title},
+                description = #{todo.description},
+                will_start_at = #{todo.willStartAt},
+                will_end_at = #{todo.willEndAt},
+                updated_at = #{todo.updatedAt}
             </set>
             where id = #{todo.id}
         </foreach>
@@ -125,6 +118,14 @@
         from to_do
         where id = #{id};
     </delete>
+    <delete id="deleteAll">
+        DELETE FROM to_do
+        WHERE id IN
+        <foreach collection="toDoIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
     <insert id="insertAll" useGeneratedKeys="true" keyProperty="id">
         insert into to_do (plan_id, attraction_id, title, description, will_start_at, will_end_at, created_at)
         values
