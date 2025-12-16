@@ -43,7 +43,6 @@ public class AttractionServiceImpl implements AttractionService {
 		if (!SecurityUtils.isAnonymous() && !search.getQuery().isEmpty()) {
 			historyService.post(search, SecurityUtils.getCurrentUser());
 		}
-
 		return new Page<>(resData, pageRequest.getPageNum(), pageRequest.getPageSize(), attractionDao.countAllBySearch(search));
 	}
 
