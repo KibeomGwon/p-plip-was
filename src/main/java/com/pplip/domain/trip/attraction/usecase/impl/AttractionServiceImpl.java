@@ -12,6 +12,7 @@ import com.pplip.domain.trip.attraction.persistence.entity.ContentType;
 import com.pplip.domain.trip.attraction.usecase.AttractionService;
 import com.pplip.domain.trip.attraction.usecase.SearchHistoryService;
 import com.pplip.domain.trip.attraction.usecase.SidoGugunsService;
+import com.pplip.domain.trip.plan.api.request.PlanRequest;
 import com.pplip.global.api.code.ErrorCode;
 import com.pplip.global.exception.BusinessLogicException;
 import com.pplip.global.page.Page;
@@ -75,6 +76,7 @@ public class AttractionServiceImpl implements AttractionService {
 
 		AttractionResponse.Details data = attractionDao.findRandomFirstBySidoGuguns(suggest)
 				.orElseThrow(() -> new BusinessLogicException(ErrorCode.ATTRACTION_NOT_FOUND, "해당 지역의 ATTRACTION을 찾을 수 없습니다."));
+
 		return null;
 	}
 }
