@@ -1,5 +1,5 @@
 package com.pplip.domain.file.persistence.entity;
 
-public enum FileStatus {
+public enum ModifyStatus {
 	NEW, EXISTING, REMOVE
 }

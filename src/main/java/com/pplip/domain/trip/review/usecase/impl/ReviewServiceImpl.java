@@ -3,7 +3,7 @@ package com.pplip.domain.trip.review.usecase.impl;
 import com.pplip.domain.auth.persistence.entity.Account;
 import com.pplip.domain.auth.utils.SecurityUtils;
 import com.pplip.domain.file.persistence.dao.ReviewImagePropertyDao;
-import com.pplip.domain.file.persistence.entity.FileStatus;
+import com.pplip.domain.file.persistence.entity.ModifyStatus;
 import com.pplip.domain.file.persistence.entity.ImageType;
 import com.pplip.domain.file.persistence.entity.ReviewImageProperty;
 import com.pplip.domain.file.usecase.FileService;
@@ -21,7 +21,6 @@ import com.pplip.global.exception.BusinessLogicException;
 import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.parameters.P;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -107,8 +106,8 @@ public class ReviewServiceImpl implements ReviewService {
         entity.setContent(update.getContent());
 
         if (update.getFiles() != null) {
-            List<Long> removeIds = update.getFiles().stream().filter(file -> file.getStatus().equals(FileStatus.REMOVE)).map(file -> file.getId()).toList();
-            List<Long> newIds = update.getFiles().stream().filter(file -> file.getStatus().equals(FileStatus.NEW)).map(file -> file.getId()).toList();
+            List<Long> removeIds = update.getFiles().stream().filter(file -> file.getStatus().equals(ModifyStatus.REMOVE)).map(file -> file.getId()).toList();
+            List<Long> newIds = update.getFiles().stream().filter(file -> file.getStatus().equals(ModifyStatus.NEW)).map(file -> file.getId()).toList();
 
             List<ReviewImageProperty> imageProperties = imagePropertyDao.findAllByReviewId(id);
 

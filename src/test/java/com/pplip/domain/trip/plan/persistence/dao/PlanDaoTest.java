@@ -57,11 +57,11 @@ class PlanDaoTest {
         dao.insert(plan);
 
         // when
-        Optional<PlanResponse.Detail> foundPlanOptional = dao.findByIdToDto(plan.getId());
+        Optional<PlanResponse.PlanDetail> foundPlanOptional = dao.findByIdToDto(plan.getId());
 
         // then
         assertThat(foundPlanOptional).isPresent();
-        PlanResponse.Detail foundPlan = foundPlanOptional.get();
+        PlanResponse.PlanDetail foundPlan = foundPlanOptional.get();
         assertThat(foundPlan.getTitle()).isEqualTo("서울 여행");
     }
 
@@ -72,7 +72,7 @@ class PlanDaoTest {
         long nonExistentId = 999L;
 
         // when
-        Optional<PlanResponse.Detail> detail = dao.findByIdToDto(nonExistentId);
+        Optional<PlanResponse.PlanDetail> detail = dao.findByIdToDto(nonExistentId);
 
         // then
         assertThat(detail).isNotPresent();

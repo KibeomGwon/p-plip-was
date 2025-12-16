@@ -6,7 +6,6 @@ import com.pplip.global.page.PageRequest;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import javax.swing.text.html.Option;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +18,7 @@ public interface PlanDao {
 
     int count(Long userId);
 
-    Optional<PlanResponse.Detail> findByIdToDto(Long id);
+    Optional<PlanResponse.PlanDetail> findByIdToDto(Long id);
 
     Optional<Plan> findById(Long id);
 

@@ -85,7 +85,7 @@ class ProfileServiceImplTest {
 
     @Nested
     @DisplayName("modifyInfo 메소드는")
-    class Describe_modifyUpdateInfo {
+    class Describe_modifyToDoUpdatedInfo {
 
         private final Long userId = 1L;
         private final Long profileId = 10L;

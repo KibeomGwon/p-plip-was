@@ -32,7 +32,7 @@ public interface PlanDocsController {
      */
     @Operation(summary = "여행 계획 단건 조회")
     @ApiResponse(responseCode = "200", description = "성공")
-    CommonResponse<PlanResponse.Detail> getPlanDetail(Long id);
+    CommonResponse<PlanResponse.PlanDetail> getPlanDetail(Long id);
 
     /**
      * 새로운 여행 계획을 생성합니다.
@@ -42,7 +42,7 @@ public interface PlanDocsController {
      */
     @Operation(summary = "여행 계획 생성")
     @ApiResponse(responseCode = "201", description = "생성")
-    CommonResponse<PlanResponse.Detail> postPlan(PlanRequest.Post request, UserDetails userDetails);
+    CommonResponse<PlanResponse.PlanDetail> postPlan(PlanRequest.Post request, UserDetails userDetails);
 
     /**
      * 기존 여행 계획을 수정합니다.

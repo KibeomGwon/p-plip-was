@@ -6,11 +6,7 @@
     </resultMap>
     <select id="findAll" resultType="com.pplip.domain.trip.plan.api.response.PlanResponse$Summary">
         select
-            id,
-            title,
-            start_date as startDate,
-            end_date as endDate,
-            created_at as createdAt
+            *
         from plan
         where user_id = #{userId}
         order by start_date
@@ -18,10 +14,11 @@
         offset #{page.offset};
     </select>
 
-    <select id="findByIdToDto" resultType="com.pplip.domain.trip.plan.api.response.PlanResponse$Detail">
+    <select id="findByIdToDto" resultType="com.pplip.domain.trip.plan.api.response.PlanResponse$PlanDetail">
         select
             id,
             title,
+            thumbnail,
             user_id,
             start_date as startDate,
             end_date as endDate,
@@ -37,8 +34,8 @@
     </select>
 
     <insert id="insert" parameterType="com.pplip.domain.trip.plan.persistence.entity.Plan" useGeneratedKeys="true" keyProperty="id">
-        insert into plan (user_id, title, start_date, end_date, created_at)
-        values (#{userId}, #{title}, #{startDate}, #{endDate}, #{createdAt});
+        insert into plan (user_id, title, thumbnail, start_date, end_date, created_at)
+        values (#{userId}, #{title}, #{thumbnail}, #{startDate}, #{endDate}, #{createdAt});
     </insert>
 
     <update id="update" parameterType="com.pplip.domain.trip.plan.persistence.entity.Plan">
@@ -61,5 +58,8 @@
     <delete id="delete">
         delete from plan where id = #{id};
     </delete>
+    <select id="count">
+        select count(*) from plan where user_id = #{userId};
+    </select>
 
 </mapper>

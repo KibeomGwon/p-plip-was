@@ -1,5 +1,6 @@
 package com.pplip.domain.trip.plan.api.request;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -29,5 +30,16 @@ public class PlanRequest {
 
         private LocalDate startDate;
         private LocalDate endDate;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
+    public static class SuggestPlan {
+        @JsonProperty("attraction_id")
+        private String attractionId;
+        @JsonProperty("user_theme")
+        private String query;
     }
 }

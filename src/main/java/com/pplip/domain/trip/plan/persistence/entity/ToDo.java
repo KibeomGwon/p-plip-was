@@ -15,6 +15,7 @@ public class ToDo {
     private Long id;
     private Long planId;
     private Long attractionId;
+    private String title;
 
     private String description;
     private LocalDateTime willStartAt;

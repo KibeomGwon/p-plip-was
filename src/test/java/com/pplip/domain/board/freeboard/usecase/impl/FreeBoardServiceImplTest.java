@@ -164,7 +164,7 @@ class FreeBoardServiceImplTest {
 
     @Nested
     @DisplayName("post 메소드")
-    class PostTest {
+    class PostTodoTest {
         @Test
         @DisplayName("성공: 새로운 게시글을 작성한다")
         void given_PostRequestAndPrincipal_when_PostBoard_then_Success() {
@@ -197,7 +197,7 @@ class FreeBoardServiceImplTest {
 
     @Nested
     @DisplayName("retrieveDetail 메소드")
-    class RetrieveDetailTest {
+    class RetrievePlanToDoDetailTest {
         @Test
         @DisplayName("성공: 게시글 상세 정보를 조회한다")
         void given_BoardId_when_RetrieveDetail_then_Success() {

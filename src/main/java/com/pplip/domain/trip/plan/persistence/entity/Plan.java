@@ -14,7 +14,7 @@ public class Plan {
     private Long id;
     private Long userId;
     private String title;
-
+    private String thumbnail;
     private LocalDate startDate;
     private LocalDate endDate;
 

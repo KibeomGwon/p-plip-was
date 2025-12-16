@@ -10,54 +10,57 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public class PlanResponse {
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class Summary {
-        private Long id;
-        private String title;
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class Summary {
+		private Long id;
+		private String title;
+		private String thumbnail;
+		private LocalDate startDate;
+		private LocalDate endDate;
 
-        private LocalDate startDate;
-        private LocalDate endDate;
+		private LocalDateTime createdAt;
+	}
 
-        private LocalDateTime createdAt;
-    }
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class PlanDetail {
+		private Long id;
+		private String title;
+		@JsonIgnore
+		private Long userId;
+		private String thumbnail;
+		private LocalDate startDate;
+		private LocalDate endDate;
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class Detail {
-        private Long id;
-        private String title;
-        @JsonIgnore
-        private Long userId;
-        private LocalDate startDate;
-        private LocalDate endDate;
+		private LocalDateTime createdAt;
+	}
 
-        private LocalDateTime createdAt;
-    }
+	@Data
+	@NoArgsConstructor
+	@AllArgsConstructor
+	@Builder
+	public static class Update {
+		private Long id;
+		private String title;
 
-    @Data
-    @NoArgsConstructor
-    @AllArgsConstructor
-    @Builder
-    public static class Update {
-        private Long id;
-        private String title;
+		private LocalDate startDate;
+		private LocalDate endDate;
 
-        private LocalDate startDate;
-        private LocalDate endDate;
+		private LocalDateTime updatedAt;
+	}
 
-        private LocalDateTime updatedAt;
-    }
-    @Data
-    @Builder
-    @NoArgsConstructor
-    @AllArgsConstructor
-    public static class Remove{
-        private Long id;
-        private String title;
-    }
+	@Data
+	@Builder
+	@NoArgsConstructor
+	@AllArgsConstructor
+	public static class Remove {
+		private Long id;
+		private String title;
+	}
+
 }

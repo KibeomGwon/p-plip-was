@@ -10,11 +10,10 @@ import com.pplip.domain.board.freeboard.persistence.dao.FreeBoardDao;
 import com.pplip.domain.board.freeboard.persistence.dao.UserLikeBoardDao;
 import com.pplip.domain.board.freeboard.persistence.entity.FreeBoard;
 import com.pplip.domain.board.freeboard.persistence.entity.FreeBoardSort;
-import com.pplip.domain.board.freeboard.persistence.entity.UserLikeBoard;
 import com.pplip.domain.board.freeboard.usecase.FreeBoardService;
 import com.pplip.domain.file.api.request.FileRequest;
 import com.pplip.domain.file.persistence.dao.FreeBoardImagePropertyDao;
-import com.pplip.domain.file.persistence.entity.FileStatus;
+import com.pplip.domain.file.persistence.entity.ModifyStatus;
 import com.pplip.domain.file.persistence.entity.FreeBoardImageProperty;
 import com.pplip.domain.file.persistence.entity.ImageType;
 import com.pplip.domain.file.usecase.FileService;
@@ -63,9 +62,9 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		}
 		freeBoard.setTitle(update.getTitle());
 		freeBoard.setContent(update.getContent());
-		List<Long> removeImages = update.getImages().stream().filter(f -> f.getStatus().equals(FileStatus.REMOVE)).map(FileRequest::getId).toList();
+		List<Long> removeImages = update.getImages().stream().filter(f -> f.getStatus().equals(ModifyStatus.REMOVE)).map(FileRequest::getId).toList();
 		//현재 이미지는 생성되어 있으나, ref가 없는 상태
-		List<Long> updateImageIds = update.getImages().stream().filter(f -> f.getStatus().equals(FileStatus.NEW)).map(FileRequest::getId).toList();
+		List<Long> updateImageIds = update.getImages().stream().filter(f -> f.getStatus().equals(ModifyStatus.NEW)).map(FileRequest::getId).toList();
 		List<FreeBoardImageProperty> boardImages = freeBoardImagePropertyDao.findByBoardId(freeBoard.getId());
 		List<FreeBoardImageProperty> removeList = boardImages.stream().filter(img -> removeImages.contains(img.getId())).toList();
 

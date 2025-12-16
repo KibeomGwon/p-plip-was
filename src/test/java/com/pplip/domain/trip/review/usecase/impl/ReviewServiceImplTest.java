@@ -160,7 +160,7 @@ class ReviewServiceImplTest {
 
 	@Nested
 	@DisplayName("post 메소드")
-	class Post {
+	class PostTodo {
 
 		@Test
 		@DisplayName("성공 - 새로운 리뷰를 작성한다")
@@ -262,7 +262,7 @@ class ReviewServiceImplTest {
 
 	@Nested
 	@DisplayName("update 메소드")
-	class Update {
+	class ToDoUpdated {
 
 		@Test
 		@DisplayName("성공 - 리뷰를 수정한다")
