@@ -102,4 +102,15 @@
         VALUES (#{title}, #{areaCode}, #{siGunGuCode}, #{contentId}, #{contentType.id}, #{firstImage1}, #{firstImage2}, #{homepage}, #{latitude}, #{longitude}, #{mapLevel}, #{overview}, #{tel})
     </insert>
 
+    <select id="findRandom" resultType="com.pplip.domain.trip.attraction.persistence.entity.Attraction">
+        select *
+        from attractions
+        where area_code = #{sidoCode}
+          <if test="gugunCode != null and gugunCode != 0">
+            and si_gun_gu_code = #{gugunCode}
+          </if>
+        order by rand()
+        limit 1;
+    </select>
+
 </mapper>

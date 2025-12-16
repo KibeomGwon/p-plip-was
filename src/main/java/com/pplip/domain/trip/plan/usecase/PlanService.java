@@ -51,4 +51,6 @@ public interface PlanService {
 	PlanResponse.Remove removePlan(Long id);
 
 	PlanResponse.PlanDetail suggestPlan(PlanRequest.SuggestPlan suggest);
+
+	PlanResponse.PlanDetail randomPlan(PlanRequest.RandomPlan suggest);
 }

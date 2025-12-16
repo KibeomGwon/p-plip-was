@@ -84,4 +84,9 @@ public class PlanController implements PlanDocsController {
     public CommonResponse<PlanResponse.PlanDetail> suggestPlan(@RequestBody PlanRequest.SuggestPlan suggest){
         return CommonResponse.success(SuccessCode.CREATED, planService.suggestPlan(suggest));
     }
+
+    @PostMapping("/suggest/random")
+    public CommonResponse<PlanResponse.PlanDetail> suggestRandomPlan(@RequestBody PlanRequest.RandomPlan suggest){
+        return CommonResponse.success(SuccessCode.CREATED, planService.randomPlan(suggest));
+    }
 }
