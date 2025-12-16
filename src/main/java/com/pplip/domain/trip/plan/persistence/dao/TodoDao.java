@@ -4,6 +4,7 @@ import com.pplip.domain.trip.plan.api.response.ToDoResponse;
 import com.pplip.domain.trip.plan.persistence.entity.ToDo;
 import com.pplip.global.page.PageRequest;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,6 +32,6 @@ public interface TodoDao {
 
 	int delete(Long id);
 
-	void deleteAll(List<Long> deleteIds);
+	void deleteAll(@Param("toDoIds") List<Long> deleteIds);
 
 }

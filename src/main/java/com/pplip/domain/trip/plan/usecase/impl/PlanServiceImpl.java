@@ -135,6 +135,7 @@ public class PlanServiceImpl implements PlanService {
 		}).toList();
 		todoDao.insertAll(toDoList);
 
+
 		return PlanResponse.PlanDetail.builder()
 				.id(plan.getId())
 				.title(plan.getTitle())

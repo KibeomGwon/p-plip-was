@@ -39,8 +39,8 @@ public class ToDoResponse {
 		private String title;
 		private String attractionImage;
 		private String description;
-		private LocalDate willStartAt;
-		private LocalDate willEndAt;
+		private LocalDateTime willStartAt;
+		private LocalDateTime willEndAt;
 		private LocalDateTime createdAt;
 	}
 
