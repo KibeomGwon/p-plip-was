@@ -10,13 +10,13 @@ import com.pplip.domain.auth.jwt.JwtUtil;
 import com.pplip.domain.auth.provider.JwtAuthenticationProvider;
 import com.pplip.global.cache.usecase.RefreshTokenCacheService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configurers.CorsConfigurer;
 import org.springframework.security.config.annotation.web.configurers.CsrfConfigurer;
 import org.springframework.security.config.annotation.web.configurers.FormLoginConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HttpBasicConfigurer;
@@ -30,7 +30,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.Arrays;
 import java.util.List;
 
 @Configuration
@@ -43,10 +42,14 @@ public class SecurityConfig {
 	private final AuthenticationConfiguration authenticationConfiguration;
 	private final RefreshTokenCacheService refreshTokenCacheService;
 
+	@Value("${server.servlet.context-path}")
+	private String contextPath;
+
 	@Bean
 	public JwtAuthenticationFilter jwtAuthenticationFilter(JwtAuthenticationProvider provider) {
 		return new JwtAuthenticationFilter(provider);
 	}
+
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		http.httpBasic(HttpBasicConfigurer::disable);
@@ -60,10 +63,11 @@ public class SecurityConfig {
 		http.authorizeHttpRequests(req ->
 				req
 						.requestMatchers(
-								"/v3/api-docs/**",
-								"/swagger-ui/**",
-								"/swagger-ui.html"
-						).permitAll().anyRequest()
+								contextPath + "/v3/api-docs/**",
+								contextPath + "/swagger-ui/**",
+								contextPath + "/swagger-ui.html"
+						).permitAll()
+						.anyRequest()
 						.permitAll());
 		http.addFilterAt(customLoginFilter(), UsernamePasswordAuthenticationFilter.class);
 		http.addFilterBefore(new JwtAuthenticationFilter(provider), UsernamePasswordAuthenticationFilter.class);
@@ -75,13 +79,15 @@ public class SecurityConfig {
 		CustomLoginFilter clf = new CustomLoginFilter(om);
 		clf.setFilterProcessesUrl("/auth/login");
 		clf.setAuthenticationManager(authenticationManager(authenticationConfiguration));
-		clf.setAuthenticationSuccessHandler(new CustomLoginSuccessHandler(jwtUtil,om, refreshTokenCacheService));
+		clf.setAuthenticationSuccessHandler(new CustomLoginSuccessHandler(jwtUtil, om, refreshTokenCacheService));
 		clf.setAuthenticationFailureHandler(new CustomLoginFailureHandler(om));
 		return clf;
 	}
+
 	@Bean
-	public PasswordEncoder passwordEncoder(){
+	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
+
 	}
 
 	@Bean
@@ -95,7 +101,7 @@ public class SecurityConfig {
 		CorsConfiguration configuration = new CorsConfiguration();
 
 		// 1. 프론트엔드 주소 (정확히 일치해야 함)
-		configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:3000"));
+		configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:3000", "https://m.pplip.c01.kr"));
 
 		// 2. ★ 핵심: PATCH 메서드가 반드시 포함되어야 함 ★
 		configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"));
