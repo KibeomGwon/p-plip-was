@@ -127,4 +127,12 @@
         </foreach>
 
     </insert>
+
+    <delete id="deleteAll">
+        delete from to_do
+        where id in
+        <foreach collection="toDoIds" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>
