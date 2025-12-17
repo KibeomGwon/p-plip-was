@@ -118,14 +118,6 @@
         from to_do
         where id = #{id};
     </delete>
-    <delete id="deleteAll">
-        DELETE FROM to_do
-        WHERE id IN
-        <foreach collection="toDoIds" item="id" open="(" separator="," close=")">
-            #{id}
-        </foreach>
-    </delete>
-
     <insert id="insertAll" useGeneratedKeys="true" keyProperty="id">
         insert into to_do (plan_id, attraction_id, title, description, will_start_at, will_end_at, created_at)
         values
@@ -135,4 +127,12 @@
         </foreach>
 
     </insert>
+
+    <delete id="deleteAll">
+        delete from to_do
+        where id in
+        <foreach collection="toDoIds" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
 </mapper>
