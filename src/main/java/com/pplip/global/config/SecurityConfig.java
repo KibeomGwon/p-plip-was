@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -67,8 +68,12 @@ public class SecurityConfig {
 								contextPath + "/swagger-ui/**",
 								contextPath + "/swagger-ui.html"
 						).permitAll()
-						.anyRequest()
-						.permitAll());
+						.requestMatchers(contextPath+"/auth/**").permitAll()
+						.requestMatchers(contextPath+"/user/join/**").permitAll()
+						.requestMatchers(HttpMethod.GET,contextPath+"/freeboard/**").permitAll()
+						.requestMatchers(HttpMethod.GET,contextPath+"/notice/**").permitAll()
+						.requestMatchers(contextPath+"/error-code").permitAll()
+						.anyRequest().authenticated());
 		http.addFilterAt(customLoginFilter(), UsernamePasswordAuthenticationFilter.class);
 		http.addFilterBefore(new JwtAuthenticationFilter(provider), UsernamePasswordAuthenticationFilter.class);
 		http.addFilterBefore(new JwtExceptionFilter(om), JwtAuthenticationFilter.class);
