@@ -19,6 +19,7 @@ public class PlanResponse {
 		private Long id;
 		private String title;
 		private String thumbnail;
+		private double completedRate;
 		private LocalDate startDate;
 		private LocalDate endDate;
 
@@ -34,6 +35,7 @@ public class PlanResponse {
 		private String title;
 		@JsonIgnore
 		private Long userId;
+
 		private String thumbnail;
 		private LocalDate startDate;
 		private LocalDate endDate;
