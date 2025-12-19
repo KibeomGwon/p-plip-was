@@ -117,7 +117,6 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		int allCount = freeBoardDao.countAll();
 		if (!SecurityUtils.isAnonymous()) {
 			Account currentUser = SecurityUtils.getCurrentUser();
-
 			all.forEach(data -> data.setAuthor(data.getUserId() == currentUser.getUserId()));
 		}
 		return new Page<>(all, pageRequest.getPageNum(), pageRequest.getPageSize(), allCount);
