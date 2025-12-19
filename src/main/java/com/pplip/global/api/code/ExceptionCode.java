@@ -13,7 +13,7 @@ public enum ExceptionCode {
     EXPIRED(6),
     MALFORMED(7),
     INVALID(8), FAILURE(4), CONFLICT(9), FORBIDDEN(3),
-    INTERNAL_SERVER_ERROR(55);
+    INTERNAL_SERVER_ERROR(55), TOO_MANY_REQUEST(29);
     private int value;
 
 }

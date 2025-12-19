@@ -13,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -65,10 +66,21 @@ public class SecurityConfig {
 						.requestMatchers(
 								contextPath + "/v3/api-docs/**",
 								contextPath + "/swagger-ui/**",
-								contextPath + "/swagger-ui.html"
+								contextPath + "/swagger-ui.html",
+								contextPath + "/swagger-resources/**", // 추가 필요
+								contextPath + "/webjars/**"             // 추가 필요
 						).permitAll()
-						.anyRequest()
-						.permitAll());
+						.requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
+						.requestMatchers("/auth/**").permitAll()
+						.requestMatchers("/user/join/**").permitAll()
+						.requestMatchers(HttpMethod.GET, "/freeboard").permitAll()
+						.requestMatchers(HttpMethod.GET, "/freeboard/**").permitAll()
+						.requestMatchers(HttpMethod.GET, "/notice").permitAll()
+						.requestMatchers(HttpMethod.GET, "/notice/**").permitAll()
+						.requestMatchers("/error-code").permitAll()
+						.requestMatchers(HttpMethod.GET, "/trip/attraction/**").permitAll()
+						.requestMatchers("/trip/**").authenticated()
+						.anyRequest().authenticated());
 		http.addFilterAt(customLoginFilter(), UsernamePasswordAuthenticationFilter.class);
 		http.addFilterBefore(new JwtAuthenticationFilter(provider), UsernamePasswordAuthenticationFilter.class);
 		http.addFilterBefore(new JwtExceptionFilter(om), JwtAuthenticationFilter.class);

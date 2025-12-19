@@ -45,9 +45,9 @@ public enum ErrorCode {
     PLAN_NOT_FOUND(DomainCode.PLAN, ExceptionCode.NOT_FOUND,"계획 정보를 찾지 못했습니다."),
     PLAN_PROCESS_FAIL(DomainCode.PLAN,  ExceptionCode.FAILURE,"계획 작업 중 오류가 발생하였습니다."),
     BOARD_LIKE_PROCESS_FAILURE(DomainCode.BOARD_LIKE, ExceptionCode.FAILURE , "게시판 좋아요 작업 중 오류가 발생하였습니다."),
-    AI_SERVER_PROCESS_ERROR(DomainCode.ATTRACTION, ExceptionCode.INTERNAL_SERVER_ERROR,"추론 서버에서 오류가 발생하였습니다.")
-    ;
-
+    AI_SERVER_PROCESS_ERROR(DomainCode.ATTRACTION, ExceptionCode.INTERNAL_SERVER_ERROR,"추론 서버에서 오류가 발생하였습니다."),
+	ATTRACTION_REQUEST_BLOCKING_ERROR(DomainCode.ATTRACTION, ExceptionCode.TOO_MANY_REQUEST, "요청이 너무 많습니다."),
+    PLAN_REQUEST_BLOCKING_ERROR(DomainCode.PLAN, ExceptionCode.TOO_MANY_REQUEST, "요청이 너무 많습니다.");
 
     private DomainCode domainCode;
     private ExceptionCode exceptionCode;

@@ -12,13 +12,13 @@ import com.pplip.domain.trip.attraction.persistence.entity.ContentType;
 import com.pplip.domain.trip.attraction.usecase.AttractionService;
 import com.pplip.domain.trip.attraction.usecase.SearchHistoryService;
 import com.pplip.domain.trip.attraction.usecase.SidoGugunsService;
-import com.pplip.domain.trip.plan.api.request.PlanRequest;
 import com.pplip.global.api.code.ErrorCode;
 import com.pplip.global.exception.BusinessLogicException;
 import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.Cache;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -34,6 +34,7 @@ public class AttractionServiceImpl implements AttractionService {
 	private final InferenceService inferenceService;
 	private final SearchHistoryService historyService;
 	private final SidoGugunsService sidoGugunsService;
+	private final Cache attractionCache;
 
 
 	public Page<AttractionResponse.Summary> findAllBySearch(AttractionRequest.Search search, PageRequest pageRequest) {
@@ -48,7 +49,15 @@ public class AttractionServiceImpl implements AttractionService {
 
 	@Override
 	public List<AiResponse.SuggestAttraction> suggestAttractions(AttractionRequest.Suggest suggest) {
-		return inferenceService.suggestAttraction(AiRequest.SuggestAttractions.builder()
+		Long userId = SecurityUtils.getCurrentUser().getUserId();
+		synchronized (attractionCache) {
+			if (attractionCache.get(userId) == null) {
+				attractionCache.putIfAbsent(userId, true);
+			} else {
+				throw new BusinessLogicException(ErrorCode.ATTRACTION_REQUEST_BLOCKING_ERROR, "이미 생성 중 입니다.");
+			}
+		}
+		List<AiResponse.SuggestAttraction> response = inferenceService.suggestAttraction(AiRequest.SuggestAttractions.builder()
 				.lat(suggest.getLat())
 				.lng(suggest.getLng())
 				.query(suggest.getQuery())
@@ -56,6 +65,10 @@ public class AttractionServiceImpl implements AttractionService {
 				.k(suggest.getK())
 				.contentTypes(suggest.getContentTypes() == null ? null : suggest.getContentTypes().stream().map(ContentType::getDescription).toList())
 				.build());
+		if(attractionCache.evictIfPresent(userId)){
+			log.info("attraction_cache_evicted:{}", userId);
+		}
+		return response;
 	}
 
 	@Override

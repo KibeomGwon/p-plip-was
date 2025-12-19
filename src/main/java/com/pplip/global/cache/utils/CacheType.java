@@ -4,7 +4,10 @@ import lombok.Getter;
 
 @Getter
 public enum CacheType {
-    REFRESH("refreshTokens");
+    REFRESH("refreshTokens"),
+    ATTRACTION("attractions"),
+    PLAN("plans")
+    ;
 
     private final String name;
 

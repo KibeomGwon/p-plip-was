@@ -21,6 +21,7 @@ import com.pplip.global.page.Page;
 import com.pplip.global.page.PageRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.Cache;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +40,7 @@ public class PlanServiceImpl implements PlanService {
 	private final TodoDao todoDao;
 	private final AttractionDao attractionDao;
 	private final SidoGugunsDao sidoGugunsDao;
+	private final Cache planCache;
 
 
 	@Override
@@ -107,7 +109,16 @@ public class PlanServiceImpl implements PlanService {
 
 	@Override
 	public PlanResponse.PlanDetail suggestPlan(PlanRequest.SuggestPlan suggest) {
+		Long userId = SecurityUtils.getCurrentUser().getUserId();
+		if (planCache.get(userId) == null) {
+			planCache.putIfAbsent(userId, true);
+		} else {
+			throw new BusinessLogicException(ErrorCode.PLAN_PROCESS_FAIL, "현재 플랜 생성이 진행중입니다. 잠시 후 다시 시도해주세요.");
+		}
 		AiResponse.SuggestPlan suggestPlan = inferenceService.suggestPlan(suggest);
+		if(planCache.evictIfPresent(userId)){
+			log.info("evict plan cache for userId: {}", userId);
+		}
 		return savePlans(suggestPlan, Long.parseLong(suggest.getAttractionId()));
 	}
 
@@ -117,7 +128,7 @@ public class PlanServiceImpl implements PlanService {
 		Attraction random = attractionDao.findRandom(suggest.getSidoCode(), suggest.getGugunCode());
 		log.info("random : {}", random);
 		AiResponse.SuggestPlan suggestPlan = inferenceService.suggestPlan(PlanRequest.SuggestPlan.builder()
-				.query(suggest.getRegionName()+"에서 즐기는 즉흥 여행")
+				.query(suggest.getRegionName() + "에서 즐기는 즉흥 여행")
 				.attractionId(String.valueOf(random.getNo()))
 				.startDate(suggest.getStartDate())
 				.endDate(suggest.getEndDate())
