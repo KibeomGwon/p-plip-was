@@ -3,7 +3,9 @@ package com.pplip.domain.trip.plan.usecase.impl;
 import com.pplip.domain.auth.utils.SecurityUtils;
 import com.pplip.domain.trip.plan.api.request.ToDoRequest;
 import com.pplip.domain.trip.plan.api.response.ToDoResponse;
+import com.pplip.domain.trip.plan.persistence.dao.PlanDao;
 import com.pplip.domain.trip.plan.persistence.dao.TodoDao;
+import com.pplip.domain.trip.plan.persistence.entity.Plan;
 import com.pplip.domain.trip.plan.persistence.entity.ToDo;
 import com.pplip.domain.trip.plan.usecase.ToDoService;
 import com.pplip.global.api.code.ErrorCode;
@@ -15,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
@@ -27,6 +30,7 @@ import java.util.stream.Collectors;
 public class ToDoServiceImpl implements ToDoService {
 
 	private final TodoDao todoDao;
+	private final PlanDao planDao;
 
 	@Override
 	public List<ToDoResponse.ToDoSummary> getList(Long planId, UserDetails userDetails) {
@@ -73,7 +77,7 @@ public class ToDoServiceImpl implements ToDoService {
 						.planId(req.getPlanId())
 						.createdAt(LocalDateTime.now())
 						.build()
-				) // DTO -> Entity 변환 메서드 활용
+				)
 				.toList();
 
 		// 4. UPDATE 대상: 요청 중 ID가 있고, 기존 DB 리스트에도 존재하는 것 (검증 포함)
@@ -109,6 +113,20 @@ public class ToDoServiceImpl implements ToDoService {
 		if (!updateList.isEmpty()) {
 			log.info("Updating ToDo items: {}", updateList);
 			todoDao.updateAll(updateList);
+		}
+		List<ToDoResponse.ToDoSummary> todosList = todoDao.findAllByPlanId(planId);
+		if (!todosList.isEmpty()) {
+			Plan plan = planDao.findById(planId).orElseThrow(() -> new BusinessLogicException(ErrorCode.PLAN_NOT_FOUND, "여행 계획을 찾을 수 없습니다."));
+			log.info("Updating Plan summary info for Plan ID: {}", todosList);
+			todosList.sort(Comparator.comparing(ToDoResponse.ToDoSummary::getWillStartAt));
+			String thubmnail = todosList.stream().filter(todos -> todos.getAttractionImage() != null && !todos.getAttractionImage().isBlank())
+					.map(ToDoResponse.ToDoSummary::getAttractionImage)
+					.findFirst()
+					.orElse(null);
+			plan.setStartDate(todosList.get(0).getWillStartAt().toLocalDate());
+			plan.setEndDate(todosList.get(todosList.size() - 1).getWillEndAt().toLocalDate());
+			plan.setThumbnail(thubmnail);
+			planDao.update(plan);
 		}
 
 		return ToDoResponse.ToDoUpdated.builder()

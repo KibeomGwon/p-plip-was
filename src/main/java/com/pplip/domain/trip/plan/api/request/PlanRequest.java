@@ -16,8 +16,6 @@ public class PlanRequest {
     public static class Post {
         private String title;
 
-        private LocalDate startDate;
-        private LocalDate endDate;
     }
 
     @Data
@@ -27,8 +25,6 @@ public class PlanRequest {
     public static class Update {
         private String title;
 
-        private LocalDate startDate;
-        private LocalDate endDate;
     }
 
     @Data
