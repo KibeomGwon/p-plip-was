@@ -159,7 +159,7 @@ class PlanServiceImplTest {
         @DisplayName("성공: 새로운 여행 계획을 생성한다")
         void createPlan_success() {
             // given
-            PlanRequest.Post request = new PlanRequest.Post("새로운 여행", LocalDate.now(), LocalDate.now().plusDays(1));
+            PlanRequest.Post request = new PlanRequest.Post("새로운 여행");
             Plan plan = Plan.builder().id(1L).build();
             PlanResponse.PlanDetail planDetail = PlanResponse.PlanDetail.builder().id(1L).title(request.getTitle()).build();
 
@@ -188,7 +188,7 @@ class PlanServiceImplTest {
             try (MockedStatic<SecurityUtils> mockedSecurity = mockStatic(SecurityUtils.class)) {
                 // given
                 Long planId = 1L;
-                PlanRequest.Update request = new PlanRequest.Update("수정된 여행", LocalDate.now(), LocalDate.now().plusDays(2));
+                PlanRequest.Update request = new PlanRequest.Update("수정된 여행");
                 Plan existingPlan = Plan.builder()
                         .id(planId)
                         .userId(testUser.getUserId())
@@ -207,8 +207,6 @@ class PlanServiceImplTest {
                 // then
                 assertThat(result).isNotNull();
                 assertThat(result.getTitle()).isEqualTo(request.getTitle());
-                assertThat(result.getStartDate()).isEqualTo(request.getStartDate());
-                assertThat(result.getEndDate()).isEqualTo(request.getEndDate());
             }
         }
 
@@ -218,7 +216,7 @@ class PlanServiceImplTest {
             try (MockedStatic<SecurityUtils> mockedSecurity = mockStatic(SecurityUtils.class)) {
                 // given
                 Long nonExistPlanId = 99L;
-                PlanRequest.Update request = new PlanRequest.Update("수정", LocalDate.now(), LocalDate.now());
+                PlanRequest.Update request = new PlanRequest.Update("수정");
                 mockedSecurity.when(SecurityUtils::getCurrentUser).thenReturn(testUser);
                 when(planDao.findById(nonExistPlanId)).thenReturn(Optional.empty());
 
@@ -235,7 +233,7 @@ class PlanServiceImplTest {
                 // given
                 Long planId = 1L;
                 Long otherUserId = 2L;
-                PlanRequest.Update request = new PlanRequest.Update("수정", LocalDate.now(), LocalDate.now());
+                PlanRequest.Update request = new PlanRequest.Update("수정");
                 Plan otherUserPlan = Plan.builder().id(planId).userId(otherUserId).build();
 
                 mockedSecurity.when(SecurityUtils::getCurrentUser).thenReturn(testUser);

@@ -67,8 +67,6 @@ public class PlanServiceImpl implements PlanService {
 		Plan plan = Plan.builder()
 				.title(request.getTitle())
 				.userId(userId)
-				.startDate(request.getStartDate())
-				.endDate(request.getEndDate())
 				.createdAt(LocalDateTime.now()).build();
 		planDao.insert(plan);
 		return planDao.findByIdToDto(plan.getId()).orElseThrow(() -> new BusinessLogicException(ErrorCode.PLAN_NOT_FOUND, "플랜 저장에 실패했습니다."));
@@ -82,8 +80,6 @@ public class PlanServiceImpl implements PlanService {
 			throw new BusinessLogicException(ErrorCode.FORBIDDEN, "작성자만 수정할 수 있습니다.");
 		}
 		plan.setTitle(update.getTitle());
-		plan.setStartDate(update.getStartDate());
-		plan.setEndDate(update.getEndDate());
 		plan.setUpdatedAt(LocalDateTime.now());
 		planDao.update(plan);
 		return PlanResponse.Update.builder().id(plan.getId())
@@ -146,9 +142,9 @@ public class PlanServiceImpl implements PlanService {
 		log.info("suggestPlan: {}", suggestPlan);
 
 		Plan plan = Plan.builder().title(suggestPlan.getTitle())
+				.createdAt(LocalDateTime.now())
 				.startDate(suggestPlan.getStartDate())
 				.endDate(suggestPlan.getEndDate())
-				.createdAt(LocalDateTime.now())
 				.userId(currentUser.getUserId()).build();
 		if (thumbnail == null || thumbnail.isBlank()) {
 			thumbnail = suggestPlan.getToDos().stream().map(toDoItem -> toDoItem.getAttraction().getFirstImage1())
