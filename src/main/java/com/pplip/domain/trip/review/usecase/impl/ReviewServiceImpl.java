@@ -80,7 +80,7 @@ public class ReviewServiceImpl implements ReviewService {
             throw new BusinessLogicException(ErrorCode.REVIEW_CREATE_FAILURE, "리뷰 작성에 실패했습니다");
         }
 
-        if(post.getFileIds() != null) {
+        if(!post.getFileIds().isEmpty()) {
             imagePropertyDao.bulkUpdate(post.getFileIds(), entity.getId());
         }
 
@@ -105,7 +105,7 @@ public class ReviewServiceImpl implements ReviewService {
         entity.setUpdatedAt(LocalDateTime.now());
         entity.setContent(update.getContent());
 
-        if (update.getFiles() != null) {
+        if (!update.getFiles().isEmpty()) {
             List<Long> removeIds = update.getFiles().stream().filter(file -> file.getStatus().equals(ModifyStatus.REMOVE)).map(file -> file.getId()).toList();
             List<Long> newIds = update.getFiles().stream().filter(file -> file.getStatus().equals(ModifyStatus.NEW)).map(file -> file.getId()).toList();
 
