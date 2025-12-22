@@ -74,8 +74,10 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 		freeBoard.setUpdatedAt(LocalDateTime.now());
 		freeBoardDao.update(freeBoard);
 
-		fileService.deleteSavedFiles(removeList.stream().map(FreeBoardImageProperty::getId).toList(), ImageType.FREE_BOARD);//엑박 방지하려면 프로퍼티 먼저 삭제
-		fileService.deleteOriginFiles(removeList.stream().map(FreeBoardImageProperty::getPath).toList());
+        if (!removeImages.isEmpty()) {
+            fileService.deleteSavedFiles(removeList.stream().map(FreeBoardImageProperty::getId).toList(), ImageType.FREE_BOARD);//엑박 방지하려면 프로퍼티 먼저 삭제
+            fileService.deleteOriginFiles(removeList.stream().map(FreeBoardImageProperty::getPath).toList());
+        }
 		FreeBoardResponse.Detail detail = freeBoardDao.findByIdToDto(id).get();
 		detail.setAuthor(detail.getUserId() == userId);
 		return detail;
@@ -91,7 +93,9 @@ public class FreeBoardServiceImpl implements FreeBoardService {
 				.isRemoved(false)
 				.viewCnt(0).build();
 		int insert = freeBoardDao.insert(freeBoard);
-		freeBoardImagePropertyDao.bulkUpdate(request.getIds(), freeBoard.getId());
+        if (!request.getIds().isEmpty()) {
+            freeBoardImagePropertyDao.bulkUpdate(request.getIds(), freeBoard.getId());
+        }
 		FreeBoardResponse.Detail detail = freeBoardDao.findByIdToDto(freeBoard.getId()).orElseThrow(() -> new BusinessLogicException(ErrorCode.BOARD_NOT_FOUND_ERROR, "게시글 저장에 실패했습니다."));
 		detail.setAuthor(detail.getUserId() == userId);
 		return detail;

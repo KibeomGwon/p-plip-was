@@ -15,7 +15,6 @@ public class PlanRequest {
     @Builder
     public static class Post {
         private String title;
-
     }
 
     @Data

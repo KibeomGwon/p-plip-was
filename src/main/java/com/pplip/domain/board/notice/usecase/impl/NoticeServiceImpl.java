@@ -79,8 +79,11 @@ public class NoticeServiceImpl implements NoticeService {
         }
 
         // 이미지들의 board_id 값을 업데이트.
-        if (imagePropertyDao.bulkUpdate(post.getImageIds(), entity.getId()) != post.getImageIds().size()) {
-            throw new BoardLogicException(ErrorCode.FAIL_TO_CREATE_BOARD);
+
+        if (!post.getImageIds().isEmpty()) {
+            if (imagePropertyDao.bulkUpdate(post.getImageIds(), entity.getId()) != post.getImageIds().size()) {
+                throw new BoardLogicException(ErrorCode.FAIL_TO_CREATE_BOARD);
+            }
         }
 
         NoticeResponse.Detail resData = dao.findById(entity.getId())
